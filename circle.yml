@@ -1,0 +1,12 @@
+machine:
+  python:
+    version: 2.7.11
+
+test:
+  override:
+    - chmod +x django_testing_script.sh
+    - ./django_testing_script.sh
+
+dependencies:
+  override:
+    - pip install -r requirements.txt
