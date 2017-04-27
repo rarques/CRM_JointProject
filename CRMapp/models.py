@@ -17,12 +17,12 @@ class WebUser(models.Model):
 
 class UserAsPerson(models.Model):
     web_user = models.ForeignKey(WebUser)
-    DNI = models.CharField()
+    DNI = models.CharField(max_length=30)
 
 
 class UserAsCompany(models.Model):
     web_user = models.ForeignKey(WebUser)
-    CIF = models.CharField()
+    CIF = models.CharField(max_length=30)
 
 
 class Employee(models.Model):
