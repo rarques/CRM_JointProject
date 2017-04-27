@@ -25,6 +25,11 @@ class UserAsCompany(models.Model):
 class WorkerUser(models.Model):
     django_user = models.ForeignKey(User)
 
+
+class Product(models.Model):
+    name = models.CharField(max_length=30)
+
+
 class Opinion(models.Model):
     user = models.ForeignKey(WebUser)
     product = models.ForeignKey(Product)
@@ -34,8 +39,4 @@ class Opinion(models.Model):
 class Incidence(models.Model):
     user = models.ForeignKey(WebUser)
     product = models.ForeignKey(Product)
-    name = models.CharField(max_length=30)
-
-
-class Product(models.Model):
     name = models.CharField(max_length=30)
