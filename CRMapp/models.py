@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class WebUser(models.Model):
-    django_user = models.Model(User)
+    django_user = models.ForeignKey(User)
     country = models.CharField(max_length=20)
     state = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
@@ -14,15 +14,16 @@ class WebUser(models.Model):
 
 
 class UserAsPerson(models.Model):
-    web_user = models.Model(WebUser)
+    web_user = models.ForeignKey(WebUser)
+    DNI = models.IntegerField()
 
 
 class UserAsCompany(models.Model):
-    web_user = models.Model(WebUser)
+    web_user = models.ForeignKey(WebUser)
 
 
 class WorkerUser(models.Model):
-    django_user = models.Model(User)
+    django_user = models.ForeignKey(User)
 
 class Opinion(models.Model):
     user = models.ForeignKey(WebUser)
