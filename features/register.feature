@@ -4,8 +4,6 @@ Feature: Register a new user
   So I can use the different services of the web page.
 
   Background: The user wants to register and visits the register page
-    Given The user wants to register
-    And visits de register page
 
   Scenario: Register new user
     Given I'm not registered
@@ -24,4 +22,4 @@ Feature: Register a new user
     Given I'm not registered
     When I fill the form with invalid information
     And I submit the form
-    Then I get an error
+    Then I get an error telling me the wrong information
