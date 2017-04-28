@@ -11,8 +11,8 @@ Fork and/or clone the repository into your local machine.
 
 In order to work with the project you will need the following:
 
-* [python 2.7.12]
-* [virtualenv]
+* python 2.7.12
+* virtualenv
 
 Installing and activating virtualenv:
 
@@ -40,7 +40,7 @@ It will automatically apply the necessary migrations on the database and run the
 
 ### Break down into end to end tests
 
-Test not implemented yet.
+Tests not implemented yet.
 
 ## Deployment
 
@@ -61,4 +61,4 @@ Deployment in heroku
 
 ## License
 
-This project is licensed under the GPU License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GPU License - see the [LICENSE](LICENSE) file for details
