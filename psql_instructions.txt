@@ -1,0 +1,25 @@
+Instructions for creating a new postgresql database.
+
+-First open postgres as superuser:
+sudo su - postgres
+
+-Enter the psql:
+psql
+
+-Create a new DATABASE (the database must have the same name that the database in the settings.py file in django):
+CREATE DATABASE crmdatabase;
+
+-Now create a new user (same as the database, new user and password must be the same as settings.py file):
+CREATE USER gt1 WITH PASSWORD 'admin';    (the password must be put between ' ')
+
+-Now we change default roles a little bit...:
+ALTER ROLE gt1 SET client_encoding TO 'utf8';
+ALTER ROLE gt1 SET default_transaction_isolation TO 'read committed';
+ALTER ROLE gt1 SET timezone TO 'UTC';
+
+-Finally, we grant all privileges to our user over the database:
+GRANT ALL PRIVILEGES ON DATABASE crmdatabase TO gt1;
+
+-Exit the command lines:
+\q
+exit
