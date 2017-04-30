@@ -23,3 +23,19 @@ GRANT ALL PRIVILEGES ON DATABASE crmdatabase TO gt1;
 -Exit the command lines:
 \q
 exit
+
+
+-Oh, if you have crazy problems with the database... DROP IT:
+
+sudo su - postgres
+
+dropdb crmdatabase
+
+psql
+
+CREATE DATABASE crmdatabase;
+
+GRANT ALL PRIVILEGES ON DATABASE crmdatabase TO gt1;
+
+\q
+exit
