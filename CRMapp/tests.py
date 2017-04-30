@@ -2,16 +2,6 @@ from django.test import TestCase
 from models import *
 
 
-class simpleTest(TestCase):
-    """Simple test to check if CircleCI runs tests correctly"""
-
-    def setUp(self):
-        pass
-
-    def test(self):
-        self.assertEqual(True, True)
-
-
 class ModelsTesting(TestCase):
     def setUp(self):
         user1, user2, user3 = self.create_django_users()
