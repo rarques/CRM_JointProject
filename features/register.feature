@@ -4,6 +4,7 @@ Feature: Register a new user
   So I can use the different services of the web page.
 
   Background: The user wants to register and visits the register page
+    Given The user visits the register page
 
   Scenario: Register new user
     Given I'm not registered
