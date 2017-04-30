@@ -1,4 +1,11 @@
-{% extends 'root.html' %}
+{% extends 'base.html' %}
 {% block content %}
-
+    <div id="register-form-container">
+        <div id="person-registration-form">
+            {{ person_form }}
+        </div>
+        <div id="company-registration-form">
+            {{ company_form }}
+        </div>
+    </div>
 {% endblock %}

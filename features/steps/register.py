@@ -5,10 +5,8 @@ use_step_matcher("re")
 
 @given("The user visits the register page")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    context.browser.visit(context.get_url('register'))
+    assert context.browser.is_text_present("Person")
 
 
 @given("I'm not registered")
