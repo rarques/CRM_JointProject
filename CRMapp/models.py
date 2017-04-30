@@ -23,7 +23,7 @@ class UserAsPerson(models.Model):
     DNI = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.username
+        return self.web_user.django_user.username
 
 
 class UserAsCompany(models.Model):
@@ -31,7 +31,7 @@ class UserAsCompany(models.Model):
     CIF = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.username
+        return self.web_user.django_user.username
 
 
 class Employee(models.Model):
