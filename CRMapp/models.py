@@ -5,8 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 
 
-class WebUser(models.Model):
-    django_user = models.ForeignKey(User)
+class WebUser(User):
     country = models.CharField(max_length=20)
     province = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
@@ -15,32 +14,29 @@ class WebUser(models.Model):
     phone = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return self.django_user.username
+        return self.username
 
 
-class UserAsPerson(models.Model):
-    web_user = models.ForeignKey(WebUser)
+class UserAsPerson(WebUser):
     DNI = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.django_user.username
+        return self.username
 
 
-class UserAsCompany(models.Model):
-    web_user = models.ForeignKey(WebUser)
+class UserAsCompany(WebUser):
     CIF = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.django_user.username
+        return self.username
 
 
-class Employee(models.Model):
-    django_user = models.ForeignKey(User)
+class Employee(User):
     NSS = models.CharField(max_length=30)
     department = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.django_user.username
+        return self.username
 
 
 class Product(models.Model):
