@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 
 
-class WebUser(User):
+class WebUser(models.Model):
+    django_user = models.OneToOneField(User, on_delete=models.CASCADE)
     country = models.CharField(max_length=20)
     province = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
@@ -14,29 +15,32 @@ class WebUser(User):
     phone = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return self.username
+        return self.django_user.username
 
 
-class UserAsPerson(WebUser):
+class UserAsPerson(models.Model):
+    web_user = models.OneToOneField(WebUser, on_delete=models.CASCADE)
     DNI = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.username
+        return self.web_user.django_user.username
 
 
-class UserAsCompany(WebUser):
+class UserAsCompany(models.Model):
+    web_user = models.OneToOneField(WebUser, on_delete=models.CASCADE)
     CIF = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.username
+        return self.web_user.django_user.username
 
 
-class Employee(User):
+class Employee(models.Model):
+    django_user = models.OneToOneField(User, on_delete=models.CASCADE)
     NSS = models.CharField(max_length=30)
     department = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.username
+        return self.django_user.username
 
 
 class Product(models.Model):
