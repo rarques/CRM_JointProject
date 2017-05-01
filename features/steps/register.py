@@ -47,47 +47,29 @@ def step_impl(context):
 
 @then("I'm redirected to my profile page")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    raise NotImplementedError("Not implemented")
 
 
 @step("I see my personal information")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    raise NotImplementedError("Not implemented")
 
 
 @given("I'm registered")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    raise NotImplementedError("Not implemented")
 
 
 @then("I get an error telling me I'm registered")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    raise NotImplementedError("Not implemented")
 
 
 @when("I fill the form with invalid information")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    raise NotImplementedError("Not implemented")
 
 
 @then("I get an error telling me the wrong information")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    raise NotImplementedError("Not implemented")
