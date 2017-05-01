@@ -14,15 +14,24 @@ class WebUser(models.Model):
     street = models.CharField(max_length=50)
     phone = models.IntegerField(blank=True, null=True)
 
+    def __unicode__(self):
+        return self.django_user.username
+
 
 class UserAsPerson(models.Model):
     web_user = models.ForeignKey(WebUser)
     DNI = models.CharField(max_length=30)
 
+    def __unicode__(self):
+        return self.web_user.django_user.username
+
 
 class UserAsCompany(models.Model):
     web_user = models.ForeignKey(WebUser)
     CIF = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.web_user.django_user.username
 
 
 class Employee(models.Model):
@@ -30,9 +39,15 @@ class Employee(models.Model):
     NSS = models.CharField(max_length=30)
     department = models.CharField(max_length=30)
 
+    def __unicode__(self):
+        return self.django_user.username
+
 
 class Product(models.Model):
     name = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Opinion(models.Model):
@@ -43,6 +58,9 @@ class Opinion(models.Model):
     rating = models.IntegerField()
     date = models.DateField(default=now)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Incidence(models.Model):
     user = models.ForeignKey(WebUser)
@@ -51,3 +69,6 @@ class Incidence(models.Model):
     explanation = models.TextField(max_length=300)
     category = models.CharField(max_length=30)
     date = models.DateField(default=now)
+
+    def __unicode__(self):
+        return self.name
