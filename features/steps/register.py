@@ -3,16 +3,23 @@ from behave import *
 use_step_matcher("re")
 
 
-@given("The user visits the register page")
-def step_impl(context):
-    context.browser.visit(context.get_url('register'))
-    title = context.browser.find_by_tag("h2")
-    assert title.text == 'Register as a Person or as a Company'
-
-
 @given("I'm not registered")
 def step_impl(context):
     pass
+
+
+@step("I visit the register as person page")
+def step_impl(context):
+    context.browser.visit(context.get_url('register_person'))
+    title = context.browser.find_by_tag("h2")
+    assert title.text == 'Register as Person'
+
+
+@step("I visit the register as company page")
+def step_impl(context):
+    context.browser.visit(context.get_url('register_company'))
+    title = context.browser.find_by_tag("h2")
+    assert title.text == 'Register as Company'
 
 
 @when("I fill the form's basic fields")
@@ -25,6 +32,7 @@ def step_impl(context):
 
 @step("I fill the form's specific fields")
 def step_impl(context):
+    pass
     browser = context.browser
     for row in context.table:
         for heading in row.headings:
@@ -33,13 +41,24 @@ def step_impl(context):
 
 @step("I submit the form")
 def step_impl(context):
-    form = context.browser.find_by_id('person-registration-form')
+    form = context.browser.find_by_id('registration-form')
     form.find_by_value('Submit').first.click()
 
 
 @then("I'm redirected to my profile page")
 def step_impl(context):
-    assert context.browser.is_text_present("Profile")
+    """
+    :type context: behave.runner.Context
+    """
+    pass
+
+
+@step("I see my personal information")
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    pass
 
 
 @given("I'm registered")
