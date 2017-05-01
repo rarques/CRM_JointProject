@@ -1,5 +1,5 @@
 .page-header {
-    background-color: #3c86ff;
+    background-color: #a7c7ff;
     border-style: outset;
     margin-top: 0;
     padding: 20px 20px 20px 30px;
@@ -20,12 +20,54 @@ body {
 }
 
 .content {
-
+    margin-left: 40px;
 }
 p {
     font-family: Arial;
 }
 
 hr {
-    
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: 15px;
+    margin-right: 15px;
+    border-style: inset;
+    border-width: 1px;
+}
+
+.field {
+  display:flex;
+  position: relative;
+  margin: 0 auto;
+  width:50%;
+  flex-direction:row;
+  box-shadow:
+   1px 1px 0 rgb(22, 160, 133),
+   2px 2px 0 rgb(22, 160, 133),
+   3px 3px 0 rgb(22, 160, 133),
+   4px 4px 0 rgb(22, 160, 133),
+   5px 5px 0 rgb(22, 160, 133),
+   6px 6px 0 rgb(22, 160, 133),
+   7px 7px 0 rgb(22, 160, 133)
+  ;
+}
+
+.field>input[type=text],
+.field>button {
+  display:block;
+  font:1.2em 'Montserrat Alternates';
+}
+
+.field>input[type=text] {
+  flex:1;
+  padding:0.6em;
+  border:0.2em solid rgb(26, 188, 156);
+}
+
+.field>button {
+  padding:0.6em 0.8em;
+  background-color:rgb(26, 188, 156);
+  color:white;
+  border:none;
 }
