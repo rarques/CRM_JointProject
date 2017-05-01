@@ -6,7 +6,7 @@ from django.utils.timezone import now
 
 
 class WebUser(models.Model):
-    django_user = models.ForeignKey(User)
+    django_user = models.OneToOneField(User, on_delete=models.CASCADE)
     country = models.CharField(max_length=20)
     province = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
@@ -19,7 +19,7 @@ class WebUser(models.Model):
 
 
 class UserAsPerson(models.Model):
-    web_user = models.ForeignKey(WebUser)
+    web_user = models.OneToOneField(WebUser, on_delete=models.CASCADE)
     DNI = models.CharField(max_length=30)
 
     def __unicode__(self):
@@ -27,7 +27,7 @@ class UserAsPerson(models.Model):
 
 
 class UserAsCompany(models.Model):
-    web_user = models.ForeignKey(WebUser)
+    web_user = models.OneToOneField(WebUser, on_delete=models.CASCADE)
     CIF = models.CharField(max_length=30)
 
     def __unicode__(self):
@@ -35,7 +35,7 @@ class UserAsCompany(models.Model):
 
 
 class Employee(models.Model):
-    django_user = models.ForeignKey(User)
+    django_user = models.OneToOneField(User, on_delete=models.CASCADE)
     NSS = models.CharField(max_length=30)
     department = models.CharField(max_length=30)
 
