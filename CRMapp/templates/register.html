@@ -2,11 +2,16 @@
 {% block content %}
     <h2>Register as a Person or as a Company</h2>
     <div id="register-form-container">
-        <div id="person-registration-form">
-            {{ person_form }}
-        </div>
-        <div id="company-registration-form">
-            {{ company_form }}
-        </div>
+        {% if form %}
+            <form action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_table }}
+                <input type="submit" value="Submit"/>
+            </form>
+        {% else %}
+            <a href="{% url 'register_person' %}">Register as a Person</a>
+            <p>OR</p>
+            <a href="{% url 'register_company' %}">Register as a Company</a>
+        {% endif %}
     </div>
 {% endblock %}

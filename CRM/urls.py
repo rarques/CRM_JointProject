@@ -20,4 +20,6 @@ from CRMapp.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^register/$', register, name='register'),
+    url(r'^register-person/$', register_person, name='register_person'),
+    url(r'^register-company/$', register_company, name='register_company'),
 ]
