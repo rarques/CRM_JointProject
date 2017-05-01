@@ -8,14 +8,19 @@ Feature: Register a new user
 
   Scenario: Register new user
     Given I'm not registered
-    When I fill the form with valid information
+    When I fill the form's basic fields
+      | username_p | password_p  | repassword_p | email              | name_p |
+      | moliva     | napolitanes | napolitanes  | oliva@diei.udl.cat | Marta  |
+    And I fill the form's specific fields
+      | lastname_p | DNI       | phone     | street      | city     | zipcode | province  | country      |
+      | Oliva      | 12345678A | 973123456 | Croissant I | Isengard | 23230   | Enedwaith | Middle Earth |
     And I submit the form
-    Then I receive an email confirmation
-    And I accept the confirmation
+    Then I'm redirected to my profile page
 
   Scenario: The user is already registered
     Given I'm registered
-    When I fill the form with valid information
+    When I fill the form's basic fields
+    And I fill the form's specific fields
     And I submit the form
     Then I get an error telling me I'm registered
 

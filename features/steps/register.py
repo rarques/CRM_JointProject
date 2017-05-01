@@ -6,47 +6,40 @@ use_step_matcher("re")
 @given("The user visits the register page")
 def step_impl(context):
     context.browser.visit(context.get_url('register'))
-    assert context.browser.is_text_present("Person")
+    title = context.browser.find_by_tag("h2")
+    assert title.text == 'Register as a Person or as a Company'
 
 
 @given("I'm not registered")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
     pass
 
 
-@when("I fill the form with valid information")
+@when("I fill the form's basic fields")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    browser = context.browser
+    for row in context.table:
+        for heading in row.headings:
+            browser.fill(heading, row[heading])
+
+
+@step("I fill the form's specific fields")
+def step_impl(context):
+    browser = context.browser
+    for row in context.table:
+        for heading in row.headings:
+            browser.fill(heading, row[heading])
 
 
 @step("I submit the form")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    form = context.browser.find_by_id('person-registration-form')
+    form.find_by_value('Submit').first.click()
 
 
-@then("I receive an email confirmation")
+@then("I'm redirected to my profile page")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
-
-
-@step("I accept the confirmation")
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    pass
+    assert context.browser.is_text_present("Profile")
 
 
 @given("I'm registered")
