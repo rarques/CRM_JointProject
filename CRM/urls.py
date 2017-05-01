@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from CRMapp.views import *
 
 urlpatterns = [
+    url(r'^$', base),
     url(r'^admin/', admin.site.urls),
+
 ]

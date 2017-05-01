@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="shortcut icon" href="images/favicon.ico" />
+        <meta charset="UTF-8">
+
+        <title>{{TitleHeader}}</title>
+    </head>
+
+    <body>
+        <div class ="page-header">
+             <img src="{% static 'images/Logo.jpg' %}" style="width:80px;height:80px;">
+             <div class="close-image">
+                 <img src="{% static 'images/Carrito.png' %}" style="width:70px;height:70px;top:-5px;right:-3px;">
+             </div>
+             <div class="close-image">
+                 <a href="a la view de log-in">
+                 <img src="{% static 'images/icon_login.png' %}" style="width:80px;height:80px;top:-10px;right:10px;">
+                 </a>
+             </div>
+        </div>
+
+        <div class ="page-title">
+            <h2><strong>{{PageTitle}}</strong></h2>
+        </div>
+        <hr>
+        {% block content %}
+        {% endblock %}
+
+    </body>
+</html>
