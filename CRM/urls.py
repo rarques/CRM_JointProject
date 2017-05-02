@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.views import login, logout
+from CRMapp.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^user/', webUser),
+
 ]
