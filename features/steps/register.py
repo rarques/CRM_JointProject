@@ -60,19 +60,11 @@ def step_impl(context):
 
 @given("I'm registered")
 def step_impl(context):
-    raise NotImplementedError("Not implemented")
+    from django.contrib.auth.models import User
+    User.objects.create(username='used_name')
 
 
 @then("I get an error telling me I'm registered")
 def step_impl(context):
-    raise NotImplementedError("Not implemented")
-
-
-@when("I fill the form with invalid information")
-def step_impl(context):
-    raise NotImplementedError("Not implemented")
-
-
-@then("I get an error telling me the wrong information")
-def step_impl(context):
-    raise NotImplementedError("Not implemented")
+    browser = context.browser
+    assert len(browser.find_by_css('.errorlist')) == 1

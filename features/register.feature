@@ -30,22 +30,15 @@ Feature: Register a new user
     And I submit the form
     Then I'm redirected to my profile page
     And Exists a UserAsCompany with CIF = 98765432Z
-#
-#  Scenario: The user is already registered
-#    Given I'm registered
-#    And I visit the register as person page
-#      | username  | password | repassword | email           | phone     |
-#      | used_name | password | password   | random@mail.com | 666666666 |
-#    When I fill the form's basic fields
-#      | street      | city     | zipcode | province  | country      | cif       |
-#      | Croissant I | Isengard | 23230   | Enedwaith | Middle Earth | 12345678A |
-#    And I fill the form's specific fields
-#    And I submit the form
-#    Then I get an error telling me I'm registered
-#
-#  Scenario: The user enters incorrect information
-#    Given I'm not registered
-#    And I visit the register as person page
-#    When I fill the form with invalid information
-#    And I submit the form
-#    Then I get an error telling me the wrong information
+
+  Scenario: The user is already registered
+    Given I'm registered
+    And I visit the register as company page
+    When I fill the form's basic fields
+      | username  | password | repassword | email           | phone     |
+      | used_name | password | password   | random@mail.com | 666666666 |
+    And I fill the form's specific fields
+      | street      | city     | zip_code | province  | country      | CIF       |
+      | Croissant I | Isengard | 23230    | Enedwaith | Middle Earth | 12345678A |
+    And I submit the form
+    Then I get an error telling me I'm registered
