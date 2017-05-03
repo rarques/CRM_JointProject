@@ -16,16 +16,20 @@ def register_person(request):
             "title": "Register as Person",
             "basic_form": UserForm(),
             "form": WebUserForm(),
+            "specific_form": UserAsPersonForm(),
             "destination_url": "/register-person/"
         })
     elif request.method == 'POST':
         # Register person
         user_form = UserForm(request.POST)
         web_user_form = WebUserForm(request.POST)
+        user_as_person_form = UserAsPersonForm(request.POST)
         if user_form.is_valid() \
-                and web_user_form.is_valid():
+                and web_user_form.is_valid() \
+                and user_as_person_form.is_valid():
             new_user = create_new_django_user(user_form)
             new_web_user = create_new_web_user(web_user_form, new_user)
+            new_person_user = create_new_user_as_person(user_as_person_form, new_web_user)
             # TODO: Create UserAsPerson from web_user
             # return redirect(profile)
             return HttpResponse("Registered")
@@ -64,3 +68,10 @@ def create_new_web_user(web_user_form, django_user):
     new_web_user.django_user = django_user
     new_web_user.save()
     return new_web_user
+
+
+def create_new_user_as_person(user_as_person_form, web_user):
+    new_person_user = user_as_person_form.save(commit=False)
+    new_person_user.web_user = web_user
+    new_person_user.save()
+    return new_person_user
