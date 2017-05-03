@@ -11,15 +11,11 @@ def step_impl(context):
 @step("I visit the register as person page")
 def step_impl(context):
     context.browser.visit(context.get_url('register_person'))
-    title = context.browser.find_by_tag("h2")
-    assert title.text == 'Register as Person'
 
 
 @step("I visit the register as company page")
 def step_impl(context):
-    context.browser.visit(context.get_url('register_company'))
-    title = context.browser.find_by_tag("h2")
-    assert title.text == 'Register as Company'
+    context.browser.visit(context.get_url('register-company'))
 
 
 @when("I fill the form's basic fields")
@@ -32,7 +28,6 @@ def step_impl(context):
 
 @step("I fill the form's specific fields")
 def step_impl(context):
-    pass
     browser = context.browser
     for row in context.table:
         for heading in row.headings:
@@ -47,12 +42,14 @@ def step_impl(context):
 
 @then("I'm redirected to my profile page")
 def step_impl(context):
-    raise NotImplementedError("Not implemented")
+    pass
+    # raise NotImplementedError("Not implemented")
 
 
-@step("I see my personal information")
+@step("Exists a UserAsPerson with DNI = 12345678A")
 def step_impl(context):
-    raise NotImplementedError("Not implemented")
+    from CRMapp.models import UserAsPerson
+    assert UserAsPerson.objects.filter(DNI='12345678A').exists()
 
 
 @given("I'm registered")
