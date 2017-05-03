@@ -10,8 +10,7 @@ class ModelsTesting(TestCase):
 
         self.create_person_company_employee(user3, web_user1, web_user2)
 
-        category = Category.objects.create(name="menjar")
-        Product.objects.create(name="croissant", category=category, price=2, price_after_discount=1)
+        self.create_product()
 
     def create_django_users(self):
         user1 = User.objects.create(username="user1")
@@ -28,6 +27,11 @@ class ModelsTesting(TestCase):
                                            zip_code=666, street="All water n1",
                                            phone=288, interested_category=category)
         return web_user1, web_user2
+
+    def create_product(self):
+        category = Category.objects.create(name="menjar")
+        discount = Discount.objects.create(discount_identifier="XX2D-AGS1", percent=20, expiring_data="2006-10-25")
+        Product.objects.create(name="croissant", category=category, price=2, discount=discount)
 
     def create_person_company_employee(self, user3, web_user1, web_user2):
         UserAsPerson.objects.create(web_user=web_user1, DNI="312W")

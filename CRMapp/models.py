@@ -51,12 +51,17 @@ class Employee(models.Model):
         return self.django_user.username
 
 
+class Discount(models.Model):
+    discount_identifier = models.CharField(max_length=30)
+    percent = models.IntegerField()
+    expiring_data = models.DateField(blank=True, null=True)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=30)
     category = models.ForeignKey(Category)
     price = models.IntegerField()
-    price_after_discount = models.IntegerField()
-    data_discount_expires = models.DateField(blank=True, null=True)
+    discount = models.ForeignKey(Discount)
 
     def __unicode__(self):
         return self.name
@@ -84,3 +89,10 @@ class Incidence(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Sale(models.Model):
+    client = models.ForeignKey(WebUser)
+    product = models.ForeignKey(Product)
+    opinion = models.ForeignKey(Opinion)
+    incidence = models.ForeignKey(Incidence)
