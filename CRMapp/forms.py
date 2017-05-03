@@ -2,6 +2,7 @@
 
 from django.forms import *
 from django.contrib.auth.models import User
+from models import *
 
 
 class UserForm(ModelForm):
@@ -23,8 +24,13 @@ class UserForm(ModelForm):
             )
 
 
-class WebUserForm(Form):
-    pass
+class WebUserForm(ModelForm):
+    class Meta:
+        model = WebUser
+        exclude = ['django_user']
+
+    def clean(self):
+        return super(WebUserForm, self).clean()
 
 
 """
