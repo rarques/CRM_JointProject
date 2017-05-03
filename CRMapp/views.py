@@ -47,12 +47,20 @@ def register_company(request):
         return render(request, 'register.html', {
             "title": "Register as Company",
             "basic_form": UserForm(),
-            # "form": UserAsCompanyForm(),
+            "form": WebUserForm(),
+            "specific_form": UserAsCompanyForm(),
             "destination_url": "/register-company/"
         })
     elif request.method == 'POST':
         # Register company
-        pass
+        user_form = UserForm(request.POST)
+        web_user_form = WebUserForm(request.POST)
+        if user_form.is_valid() \
+                and web_user_form.is_valid():
+            new_user = create_new_django_user(user_form)
+            new_web_user = create_new_web_user(web_user_form, new_user)
+            # TODO: Create UserAsCompany from new WebUser
+            return HttpResponse("Registered")
 
 
 def create_new_django_user(user_form):

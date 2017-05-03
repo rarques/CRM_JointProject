@@ -2,7 +2,7 @@
 
 from django.forms import *
 from django.contrib.auth.models import User
-from models import WebUser, UserAsPerson
+from models import WebUser, UserAsPerson, UserAsCompany
 
 
 class UserForm(ModelForm):
@@ -40,3 +40,12 @@ class UserAsPersonForm(ModelForm):
 
     def clean(self):
         return super(UserAsPersonForm, self).clean()
+
+
+class UserAsCompanyForm(ModelForm):
+    class Meta:
+        model = UserAsCompany
+        exclude = ['web_user']
+
+    def clean(self):
+        return super(UserAsCompanyForm, self).clean()
