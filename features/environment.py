@@ -20,6 +20,7 @@ def before_all(context):
     context.test_runner = DiscoverRunner()
     context.test_runner.setup_test_environment()
     context.browser = Browser('phantomjs')
+    context.browser.driver.set_window_size(1027, 640)
 
 
 def before_scenario(context, scenario):

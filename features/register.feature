@@ -9,8 +9,8 @@ Feature: Register a new user
     Given I'm not registered
     And I visit the register as person page
     When I fill the form's basic fields
-      | username | password    | repassword  | email              | phone     |
-      | moliva   | napolitanes | napolitanes | oliva@diei.udl.cat | 973123456 |
+      | username | password    | repassword  | email            | phone     |
+      | moliva   | napolitanes | napolitanes | moliva@gmail.com | 973123456 |
     And I fill the form's specific fields
       | street      | city     | zip_code | province  | country      | DNI       |
       | Croissant I | Isengard | 23230    | Enedwaith | Middle Earth | 12345678A |
