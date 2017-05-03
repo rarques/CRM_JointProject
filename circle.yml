@@ -4,6 +4,8 @@ machine:
 
 test:
   override:
+    - chmod +x install_phantomjs.sh
+    - ./install_phantomjs.sh
     - chmod +x django_testing_script.sh
     - ./django_testing_script.sh
 
