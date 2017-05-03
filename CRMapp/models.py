@@ -12,7 +12,7 @@ class Category(models.Model):
         return self.name
 
 
-class Client(models.Model):
+class WebUser(models.Model):
     django_user = models.OneToOneField(User, on_delete=models.CASCADE)
     country = models.CharField(max_length=20)
     province = models.CharField(max_length=20)
@@ -20,11 +20,26 @@ class Client(models.Model):
     zip_code = models.IntegerField()
     street = models.CharField(max_length=50)
     phone = models.IntegerField(blank=True, null=True)
-    number_identificator = models.CharField(max_length=30)
     interested_category = models.ForeignKey(Category)
 
     def __unicode__(self):
-        return self.django_user.username+"  "+self.interested_category.name
+        return self.django_user.username
+
+
+class UserAsPerson(models.Model):
+    web_user = models.OneToOneField(WebUser, on_delete=models.CASCADE)
+    DNI = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.web_user.django_user.username
+
+
+class UserAsCompany(models.Model):
+    web_user = models.OneToOneField(WebUser, on_delete=models.CASCADE)
+    CIF = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.web_user.django_user.username
 
 
 class Employee(models.Model):
@@ -48,7 +63,7 @@ class Product(models.Model):
 
 
 class Opinion(models.Model):
-    user = models.ForeignKey(Client)
+    user = models.ForeignKey(WebUser)
     product = models.ForeignKey(Product)
     name = models.CharField(max_length=30)
     comment = models.TextField(max_length=200)
@@ -60,7 +75,7 @@ class Opinion(models.Model):
 
 
 class Incidence(models.Model):
-    user = models.ForeignKey(Client)
+    user = models.ForeignKey(WebUser)
     product = models.ForeignKey(Product)
     name = models.CharField(max_length=30)
     explanation = models.TextField(max_length=300)

@@ -2,7 +2,8 @@ from django.contrib import admin
 from CRMapp.models import *
 
 admin.site.register(Category)
-admin.site.register(Client)
+admin.site.register(UserAsPerson)
+admin.site.register(UserAsCompany)
 admin.site.register(Employee)
 admin.site.register(Product)
 admin.site.register(Opinion)
