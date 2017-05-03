@@ -2,7 +2,7 @@
 {% block content %}
     <div id="register-form-container">
         {% if basic_form %}
-            <form id="registration-form" action="{% url 'register' %}" method="post">
+            <form id="registration-form" action="{{ destination_url }}" method="post">
                 {% csrf_token %}
                 <table>
                     {{ basic_form.as_table }}

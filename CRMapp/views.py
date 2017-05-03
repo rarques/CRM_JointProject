@@ -1,4 +1,5 @@
-from django.shortcuts import render, render_to_response
+from django.http.response import Http404, HttpResponse
+from django.shortcuts import render, render_to_response, redirect
 from forms import *
 
 
@@ -13,20 +14,35 @@ def register_person(request):
     if request.method == 'GET':
         return render(request, 'register.html', {
             "title": "Register as Person",
-            "basic_form": BasicForm(),
-            "form": UserAsPersonForm(),
+            "basic_form": UserForm(),
+            # "form": UserAsPersonForm(),
+            "destination_url": "/register-person/"
         })
     elif request.method == 'POST':
         # Register person
-        pass
+        user_form = UserForm(request.POST)
+        if user_form.is_valid():
+            form_data = user_form.cleaned_data
+            new_user = user_form.save(commit=False)
+            new_user.set_password(form_data['password'])
+            new_user.save()
+            return redirect(profile)
+        else:
+            return render(request, 'register.html', {
+                "title": "Register as Person",
+                "basic_form": user_form,
+                # "form": UserAsPersonForm(),
+                "destination_url": "/register-person/"
+            })
 
 
 def register_company(request):
     if request.method == 'GET':
         return render(request, 'register.html', {
             "title": "Register as Company",
-            "basic_form": BasicForm(),
-            "form": UserAsCompanyForm(),
+            "basic_form": UserForm(),
+            # "form": UserAsCompanyForm(),
+            "destination_url": "/register-company/"
         })
     elif request.method == 'POST':
         # Register company

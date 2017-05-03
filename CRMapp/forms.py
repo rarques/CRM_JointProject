@@ -1,8 +1,33 @@
 # coding=utf-8
 
 from django.forms import *
+from django.contrib.auth.models import User
 
 
+class UserForm(ModelForm):
+    password = CharField(max_length=30, widget=PasswordInput)
+    repassword = CharField(max_length=30, widget=PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email',)
+
+    def clean(self):
+        cleaned_data = super(UserForm, self).clean()
+        password = cleaned_data.get("password")
+        repassword = cleaned_data.get("repassword")
+
+        if password != repassword:
+            raise forms.ValidationError(
+                "password and repassword does not match"
+            )
+
+
+class WebUserForm(Form):
+    pass
+
+
+"""
 class BasicForm(Form):
     username = CharField(label='Usuari', max_length=30)
     password = CharField(label='Contrassenya', max_length=50)
@@ -22,3 +47,4 @@ class UserAsPersonForm(Form):
 
 class UserAsCompanyForm(Form):
     cif = IntegerField(label='CIF')
+"""
