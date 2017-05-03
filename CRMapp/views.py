@@ -29,15 +29,15 @@ def register_person(request):
                 and user_as_person_form.is_valid():
             new_user = create_new_django_user(user_form)
             new_web_user = create_new_web_user(web_user_form, new_user)
-            new_person_user = create_new_user_as_person(user_as_person_form, new_web_user)
-            # TODO: Create UserAsPerson from web_user
+            create_new_user_as_person(user_as_person_form, new_web_user)
             # return redirect(profile)
             return HttpResponse("Registered")
         else:
             return render(request, 'register.html', {
                 "title": "Register as Person",
                 "basic_form": user_form,
-                # "form": UserAsPersonForm(),
+                "form": web_user_form,
+                "specific_form": user_as_person_form,
                 "destination_url": "/register-person/"
             })
 
