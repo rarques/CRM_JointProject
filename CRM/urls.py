@@ -21,8 +21,8 @@ from CRMapp.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^person_profile/([0-9]+)', person_profile, name='person_profile'),
-    url(r'^company_profile([0-9]+)', company_profile, name='company_profile'),
-    url(r'^modify_person/([0-9]+)', modify_person, name='modify_person'),
-    url(r'^modify_company/([0-9]+)', modify_company, name='modify_company')
+    url(r'^person_profile/', person_profile, name='person_profile'),
+    url(r'^company_profile/', company_profile, name='company_profile'),
+    url(r'^modify_person/', modify_person, name='modify_person'),
+    url(r'^modify_company/', modify_company, name='modify_company')
 ]
