@@ -15,15 +15,17 @@ def register_person(request):
         return render(request, 'register.html', {
             "title": "Register as Person",
             "basic_form": UserForm(),
-            # "form": WebUserForm(),
+            "form": WebUserForm(),
             "destination_url": "/register-person/"
         })
     elif request.method == 'POST':
         # Register person
         user_form = UserForm(request.POST)
-        if user_form.is_valid():
+        web_user_form = WebUserForm(request.POST)
+        if user_form.is_valid() \
+                and web_user_form.is_valid():
             new_user = create_new_django_user(user_form)
-            # TODO: Create WebUser from new_user
+            new_web_user = create_new_web_user(web_user_form, new_user)
             # TODO: Create UserAsPerson from web_user
             # return redirect(profile)
             return HttpResponse("Registered")
@@ -55,3 +57,10 @@ def create_new_django_user(user_form):
     new_user.set_password(form_data['password'])
     new_user.save()
     return new_user
+
+
+def create_new_web_user(web_user_form, django_user):
+    new_web_user = web_user_form.save(commit=False)
+    new_web_user.django_user = django_user
+    new_web_user.save()
+    return new_web_user
