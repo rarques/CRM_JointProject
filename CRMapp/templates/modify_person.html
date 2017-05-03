@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div id="modify_person">
+        <form action="{% url modify_person %}" method="post">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <label>
+                            Basic
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            User name :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ user_name }}"
+                               name="user_name" id="user_name" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            First name :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ first_name }}"
+                               name="first_name" id="first_name" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Last name :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ last_name }}"
+                               name="last_name" id="last_name" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Email :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="email" value="{{ email }}"
+                               name="email" id="email" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label>
+                            User information
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Country :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ country }}"
+                               name="country" id="country" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Province :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ province }}"
+                               name="province" id="province" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            City :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ city }}"
+                               name="city" id="city" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Zip code :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" maxlength="5" value="{{ zip_code }}"
+                               name="zip_code" id="zip_code" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Street :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ street }}"
+                               name="street" id="street" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Phone :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="tel" value="{{ phone }}"
+                               name="phone" id="phone" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label>
+                            Personal information
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            DNI :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" maxlength="9" value="{{ dni }}"
+                               name="dni" id="dni" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Apply"/>
+                    </td>
+                    <td>
+                <tr>
+                    <td>
+                        <input type="reset" value="Cancel"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}

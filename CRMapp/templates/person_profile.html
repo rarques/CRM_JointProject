@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div id="person_profile">
+        <table>
+            <tr>
+                <td colspan="2">
+                    <label>
+                        Basic
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        User name :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ user_name }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        First name :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ first_name }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Last name :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ last_name }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Email :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ email }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label>
+                        User information
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Country :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ country }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Province :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ province }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        City :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ city }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Zip code :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ zip_code }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Street :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ street }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Phone :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ phone }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label>
+                        Personal information
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        DNI :
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        {{ dni }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button>
+                        <a href="{% url modify_person %}">Modify</a>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
