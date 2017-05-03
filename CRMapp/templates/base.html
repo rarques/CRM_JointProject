@@ -13,21 +13,20 @@
 
     <body>
         <div class ="page-header">
-             <img src="{% static 'images/Logo.png' %}" style="width:130px;height:80px;">
-             <div class="field" id="searchform">
-                 <input type="text" id="searchterm" placeholder="what are you searching for?" />
-                 <button type="button" id="search">Find!</button>
+            <div class="close-image"></div>
+                <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"><i class="fa fa-unlock-alt" style="color: rgb(12, 12, 12); font-size: 82px; box-sizing: content-box; line-height: 135px; text-align: center; width: 135px; height: 135px; display: inline-block; overflow: hidden; border-radius: 50%; background-color: rgb(224, 231, 237);"></i>
             </div>
-             <div class="close-image">
-                 <img src="{% static 'images/Carrito.png' %}" style="width:70px;height:70px;top:-5px;right:-10px;">
-             </div>
-             <div class="close-image">
-                 <a href="a la view de log-in">
-                 <img src="{% static 'images/Login.png' %}" style="width:70px;height:70px;top:-15px;right:10px;">
-                 </a>
-             </div>
         </div>
-
+        <div>
+            <nav>
+                <ul>
+                  <li><a href="default.asp">Home</a></li>
+                  <li><a href="news.asp">News</a></li>
+                  <li><a href="contact.asp">Contact</a></li>
+                  <li><a href="about.asp">About</a></li>
+                </ul>
+            </nav>
+        </div>
         <div class ="page-title">
             <h2><strong>{{PageTitle}}</strong></h2>
         </div>
@@ -35,6 +34,8 @@
 
         {% block content %}
         {% endblock %}
+
+        <footer></footer>
 
     </body>
 </html>

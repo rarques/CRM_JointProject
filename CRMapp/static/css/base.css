@@ -1,5 +1,10 @@
+html {
+	position: relative;
+	min-height: 100%;
+}
+
 .page-header {
-    background-color: #a7c7ff;
+    background-color: #4a4aff;
     border-style: outset;
     margin-top: 0;
     padding: 20px 20px 20px 30px;
@@ -7,6 +12,8 @@
 
 body {
     background-color: #f4f6ff;
+    margin: 0 0 125px;
+	padding: 25px;
 }
 .page-title {
     font-family: Arial;
@@ -14,9 +21,9 @@ body {
 }
 
 .close-image{
-    display: block;
-    float:right;
-    position:relative;
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
 .content {
@@ -36,38 +43,37 @@ hr {
     border-width: 1px;
 }
 
-.field {
-  display:flex;
-  position: relative;
-  margin: 0 auto;
-  width:50%;
-  flex-direction:row;
-  box-shadow:
-   1px 1px 0 rgb(22, 160, 133),
-   2px 2px 0 rgb(22, 160, 133),
-   3px 3px 0 rgb(22, 160, 133),
-   4px 4px 0 rgb(22, 160, 133),
-   5px 5px 0 rgb(22, 160, 133),
-   6px 6px 0 rgb(22, 160, 133),
-   7px 7px 0 rgb(22, 160, 133)
-  ;
+ul {
+    list-style-type: none;
+    margin-top: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
 }
 
-.field>input[type=text],
-.field>button {
-  display:block;
-  font:1.2em 'Montserrat Alternates';
+li {
+    float: left;
 }
 
-.field>input[type=text] {
-  flex:1;
-  padding:0.6em;
-  border:0.2em solid rgb(26, 188, 156);
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
 }
 
-.field>button {
-  padding:0.6em 0.8em;
-  background-color:rgb(26, 188, 156);
-  color:white;
-  border:none;
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+    padding-left: 15px;
+}
+
+footer {
+	background-color: orange;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 100px;
+	width: 100%;
 }
