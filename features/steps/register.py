@@ -15,7 +15,7 @@ def step_impl(context):
 
 @step("I visit the register as company page")
 def step_impl(context):
-    context.browser.visit(context.get_url('register-company'))
+    context.browser.visit(context.get_url('register_company'))
 
 
 @when("I fill the form's basic fields")
@@ -50,6 +50,12 @@ def step_impl(context):
 def step_impl(context):
     from CRMapp.models import UserAsPerson
     assert UserAsPerson.objects.filter(DNI='12345678A').exists()
+
+
+@step("Exists a UserAsCompany with CIF = 98765432Z")
+def step_impl(context):
+    from CRMapp.models import UserAsCompany
+    assert UserAsCompany.objects.filter(CIF='98765432Z').exists()
 
 
 @given("I'm registered")

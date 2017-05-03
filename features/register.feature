@@ -18,18 +18,18 @@ Feature: Register a new user
     Then I'm redirected to my profile page
     And Exists a UserAsPerson with DNI = 12345678A
 
-#  Scenario: Register new company user
-#    Given I'm not registered
-#    And I visit the register as company page
-#    When I fill the form's basic fields
-#      | username | password      | repassword    | email         | phone     |
-#      | sirius   | i<3croissants | i<3croissants | sir@gmail.com | 973123456 |
-#    And I fill the form's specific fields
-#      | street      | city     | zipcode | province  | country      | cif       |
-#      | Croissant I | Isengard | 23230   | Enedwaith | Middle Earth | 12345678A |
-#    And I submit the form
-#    Then I'm redirected to my profile page
-#    And I see my personal information
+  Scenario: Register new company user
+    Given I'm not registered
+    And I visit the register as company page
+    When I fill the form's basic fields
+      | username | password      | repassword    | email         | phone     |
+      | sirius   | i<3croissants | i<3croissants | sir@gmail.com | 973123456 |
+    And I fill the form's specific fields
+      | street      | city     | zip_code | province  | country      | CIF       |
+      | Croissant I | Isengard | 23230    | Enedwaith | Middle Earth | 98765432Z |
+    And I submit the form
+    Then I'm redirected to my profile page
+    And Exists a UserAsCompany with CIF = 98765432Z
 #
 #  Scenario: The user is already registered
 #    Given I'm registered
