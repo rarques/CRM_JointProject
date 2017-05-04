@@ -7,13 +7,13 @@ Feature: Modify user (person or company) profile information
   Background: The user (person or company) is registered in the system previously and is in the profile
 
   Scenario: User (person) updates profile information
-    Given I'm registered
+    Given I am registered
     And I visit the modify as person page
     When I change the form fields that interest me
       | username | email                | country | province           | city         | zip_code | street | phone     | DNI       |
       | aragorn  | aragorn@arathorn.sil | gondor  | Campos de pelennor | minas tirith | 06660    | Anor   | 999666333 | 45236834T |
     And I submit the modify person form
-    Then I'm redirected to my profile page
+    Then I am redirected to my profile page
     And Exists a UserAsPerson with DNI = "45236834T"
 
   Scenario: The user enters invalid information
@@ -33,7 +33,7 @@ Feature: Modify user (person or company) profile information
       | username           | email                             | country       | province   | city         | zip_code | street              | phone     | CIF       |
       | oracle corporation | support_cloud_platform@oracle.com | Oracle Empire | California | Redwood city | 07421    | oracle headquarters | 323495156 | E43576214 |
     And I submit the modify company form
-    Then I'm redirected to my profile page
+    Then I am redirected to my profile page
     And Exists a UserAsCompany with CIF = "E43576214"
 
   Scenario: The user (company) enters invalid information

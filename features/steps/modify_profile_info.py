@@ -3,7 +3,7 @@ from behave import *
 use_step_matcher("re")
 
 
-@given("I'm registered")
+@given("I am registered")
 def step_impl(context):
     """
     :type context: behave.runner.Context
@@ -40,7 +40,7 @@ def step_impl(context):
     form.find_by_value('Apply').first.click()
 
 
-@then("I'm redirected to my profile page")
+@then("I am redirected to my profile page")
 def step_impl(context):
     """
     :type context: behave.runner.Context
