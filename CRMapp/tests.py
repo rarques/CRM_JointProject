@@ -20,12 +20,12 @@ class ModelsTesting(TestCase):
 
     def create_web_users(self, user1, user2):
         category = Category.objects.create(name="Tractor")
-        web_user1 = WebUser.objects.create(django_user=user1, country="Spain", province="Lleida", city="Cervera",
-                                           zip_code=25200, street="Ramon Balcells n2",
-                                           phone=288, interested_category=category)
+        web_user1 = WebUser.objects.create(django_user=user1, country="Spain", province="Lleida",
+                                           city="Cervera", zip_code=25200,
+                                           street="Ramon Balcells n2", phone=288)
         web_user2 = WebUser.objects.create(django_user=user2, country="Spain", province="Castamere", city="Rip city",
                                            zip_code=666, street="All water n1",
-                                           phone=288, interested_category=category)
+                                           phone=322)
         return web_user1, web_user2
 
     def create_product(self):
@@ -92,7 +92,27 @@ class ModelsTesting(TestCase):
         incidence = Incidence.objects.get(category="Defectuos")
         self.assertEqual(incidence.explanation, "lulz")
 
-    """Test add category into a client"""
+    def test_user_interested_in_categories(self):
+        category1 = Category.objects.create(name="ordenador")
+        category2 = Category.objects.create(name="components")
+        user = WebUser.objects.get(django_user=User.objects.get(username="user1"))
+        CategoryPerUser.objects.create(user=user, category=category1)
+        CategoryPerUser.objects.create(user=user, category=category2)
+        catched_user = CategoryPerUser.objects.get(category=category2)
+        self.assertEqual(catched_user.user.phone, 288)
+        catched_user = CategoryPerUser.objects.get(category=category1)
+        self.assertEqual(catched_user.user.phone, 288)
 
+    def test_interested_users_in_category(self):
+        category = Category.objects.create(name="phone")
+        user1 = WebUser.objects.get(django_user=User.objects.get(username="user1"))
+        user2 = WebUser.objects.get(django_user=User.objects.get(username="user2"))
+        CategoryPerUser.objects.create(user=user1, category=category)
+        CategoryPerUser.objects.create(user=user2, category=category)
+        interested_users = CategoryPerUser.objects.filter(category=category)
+        first_user = interested_users.get(user=user1)
+        second_user = interested_users.get(user=user2)
+        self.assertEqual(first_user.user.phone, 288)
+        self.assertEqual(second_user.user.phone, 322)
 
     """Test selling a product"""
