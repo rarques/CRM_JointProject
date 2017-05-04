@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div id="modify_person">
-        <form action="{% url modify_person %}" method="post">
+        <form action="{% url 'modify_person' %}" method="post">
             {% csrf_token %}
             <table>
                 <tr>
@@ -19,7 +19,7 @@
                     </td>
                     <td>
                         <input type="text" value="{{ user_name }}"
-                               name="user_name" id="user_name" required="true"/>
+                               name="user_name" id="user_name"/>
                     </td>
                 </tr>
                 <tr>
@@ -30,7 +30,7 @@
                     </td>
                     <td>
                         <input type="text" value="{{ first_name }}"
-                               name="first_name" id="first_name" required="true"/>
+                               name="first_name" id="first_name"/>
                     </td>
                 </tr>
                 <tr>
@@ -41,7 +41,7 @@
                     </td>
                     <td>
                         <input type="text" value="{{ last_name }}"
-                               name="last_name" id="last_name" required="true"/>
+                               name="last_name" id="last_name"/>
                     </td>
                 </tr>
                 <tr>
@@ -52,7 +52,7 @@
                     </td>
                     <td>
                         <input type="email" value="{{ email }}"
-                               name="email" id="email" required="true"/>
+                               name="email" id="email"/>
                     </td>
                 </tr>
                 <tr>
@@ -63,7 +63,7 @@
                     </td>
                     <td>
                         <input type="password" value=""
-                               name="password" id="password" required="true"/>
+                               name="password" id="password"/>
                     </td>
                 </tr>
                 <tr>
@@ -74,8 +74,7 @@
                     </td>
                     <td>
                         <input type="password" value=""
-                               name="repeat_password" id="repeat_password"
-                               required="true"/>
+                               name="repeat_password" id="repeat_password"/>
                     </td>
                 </tr>
                 <tr>
@@ -93,7 +92,7 @@
                     </td>
                     <td>
                         <input type="text" value="{{ country }}"
-                               name="country" id="country" required="true"/>
+                               name="country" id="country"/>
                     </td>
                 </tr>
                 <tr>
@@ -104,7 +103,7 @@
                     </td>
                     <td>
                         <input type="text" value="{{ province }}"
-                               name="province" id="province" required="true"/>
+                               name="province" id="province"/>
                     </td>
                 </tr>
                 <tr>
@@ -115,7 +114,7 @@
                     </td>
                     <td>
                         <input type="text" value="{{ city }}"
-                               name="city" id="city" required="true"/>
+                               name="city" id="city"/>
                     </td>
                 </tr>
                 <tr>
@@ -126,7 +125,7 @@
                     </td>
                     <td>
                         <input type="text" maxlength="5" value="{{ zip_code }}"
-                               name="zip_code" id="zip_code" required="true"/>
+                               name="zip_code" id="zip_code"/>
                     </td>
                 </tr>
                 <tr>
@@ -137,7 +136,7 @@
                     </td>
                     <td>
                         <input type="text" value="{{ street }}"
-                               name="street" id="street" required="true"/>
+                               name="street" id="street"/>
                     </td>
                 </tr>
                 <tr>
@@ -148,7 +147,7 @@
                     </td>
                     <td>
                         <input type="tel" value="{{ phone }}"
-                               name="phone" id="phone" required="true"/>
+                               name="phone" id="phone"/>
                     </td>
                 </tr>
                 <tr>
@@ -166,17 +165,12 @@
                     </td>
                     <td>
                         <input type="text" maxlength="9" value="{{ dni }}"
-                               name="dni" id="dni" required="true"/>
+                               name="dni" id="dni"/>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td colspan="2">
                         <input type="submit" value="Apply"/>
-                    </td>
-                    <td>
-                <tr>
-                    <td>
-                        <input type="reset" value="Cancel"/>
                     </td>
                 </tr>
             </table>
