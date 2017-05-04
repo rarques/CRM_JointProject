@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.views import login, logout
 from CRMapp.views import *
 
 urlpatterns = [
@@ -22,4 +23,6 @@ urlpatterns = [
     url(r'^register/$', register, name='register'),
     url(r'^register-person/$', register_person, name='register_person'),
     url(r'^register-company/$', register_company, name='register_company'),
+    url(r'^accounts/login/$', login, name='login'),
+    url(r'^accounts/logout/$', logout, name='logout'),
 ]
