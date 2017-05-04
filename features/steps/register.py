@@ -44,7 +44,9 @@ def step_impl(context):
 
 @step("I select the categories I'm interested in")
 def step_impl(context):
-    raise NotImplementedError
+    browser = context.browser
+    for row in context.table:
+        browser.check('category')
 
 
 @step("I submit the form")
