@@ -4,7 +4,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from forms import *
 
-from CRMapp.models import WebUser, UserAsPerson, UserAsCompany
+from CRMapp.models import WebUser, UserAsPerson, UserAsCompany, CategoryPerUser
 
 
 @login_required
@@ -17,6 +17,7 @@ def person_profile(request):
     if request.method == 'GET':
         user = request.user
         web_user = WebUser.objects.get(django_user=user)
+        categories = CategoryPerUser.objects.filter(user=web_user)
         user_as_person = UserAsPerson.objects.get(web_user=web_user)
         return render(request,
                       'person_profile.html',
@@ -29,6 +30,7 @@ def person_profile(request):
                           'zip_code': web_user.zip_code,
                           'street': web_user.street,
                           'phone': web_user.phone,
+                          'categories' : categories,
                           'dni': user_as_person.DNI
                       })
 
@@ -43,6 +45,7 @@ def company_profile(request):
     if request.method == 'GET':
         user = request.user
         web_user = WebUser.objects.get(django_user=user)
+        categories = CategoryPerUser.objects.filter(user=web_user)
         user_as_company = UserAsCompany.objects.get(web_user=web_user)
         return render(request,
                       'company_profile.html',
@@ -55,6 +58,7 @@ def company_profile(request):
                           'zip_code': web_user.zip_code,
                           'street': web_user.street,
                           'phone': web_user.phone,
+                          'categories' : categories,
                           'cif': user_as_company.CIF
                       })
 

@@ -115,6 +115,20 @@
             <tr>
                 <td colspan="2">
                     <label>
+                        Categories
+                    </label>
+                </td>
+            </tr>
+            {% for category_per_user in categories %}
+                <tr>
+                    <td>
+                        {{ category_per_user.category }}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="2">
+                    <label>
                         Personal information
                     </label>
                 </td>

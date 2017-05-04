@@ -8,9 +8,18 @@ def step_impl(context):
     """
     :type context: behave.runner.Context
     """
+    from CRMapp.models import WebUser, UserAsPerson, UserAsCompany
     from django.contrib.auth.models import User
-    User.objects.create(username='used_name')
-
+    user1 = User.objects.create(username='used_name')
+    user2 = User.objects.create(username='padre')
+    web_user1 = WebUser.objects.create(django_user=user1, country="Spain", province="Lleida",
+                                       city="Cervera", zip_code=25200,
+                                       street="Ramon Balcells n2", phone=288)
+    web_user2 = WebUser.objects.create(django_user=user2, country="Spain", province="Lleida",
+                                       city="Cervera", zip_code=25200,
+                                       street="Ramon Balcells n2", phone=288)
+    UserAsPerson.objects.create(web_user=web_user1, DNI="312W")
+    UserAsCompany.objects.create(web_user=web_user2, CIF="12w2")
 
 @step("I visit the modify as person page")
 def step_impl(context):
