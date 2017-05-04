@@ -124,7 +124,9 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" maxlength="5" value="{{ zip_code }}"
+                        <input type="text" maxlength="5"
+                               minlength="5"
+                               value="{{ zip_code }}"
                                name="zip_code" id="zip_code"/>
                     </td>
                 </tr>
@@ -164,7 +166,9 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" maxlength="9" value="{{ cif }}"
+                        <input type="text" maxlength="9"
+                               minlength="9"
+                               value="{{ cif }}"
                                name="cif" id="cif"/>
                     </td>
                 </tr>

@@ -1,6 +1,6 @@
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import redirect, render
 
 from CRMapp.models import WebUser, UserAsPerson, UserAsCompany
 
@@ -16,20 +16,21 @@ def person_profile(request):
         user = request.user
         web_user = WebUser.objects.get(django_user=user)
         user_as_person = UserAsPerson.objects.get(web_user=web_user)
-        return render_to_response(template_name='person_profile.html',
-                                  context={
-                                      'user_name': user.username,
-                                      'first_name': user.first_name,
-                                      'last_name': user.last_name,
-                                      'email': user.email,
-                                      'country': web_user.country,
-                                      'province': web_user.province,
-                                      'city': web_user.province,
-                                      'zip_code': web_user.zip_code,
-                                      'street': web_user.street,
-                                      'phone': web_user.phone,
-                                      'dni': user_as_person.DNI
-                                  })
+        return render(request,
+                      'person_profile.html',
+                      {
+                          'user_name': user.username,
+                          'first_name': user.first_name,
+                          'last_name': user.last_name,
+                          'email': user.email,
+                          'country': web_user.country,
+                          'province': web_user.province,
+                          'city': web_user.province,
+                          'zip_code': web_user.zip_code,
+                          'street': web_user.street,
+                          'phone': web_user.phone,
+                          'dni': user_as_person.DNI
+                      })
 
 
 @login_required
@@ -43,20 +44,21 @@ def company_profile(request):
         user = request.user
         web_user = WebUser.objects.get(django_user=user)
         user_as_company = UserAsCompany.objects.get(web_user=web_user)
-        return render_to_response(template_name='company_profile.html',
-                                  context={
-                                      'user_name': user.username,
-                                      'first_name': user.first_name,
-                                      'last_name': user.last_name,
-                                      'email': user.email,
-                                      'country': web_user.country,
-                                      'province': web_user.province,
-                                      'city': web_user.province,
-                                      'zip_code': web_user.zip_code,
-                                      'street': web_user.street,
-                                      'phone': web_user.phone,
-                                      'cif': user_as_company.CIF
-                                  })
+        return render(request,
+                      'company_profile.html',
+                      {
+                          'user_name': user.username,
+                          'first_name': user.first_name,
+                          'last_name': user.last_name,
+                          'email': user.email,
+                          'country': web_user.country,
+                          'province': web_user.province,
+                          'city': web_user.province,
+                          'zip_code': web_user.zip_code,
+                          'street': web_user.street,
+                          'phone': web_user.phone,
+                          'cif': user_as_company.CIF
+                      })
 
 
 @login_required
@@ -74,22 +76,23 @@ def modify_person(request):
         parameters = get_person_profile_parameters(request.POST)
         update_person_profile(parameters, user, web_user, user_as_person)
     else:
-        return render_to_response(template_name='modify_person.html',
-                                  context={
-                                      'user_name': user.username,
-                                      'first_name': user.first_name,
-                                      'last_name': user.last_name,
-                                      'email': user.email,
-                                      'country': web_user.country,
-                                      'province': web_user.province,
-                                      'city': web_user.province,
-                                      'zip_code': web_user.zip_code,
-                                      'street': web_user.street,
-                                      'phone': web_user.phone,
-                                      'dni': user_as_person.DNI
-                                  }
-                                  )
-    return redirect(to='person_profile.html')
+        return render(request,
+                      'modify_person.html',
+                      {
+                          'user_name': user.username,
+                          'first_name': user.first_name,
+                          'last_name': user.last_name,
+                          'email': user.email,
+                          'country': web_user.country,
+                          'province': web_user.province,
+                          'city': web_user.province,
+                          'zip_code': web_user.zip_code,
+                          'street': web_user.street,
+                          'phone': web_user.phone,
+                          'dni': user_as_person.DNI
+                      }
+                      )
+    return redirect(to='../person_profile')
 
 
 @login_required
@@ -107,22 +110,23 @@ def modify_company(request):
         parameters = get_company_profile_parameters(request.POST)
         update_company_profile(parameters, user, web_user, user_as_company)
     else:
-        return render_to_response(template_name='modify_company.html',
-                                  context={
-                                      'user_name': user.username,
-                                      'first_name': user.first_name,
-                                      'last_name': user.last_name,
-                                      'email': user.email,
-                                      'country': web_user.country,
-                                      'province': web_user.province,
-                                      'city': web_user.province,
-                                      'zip_code': web_user.zip_code,
-                                      'street': web_user.street,
-                                      'phone': web_user.phone,
-                                      'cif': user_as_company.CIF
-                                  }
-                                  )
-    return redirect(to='company_profile.html')
+        return render(request,
+                      'modify_company.html',
+                      {
+                          'user_name': user.username,
+                          'first_name': user.first_name,
+                          'last_name': user.last_name,
+                          'email': user.email,
+                          'country': web_user.country,
+                          'province': web_user.province,
+                          'city': web_user.province,
+                          'zip_code': web_user.zip_code,
+                          'street': web_user.street,
+                          'phone': web_user.phone,
+                          'cif': user_as_company.CIF
+                      }
+                      )
+    return redirect(to='../company_profile')
 
 
 def get_company_profile_parameters(source):
@@ -147,7 +151,7 @@ def get_person_profile_parameters(source):
     parameters = {}
     get_basic_parameters(parameters, source)
     get_user_parameters(parameters, source)
-    get_company_parameters(parameters, source)
+    get_person_parameters(parameters, source)
     return parameters
 
 
@@ -226,6 +230,9 @@ def update_company_profile(parameters, user, web_user, user_as_company):
     update_basic_parameters(parameters, user)
     update_user_parameters(parameters, web_user)
     update_company_parameters(parameters, user_as_company)
+    """user.save(force_update=True)
+    web_user.save(force_update=True)
+    user_as_company.save(force_update=True)"""
 
 
 def update_person_profile(parameters, user, web_user, user_as_person):
@@ -239,6 +246,9 @@ def update_person_profile(parameters, user, web_user, user_as_person):
     update_basic_parameters(parameters, user)
     update_user_parameters(parameters, web_user)
     update_person_parameters(parameters, user_as_person)
+    """user.save(force_update=True)
+    web_user.save(force_update=True)
+    user_as_person.save(force_update=True)"""
 
 
 def update_basic_parameters(parameters, user):
@@ -247,11 +257,11 @@ def update_basic_parameters(parameters, user):
     :param parameters: Dictionary that contains all the parameters
     :param user: Django user model
     """
-    user.update(username=parameters['user_name'])
-    user.update(first_name=parameters['first_name'])
-    user.update(last_name=parameters['last_name'])
-    user.update(email=parameters['email'])
-    user.update(password=parameters['password'])
+    user.username=parameters['user_name']
+    user.first_name=parameters['first_name']
+    user.last_name=parameters['last_name']
+    user.email=parameters['email']
+    user.password=parameters['password']
 
 
 def update_user_parameters(parameters, web_user):
@@ -260,12 +270,12 @@ def update_user_parameters(parameters, web_user):
     :param parameters: Dictionary that contains all the parameters
     :param web_user: WebUser model
     """
-    web_user.update(country=parameters['country'])
-    web_user.update(province=parameters['province'])
-    web_user.update(city=parameters['city'])
-    web_user.update(zip_code=parameters['zip_code'])
-    web_user.update(street=parameters['street'])
-    web_user.update(phone=parameters['phone'])
+    web_user.country=parameters['country']
+    web_user.province=parameters['province']
+    web_user.city=parameters['city']
+    web_user.zip_code=parameters['zip_code']
+    web_user.street=parameters['street']
+    web_user.phone=parameters['phone']
 
 
 def update_company_parameters(parameters, user_as_company):
@@ -274,7 +284,7 @@ def update_company_parameters(parameters, user_as_company):
     :param parameters: Dictionary that contains all the parameters
     :param user_as_company: UserAsCompany model
     """
-    user_as_company.update(CIF=parameters['cif'])
+    user_as_company.CIF=parameters['cif']
 
 
 def update_person_parameters(parameters, user_as_person):
@@ -283,4 +293,4 @@ def update_person_parameters(parameters, user_as_person):
     :param parameters: Dictionary that contains all the parameters
     :param user_as_person: UserAsPerson model
     """
-    user_as_person.update(DNI=parameters['dni'])
+    user_as_person.DNI=parameters['dni']
