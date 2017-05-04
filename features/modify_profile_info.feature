@@ -13,6 +13,7 @@ Feature: Modify user (person or company) profile information
       | aragorn   | aragorn@arathorn.sil | gondor  | Campos de pelennor | minas tirith | 06660    | Anor   | 999666333 | 45236834T |
     And I submit the form
     Then I'm redirected to my profile page
+    And Exists a UserAsPerson with DNI = "45236834T"
 
   Scenario: The user enters invalid information
     Given I'm registered
@@ -30,6 +31,7 @@ Feature: Modify user (person or company) profile information
       | oracle corporation | support_cloud_platform@oracle.com | Oracle Empire | California | Redwood city | 07421    | oracle headquarters | 323495156 | E43576214 |
     And I submit the form
     Then I'm redirected to my profile page
+    And Exists a UserAsCompany with CIF = "E43576214"
 
   Scenario: The user (company) enters invalid information
     Given I'm registered

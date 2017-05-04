@@ -35,6 +35,14 @@ def step_impl(context):
     pass
 
 
+@step('Exists a UserAsPerson with DNI = "45236834T"')
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    pass
+
+
 @when("Fields I've tried to modify contain invalid information")
 def step_impl(context):
     """
@@ -44,6 +52,14 @@ def step_impl(context):
 
 
 @then("I get an error telling me the invalid information")
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    pass
+
+
+@step('Exists a UserAsCompany with CIF = "E43576214"')
 def step_impl(context):
     """
     :type context: behave.runner.Context
