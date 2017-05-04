@@ -20,8 +20,6 @@ def person_profile(request):
                       'person_profile.html',
                       {
                           'user_name': user.username,
-                          'first_name': user.first_name,
-                          'last_name': user.last_name,
                           'email': user.email,
                           'country': web_user.country,
                           'province': web_user.province,
@@ -48,8 +46,6 @@ def company_profile(request):
                       'company_profile.html',
                       {
                           'user_name': user.username,
-                          'first_name': user.first_name,
-                          'last_name': user.last_name,
                           'email': user.email,
                           'country': web_user.country,
                           'province': web_user.province,
@@ -80,8 +76,6 @@ def modify_person(request):
                       'modify_person.html',
                       {
                           'user_name': user.username,
-                          'first_name': user.first_name,
-                          'last_name': user.last_name,
                           'email': user.email,
                           'country': web_user.country,
                           'province': web_user.province,
@@ -114,8 +108,6 @@ def modify_company(request):
                       'modify_company.html',
                       {
                           'user_name': user.username,
-                          'first_name': user.first_name,
-                          'last_name': user.last_name,
                           'email': user.email,
                           'country': web_user.country,
                           'province': web_user.province,
@@ -163,8 +155,6 @@ def get_basic_parameters(parameters, source, user):
     """
     # basic fields
     parameters['user_name'] = source['user_name']
-    parameters['first_name'] = source['first_name']
-    parameters['last_name'] = source['last_name']
     parameters['email'] = source['email']
 
 def get_user_parameters(parameters, source, web_user):
@@ -213,8 +203,7 @@ def update_company_profile(parameters, user, web_user, user_as_company):
     update_basic_parameters(parameters, user)
     update_user_parameters(parameters, web_user)
     update_company_parameters(parameters, user_as_company)
-    user.save(update_fields=["username", "first_name", "last_name",
-                             "email"])
+    user.save(update_fields=["username","email"])
     web_user.save(update_fields=["country", "province", "city", "zip_code",
                                  "street", "phone"])
     user_as_company.save(update_fields=["CIF"])
@@ -231,8 +220,7 @@ def update_person_profile(parameters, user, web_user, user_as_person):
     update_basic_parameters(parameters, user)
     update_user_parameters(parameters, web_user)
     update_person_parameters(parameters, user_as_person)
-    user.save(update_fields=["username", "first_name", "last_name",
-                             "email"])
+    user.save(update_fields=["username", "email"])
     web_user.save(update_fields=["country", "province", "city", "zip_code",
                                  "street", "phone"])
     user_as_person.save(update_fields=["DNI"])
@@ -245,8 +233,6 @@ def update_basic_parameters(parameters, user):
     :param user: Django user model
     """
     user.username = parameters['user_name']
-    user.first_name = parameters['first_name']
-    user.last_name = parameters['last_name']
     user.email = parameters['email']
 
 def update_user_parameters(parameters, web_user):

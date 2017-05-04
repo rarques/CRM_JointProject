@@ -9,23 +9,32 @@ Feature: Modify user (person or company) profile information
   Scenario: User (person) updates profile information
     Given I'm registered
     When I change the form fields that interest me
+      | user_name | email                | country | province           | city         | zip_code | street | phone     |
+      | aragorn   | aragorn@arathorn.sil | gondor  | Campos de pelennor | minas tirith | 06660    | Anor   | 999666333 |
     And I submit the form
-    Then I receive an email notification
+    Then I'm redirected to my profile page
 
   Scenario: The user enters invalid information
     Given I'm registered
     When Fields I've tried to modify contain invalid information
+      | user_name | email                | country | province           | city         | zip_code | street | phone     |
+      | aragorn   | aragorn#arathorn-sil | gondor  | Campos de pelennor | minas tirith | 06660    | Anor   | 999666333 |
+
     And I submit the form
     Then I get an error telling me the invalid information
 
   Scenario: User (company) updates profile information
     Given I'm registered
     When I change the form fields that interest me
+      | user_name          | email                             | country       | province   | city         | zip_code | street              | phone     |
+      | oracle corporation | support_cloud_platform@oracle.com | Oracle Empire | California | Redwood city | 07421    | oracle headquarters | 323495156 |
     And I submit the form
-    Then I receive an email notification
+    Then I'm redirected to my profile page
 
   Scenario: The user (company) enters invalid information
     Given I'm registered
     When Fields I've tried to modify contain invalid information
+      | user_name          | email                                | country       | province   | city         | zip_code    | street              | phone     |
+      | oracle corporation | support_cloud_platform#~$oracle->com | Oracle Empire | California | Redwood city | 07421------ | oracle headquarters | 323495156 |
     And I submit the form
     Then I get an error telling me the invalid information
