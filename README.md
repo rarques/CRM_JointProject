@@ -1,5 +1,7 @@
 # CRM_JointProject
 
+[![CircleCI](https://circleci.com/gh/rarques/CRM_JointProject.svg?style=shield&circle-token=00cf40956a6570f716325c99c83eef1978c2ad35	)](https://circleci.com/gh/rarques/CRM_JointProject)
+
 The goal of this project is to create a CRM (Customer Relationship Management) for TECNOGAD.
 TECNOGAD is a company focused on selling technological products and gadgets.
 

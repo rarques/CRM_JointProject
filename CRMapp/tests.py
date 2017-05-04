@@ -2,16 +2,6 @@ from django.test import TestCase
 from models import *
 
 
-class simpleTest(TestCase):
-    """Simple test to check if CircleCI runs tests correctly"""
-
-    def setUp(self):
-        pass
-
-    def test(self):
-        self.assertEqual(True, True)
-
-
 class ModelsTesting(TestCase):
     def setUp(self):
         user1, user2, user3 = self.create_django_users()
@@ -20,7 +10,7 @@ class ModelsTesting(TestCase):
 
         self.create_person_company_employee(user3, web_user1, web_user2)
 
-        Product.objects.create(name="croissant")
+        self.create_product()
 
     def create_django_users(self):
         user1 = User.objects.create(username="user1")
@@ -29,13 +19,19 @@ class ModelsTesting(TestCase):
         return user1, user2, user3
 
     def create_web_users(self, user1, user2):
-        web_user1 = WebUser.objects.create(django_user=user1, country="Spain", province="Lleida", city="Cervera",
-                                           zip_code=25200, street="Ramon Balcells n2",
-                                           phone=288)
+        category = Category.objects.create(name="Tractor")
+        web_user1 = WebUser.objects.create(django_user=user1, country="Spain", province="Lleida",
+                                           city="Cervera", zip_code=25200,
+                                           street="Ramon Balcells n2", phone=288)
         web_user2 = WebUser.objects.create(django_user=user2, country="Spain", province="Castamere", city="Rip city",
                                            zip_code=666, street="All water n1",
-                                           phone=288)
+                                           phone=322)
         return web_user1, web_user2
+
+    def create_product(self):
+        category = Category.objects.create(name="menjar")
+        discount = Discount.objects.create(discount_identifier="XX2D-AGS1", percent=20, expiring_data="2006-10-25")
+        Product.objects.create(name="croissant", category=category, price=2, discount=discount)
 
     def create_person_company_employee(self, user3, web_user1, web_user2):
         UserAsPerson.objects.create(web_user=web_user1, DNI="312W")
@@ -43,28 +39,24 @@ class ModelsTesting(TestCase):
         Employee.objects.create(django_user=user3, NSS="123N", department="marqueting")
 
     def test_person_attributes(self):
-        """Testing if correct attributes are given when a person is searched"""
         user = User.objects.get(username="user1")
         web_user = WebUser.objects.get(django_user=user)
         person = UserAsPerson.objects.get(web_user=web_user)
         self.assertEqual(person.DNI, "312W")
 
     def test_company_attributes(self):
-        """Testing if correct attributes are given when a company is searched"""
         user = User.objects.get(username="user2")
         web_user = WebUser.objects.get(django_user=user)
         company = UserAsCompany.objects.get(web_user=web_user)
         self.assertEqual(company.CIF, "12w2")
 
     def test_employee_attributes(self):
-        """Testing if correct attributes are given when an employee is searched"""
         user = User.objects.get(username="user3")
         employee = Employee.objects.get(django_user=user)
         self.assertEqual(employee.NSS, "123N")
         self.assertEquals(employee.department, "marqueting")
 
     def test_person_opinion(self):
-        """Person opinion about a product"""
         person = UserAsPerson.objects.get(DNI="312W")
         product = Product.objects.get(name="croissant")
         Opinion.objects.create(user=person.web_user, product=product, name="maravilla", comment="roto2", rating=5)
@@ -72,7 +64,6 @@ class ModelsTesting(TestCase):
         self.assertEqual(opinion.rating, 5)
 
     def test_company_opinion(self):
-        """Company opinion about a product"""
         company = UserAsCompany.objects.get(CIF="12w2")
         product = Product.objects.get(name="croissant")
         Opinion.objects.create(user=company.web_user, product=product, name="maravilla", comment="roto2", rating=4)
@@ -80,7 +71,6 @@ class ModelsTesting(TestCase):
         self.assertEqual(opinion.rating, 4)
 
     def test_person_incidence(self):
-        """Testing person incidence and getting it using the category"""
         person = UserAsPerson.objects.get(DNI="312W")
         product = Product.objects.get(name="croissant")
         Incidence.objects.create(user=person.web_user, product=product, name="que collons", explanation="lulz",
@@ -95,3 +85,37 @@ class ModelsTesting(TestCase):
                                  category="Defectuos")
         incidence = Incidence.objects.get(category="Defectuos")
         self.assertEqual(incidence.explanation, "lulz")
+
+    def test_user_interested_in_categories(self):
+        category1 = Category.objects.create(name="ordenador")
+        category2 = Category.objects.create(name="components")
+        user = WebUser.objects.get(django_user=User.objects.get(username="user1"))
+        CategoryPerUser.objects.create(user=user, category=category1)
+        CategoryPerUser.objects.create(user=user, category=category2)
+        catched_user = CategoryPerUser.objects.get(category=category2)
+        self.assertEqual(catched_user.user.phone, 288)
+        catched_user = CategoryPerUser.objects.get(category=category1)
+        self.assertEqual(catched_user.user.phone, 288)
+
+    def test_interested_users_in_category(self):
+        category, user1, user2 = self.creating_category_per_user()
+        interested_users = CategoryPerUser.objects.filter(category=category)
+        first_user = interested_users.get(user=user1)
+        second_user = interested_users.get(user=user2)
+        self.assertEqual(first_user.user.phone, 288)
+        self.assertEqual(second_user.user.phone, 322)
+
+    def creating_category_per_user(self):
+        category = Category.objects.create(name="phone")
+        user1 = WebUser.objects.get(django_user=User.objects.get(username="user1"))
+        user2 = WebUser.objects.get(django_user=User.objects.get(username="user2"))
+        CategoryPerUser.objects.create(user=user1, category=category)
+        CategoryPerUser.objects.create(user=user2, category=category)
+        return category, user1, user2
+
+    def test_discount_on_product(self):
+        testing_product = Product.objects.get(name="croissant")
+        self.assertEqual(testing_product.discount.discount_identifier, "XX2D-AGS1")
+
+
+"""Starting the controller unit testing"""

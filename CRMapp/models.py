@@ -5,6 +5,13 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 
 
+class Category(models.Model):
+    name = models.CharField(primary_key=True, max_length=50)
+
+    def __unicode__(self):
+        return self.name
+
+
 class WebUser(models.Model):
     django_user = models.OneToOneField(User, on_delete=models.CASCADE)
     country = models.CharField(max_length=20)
@@ -16,6 +23,14 @@ class WebUser(models.Model):
 
     def __unicode__(self):
         return self.django_user.username
+
+
+class CategoryPerUser(models.Model):
+    user = models.ForeignKey(WebUser)
+    category = models.ForeignKey(Category)
+
+    def __unicode__(self):
+        return self.user.django_user.username + "   " + self.category.name
 
 
 class UserAsPerson(models.Model):
@@ -43,8 +58,17 @@ class Employee(models.Model):
         return self.django_user.username
 
 
+class Discount(models.Model):
+    discount_identifier = models.CharField(max_length=30)
+    percent = models.IntegerField()
+    expiring_data = models.DateField(blank=True, null=True)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=30)
+    category = models.ForeignKey(Category)
+    price = models.IntegerField()
+    discount = models.ForeignKey(Discount)
 
     def __unicode__(self):
         return self.name
@@ -72,3 +96,12 @@ class Incidence(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Sale(models.Model):
+    client = models.ForeignKey(WebUser)
+    product = models.ForeignKey(Product)
+    opinion = models.ForeignKey(Opinion, blank=True, null=True)
+
+
+incidence = models.ForeignKey(Incidence, blank=True, null=True)
