@@ -3,7 +3,10 @@ from django.shortcuts import render, render_to_response, redirect
 from forms import *
 
 
-# Create your views here.
+def base(request):
+    return render(request, 'base.html',
+                  {'PageTitle': 'Base',
+                   'TitleHeader': 'Base'})
 def register(request):
     return render_to_response('register.html', {
         "title": "Register as a Person or as a Company",

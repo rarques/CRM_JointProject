@@ -19,6 +19,7 @@ from django.contrib.auth.views import login, logout
 from CRMapp.views import *
 
 urlpatterns = [
+    url(r'^$', base),
     url(r'^admin/', admin.site.urls),
     url(r'^register/$', register, name='register'),
     url(r'^register-person/$', register_person, name='register_person'),
