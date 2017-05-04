@@ -1,7 +1,7 @@
 from django.http.response import Http404, HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 
-from CRMapp.models import Category
+from CRMapp.models import Category, CategoryPerUser
 from forms import *
 
 
@@ -24,6 +24,7 @@ def register_person(request):
             "basic_form": UserForm(),
             "form": WebUserForm(),
             "specific_form": UserAsPersonForm(),
+            "categories": Category.objects.all(),
             "destination_url": "/register-person/"
         })
     elif request.method == 'POST':
@@ -31,11 +32,13 @@ def register_person(request):
         user_form = UserForm(request.POST)
         web_user_form = WebUserForm(request.POST)
         user_as_person_form = UserAsPersonForm(request.POST)
+        interested_categories = request.POST.getlist('category')
         if user_form.is_valid() \
                 and web_user_form.is_valid() \
                 and user_as_person_form.is_valid():
             new_user = create_new_django_user(user_form)
             new_web_user = create_new_web_user(web_user_form, new_user)
+            register_interested_categories(new_web_user, interested_categories)
             create_new_user_as_person(user_as_person_form, new_web_user)
             # return redirect(profile)
             return HttpResponse("Registered")
@@ -64,11 +67,13 @@ def register_company(request):
         user_form = UserForm(request.POST)
         web_user_form = WebUserForm(request.POST)
         user_as_company_form = UserAsCompanyForm(request.POST)
+        interested_categories = request.POST.getlist('category')
         if user_form.is_valid() \
                 and web_user_form.is_valid() \
                 and user_as_company_form.is_valid():
             new_user = create_new_django_user(user_form)
             new_web_user = create_new_web_user(web_user_form, new_user)
+            register_interested_categories(new_web_user, interested_categories)
             create_new_company_user(user_as_company_form, new_web_user)
             return HttpResponse("Registered")
         return render(request, 'register.html', {
@@ -93,6 +98,12 @@ def create_new_web_user(web_user_form, django_user):
     new_web_user.django_user = django_user
     new_web_user.save()
     return new_web_user
+
+
+def register_interested_categories(new_web_user, interested_categories):
+    for cat in interested_categories:
+        category = Category.objects.get(name=cat)
+        CategoryPerUser.objects.create(user=new_web_user, category=category)
 
 
 def create_new_user_as_person(user_as_person_form, web_user):

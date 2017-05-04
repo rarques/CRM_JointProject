@@ -12,13 +12,12 @@
                     {% for category in categories %}
                         <tr>
                             <td>
-                                <input type="checkbox" id="{{ category.name }}" name="{{ category }}"
+                                <input type="checkbox" id="{{ category.name }}" name="category"
                                        value="{{ category }}">
                                 <label for="{{ category.name }}">{{ category }}</label>
                             </td>
                         </tr>
                     {% endfor %}
-
                     <tr>
                         <td><input type="submit" value="Submit"/></td>
                     </tr>
