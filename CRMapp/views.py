@@ -174,7 +174,6 @@ def get_user_parameters(parameters, source, web_user):
     parameters['street'] = source['street']
     parameters['phone'] = source['phone']
 
-
 def get_company_parameters(parameters, source, user_as_company):
     """
     Captures the parameters associated with the UserAsCompany model
