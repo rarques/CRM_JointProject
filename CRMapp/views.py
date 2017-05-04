@@ -19,7 +19,7 @@ def person_profile(request):
         return render(request,
                       'person_profile.html',
                       {
-                          'user_name': user.username,
+                          'username': user.username,
                           'email': user.email,
                           'country': web_user.country,
                           'province': web_user.province,
@@ -45,7 +45,7 @@ def company_profile(request):
         return render(request,
                       'company_profile.html',
                       {
-                          'user_name': user.username,
+                          'username': user.username,
                           'email': user.email,
                           'country': web_user.country,
                           'province': web_user.province,
@@ -75,7 +75,7 @@ def modify_person(request):
         return render(request,
                       'modify_person.html',
                       {
-                          'user_name': user.username,
+                          'username': user.username,
                           'email': user.email,
                           'country': web_user.country,
                           'province': web_user.province,
@@ -107,7 +107,7 @@ def modify_company(request):
         return render(request,
                       'modify_company.html',
                       {
-                          'user_name': user.username,
+                          'username': user.username,
                           'email': user.email,
                           'country': web_user.country,
                           'province': web_user.province,
@@ -154,7 +154,7 @@ def get_basic_parameters(parameters, source, user):
     :param request: HttpRequest
     """
     # basic fields
-    parameters['user_name'] = source['user_name']
+    parameters['username'] = source['username']
     parameters['email'] = source['email']
 
 def get_user_parameters(parameters, source, web_user):
@@ -232,7 +232,7 @@ def update_basic_parameters(parameters, user):
     :param parameters: Dictionary that contains all the parameters
     :param user: Django user model
     """
-    user.username = parameters['user_name']
+    user.username = parameters['username']
     user.email = parameters['email']
 
 def update_user_parameters(parameters, web_user):

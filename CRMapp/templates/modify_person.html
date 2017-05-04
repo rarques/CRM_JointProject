@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div id="modify_person">
-        <form action="{% url 'modify_person' %}" method="post">
+        <form id="modify_person_form" action="{% url 'modify_person' %}" method="post">
             {% csrf_token %}
             <table>
                 <tr>
@@ -18,8 +18,8 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" value="{{ user_name }}"
-                               name="user_name" id="user_name"/>
+                        <input type="text" value="{{ username }}"
+                               name="username" id="username"/>
                     </td>
                 </tr>
                 <tr>
