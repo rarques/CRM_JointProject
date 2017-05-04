@@ -1,5 +1,7 @@
 from django.http.response import Http404, HttpResponse
 from django.shortcuts import render, render_to_response, redirect
+
+from CRMapp.models import Category
 from forms import *
 
 
@@ -7,6 +9,8 @@ def base(request):
     return render(request, 'base.html',
                   {'PageTitle': 'Base',
                    'TitleHeader': 'Base'})
+
+
 def register(request):
     return render_to_response('register.html', {
         "title": "Register as a Person or as a Company",
@@ -52,6 +56,7 @@ def register_company(request):
             "basic_form": UserForm(),
             "form": WebUserForm(),
             "specific_form": UserAsCompanyForm(),
+            "categories": Category.objects.all(),
             "destination_url": "/register-company/"
         })
     elif request.method == 'POST':
