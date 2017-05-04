@@ -8,9 +8,9 @@ from CRMapp.models import WebUser, UserAsPerson, UserAsCompany
 @login_required
 def person_profile(request):
     """
-    
-    :param request: 
-    :return: 
+    Shows the profile of a user of type person
+    :param request: HttpRequest
+    :return: Returns the profile template
     """
     if request.method == 'GET':
         user = request.user
@@ -35,9 +35,9 @@ def person_profile(request):
 @login_required
 def company_profile(request):
     """
-    
-    :param request: 
-    :return: 
+    Shows the profile of a user type company
+    :param request: HttpRequest
+    :return: Returns the profile template
     """
     if request.method == 'GET':
         user = request.user
@@ -62,11 +62,12 @@ def company_profile(request):
 @login_required
 def modify_person(request):
     """
-    
-    :param request: 
-    :return: 
+    Modifies the profile of a user of type person
+    :param request: HttpRequest
     """
-    if request.method == 'POST':
+    if request.method == 'POST' \
+            and request.POST['password'] \
+                    == request.POST['repeat_password']:
         user = request.user
         web_user = WebUser.objects.get(django_user=user)
         user_as_person = UserAsPerson.objects.get(web_user=web_user)
@@ -78,11 +79,12 @@ def modify_person(request):
 @login_required
 def modify_company(request):
     """
-    
-    :param request: 
-    :return: 
+    Modifies the profile of a user of type company
+    :param request: HttpRequest
     """
-    if request.method == 'POST':
+    if request.method == 'POST' \
+            and request.POST['password'] \
+                    == request.POST['repeat_password']:
         user = request.user
         web_user = WebUser.objects.get(django_user=user)
         user_as_company = UserAsCompany.objects.get(web_user=web_user)
@@ -93,9 +95,9 @@ def modify_company(request):
 
 def get_company_profile_parameters(request):
     """
-    
-    :param request: 
-    :return: 
+    Capture the parameters of the company type user profile
+    :param request: HttpRequest
+    :return: A dictionary with parameters
     """
     parameters = {}
     get_basic_parameters(parameters, request)
@@ -106,9 +108,9 @@ def get_company_profile_parameters(request):
 
 def get_person_profile_parameters(request):
     """
-    
-    :param request: 
-    :return: 
+    Capture the parameters of the person type user profile
+    :param request: HttpRequest
+    :return: A dictionary with parameters
     """
     parameters = {}
     get_basic_parameters(parameters, request)
@@ -119,10 +121,9 @@ def get_person_profile_parameters(request):
 
 def get_basic_parameters(parameters, request):
     """
-    
-    :param parameters: 
-    :param request: 
-    :return: 
+    Captures the parameters associated with the Django user model
+    :param parameters: The dictionary where the parameters will be stored
+    :param request: HttpRequest
     """
     # basic fields
     parameters['user_name'] = request.POST['user_name'] \
@@ -141,10 +142,9 @@ def get_basic_parameters(parameters, request):
 
 def get_user_parameters(parameters, request):
     """
-    
-    :param parameters: 
-    :param request: 
-    :return: 
+    Captures the parameters associated with the WebUser model
+    :param parameters: The dictionary where the parameters will be stored
+    :param request: HttpRequest
     """
     # user information
     parameters['country'] = request.POST['country'] \
@@ -163,10 +163,9 @@ def get_user_parameters(parameters, request):
 
 def get_company_parameters(parameters, request):
     """
-    
-    :param parameters: 
-    :param request: 
-    :return: 
+    Captures the parameters associated with the UserAsCompany model
+    :param parameters: The dictionary where the parameters will be stored
+    :param request: HttpRequest
     """
     # company information
     parameters['cif'] = request.POST['cif'] \
@@ -175,10 +174,9 @@ def get_company_parameters(parameters, request):
 
 def get_person_parameters(parameters, request):
     """
-    
-    :param parameters: 
-    :param request: 
-    :return: 
+    Captures the parameters associated with the UserAsPerson model
+    :param parameters: The dictionary where the parameters will be stored
+    :param request: HttpRequest
     """
     # company information
     parameters['dni'] = request.POST['dni'] \
@@ -186,18 +184,37 @@ def get_person_parameters(parameters, request):
 
 
 def update_company_profile(parameters, user, web_user, user_as_company):
+    """
+    Update user profile of company type
+    :param parameters: Dictionary that contains all the parameters 
+    :param user: Django user model
+    :param web_user: WebUser model
+    :param user_as_company: UserAsCompany model
+    """
     update_basic_parameters(parameters, user)
     update_user_parameters(parameters, web_user)
     update_company_parameters(parameters, user_as_company)
 
 
 def update_person_profile(parameters, user, web_user, user_as_person):
+    """
+    Update user profile of person type
+    :param parameters: Dictionary that contains all the parameters
+    :param user: Django user model
+    :param web_user: WebUser model
+    :param user_as_person: user_as_company: UserAsPerson model
+    """
     update_basic_parameters(parameters, user)
     update_user_parameters(parameters, web_user)
     update_person_parameters(parameters, user_as_person)
 
 
 def update_basic_parameters(parameters, user):
+    """
+    Updates the parameters associated with the Django user model
+    :param parameters: Dictionary that contains all the parameters
+    :param user: Django user model
+    """
     user.update(username=parameters['user_name'])
     user.update(first_name=parameters['first_name'])
     user.update(last_name=parameters['last_name'])
@@ -206,6 +223,11 @@ def update_basic_parameters(parameters, user):
 
 
 def update_user_parameters(parameters, web_user):
+    """
+    Updates the parameters associated with the WebUser model
+    :param parameters: Dictionary that contains all the parameters
+    :param web_user: WebUser model
+    """
     web_user.update(country=parameters['country'])
     web_user.update(province=parameters['province'])
     web_user.update(city=parameters['city'])
@@ -215,8 +237,18 @@ def update_user_parameters(parameters, web_user):
 
 
 def update_company_parameters(parameters, user_as_company):
+    """
+    Updates the parameters associated with the UserAsCompany model
+    :param parameters: Dictionary that contains all the parameters
+    :param user_as_company: UserAsCompany model
+    """
     user_as_company.update(CIF=parameters['cif'])
 
 
 def update_person_parameters(parameters, user_as_person):
+    """
+    Updates the parameters associated with the UserAsPerson model
+    :param parameters: Dictionary that contains all the parameters
+    :param user_as_person: UserAsPerson model
+    """
     user_as_person.update(DNI=parameters['dni'])
