@@ -3,6 +3,14 @@ from behave import *
 use_step_matcher("re")
 
 
+@given("There are product categories in the data base")
+def step_impl(context):
+    from CRMapp.models import Category
+    Category.objects.create(name="Keyboard")
+    Category.objects.create(name="Mouse")
+    Category.objects.create(name="Graphic cards")
+
+
 @given("I'm not registered")
 def step_impl(context):
     pass
@@ -32,6 +40,11 @@ def step_impl(context):
     for row in context.table:
         for heading in row.headings:
             browser.fill(heading, row[heading])
+
+
+@step("I select the categories I'm interested in")
+def step_impl(context):
+    raise NotImplementedError
 
 
 @step("I submit the form")
