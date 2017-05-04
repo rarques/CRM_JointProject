@@ -20,10 +20,17 @@ class WebUser(models.Model):
     zip_code = models.IntegerField()
     street = models.CharField(max_length=50)
     phone = models.IntegerField(blank=True, null=True)
-    interested_category = models.ForeignKey(Category)
 
     def __unicode__(self):
         return self.django_user.username
+
+
+class CategoryPerUser(models.Model):
+    user = models.ForeignKey(WebUser)
+    category = models.ForeignKey(Category)
+
+    def __unicode__(self):
+        return self.user.django_user.username+"   "+self.category.name
 
 
 class UserAsPerson(models.Model):

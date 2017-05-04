@@ -93,22 +93,6 @@ class ModelsTesting(TestCase):
         self.assertEqual(incidence.explanation, "lulz")
 
     """Test add category into a client"""
-    def test_multiple_categories_per_user(self):
-        self.create_special_user()
-        client_categories = WebUser.objects.get(phone=288)
-        for i in range(0, 9):
-            test=client_categories.pop(0).category.name
-            self.assertEqual(test, "Tractor"+str(i))
 
-    def create_special_user(self):
-        user = User.objects.create(username="TestingCategories")
-        self.insert_categories_into_user(user)
-
-    def insert_categories_into_user(self, user):
-        for i in range(0, 9):
-            category = Category.objects.create(name="Tractor" + str(i))
-            WebUser.objects.create(django_user=user, country="Spain", province="Lleida", city="Cervera",
-                                   zip_code=25200, street="Ramon Balcells n2",
-                                   phone=288, interested_category=category)
 
     """Test selling a product"""
