@@ -1,7 +1,8 @@
 # coding=utf-8
 
-from django.forms import *
 from django.contrib.auth.models import User
+from django.forms import *
+
 from models import WebUser, UserAsPerson, UserAsCompany
 
 
