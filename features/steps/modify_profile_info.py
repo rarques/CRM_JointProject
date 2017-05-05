@@ -21,6 +21,7 @@ def step_impl(context):
     UserAsPerson.objects.create(web_user=web_user1, DNI="312W")
     UserAsCompany.objects.create(web_user=web_user2, CIF="12w2")
 
+
 @step("I visit the modify as person page")
 def step_impl(context):
     """
@@ -106,3 +107,11 @@ def step_impl(context):
     """
     from CRMapp.models import UserAsCompany
     assert UserAsCompany.objects.filter(CIF='E43576214').exists()
+
+
+@step("I am logged")
+def step_impl(context):
+    """
+    :type context: behave.runner.Context
+    """
+    pass

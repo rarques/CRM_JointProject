@@ -8,6 +8,7 @@ Feature: Modify user (person or company) profile information
 
   Scenario: User (person) updates profile information
     Given I am registered
+    And I am logged
     And I visit the modify as person page
     When I change the form fields that interest me
       | username | email                | country | province           | city         | zip_code | street | phone     | DNI       |
@@ -18,6 +19,7 @@ Feature: Modify user (person or company) profile information
 
   Scenario: The user enters invalid information
     Given I'm registered
+    And I am logged
     And I visit the modify as person page
     When Fields I've tried to modify contain invalid information
       | username | email                | country | province           | city         | zip_code | street | phone     | DNI       |
@@ -28,6 +30,7 @@ Feature: Modify user (person or company) profile information
 
   Scenario: User (company) updates profile information
     Given I'm registered
+    And I am logged
     And I visit the modify as company page
     When I change the form fields that interest me
       | username           | email                             | country       | province   | city         | zip_code | street              | phone     | CIF       |
@@ -38,6 +41,7 @@ Feature: Modify user (person or company) profile information
 
   Scenario: The user (company) enters invalid information
     Given I'm registered
+    And I am logged
     And I visit the modify as company page
     When Fields I've tried to modify contain invalid information
       | username           | email                                | country       | province   | city         | zip_code    | street              | phone     | CIF       |
