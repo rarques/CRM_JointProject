@@ -140,10 +140,10 @@ def get_company_profile_parameters(source, user, web_user, user_as_company):
     :return: A dictionary with parameters
     """
     parameters = {}
-    get_basic_parameters(parameters, source, user)
-    get_user_parameters(parameters, source, web_user)
-    get_category_parameters(parameters, source, web_user)
-    get_company_parameters(parameters, source, user_as_company)
+    get_basic_parameters(parameters, source)
+    get_user_parameters(parameters, source)
+    get_category_parameters(parameters, source)
+    get_company_parameters(parameters, source)
     return parameters
 
 
@@ -154,10 +154,10 @@ def get_person_profile_parameters(source, user, web_user, user_as_person):
     :return: A dictionary with parameters
     """
     parameters = {}
-    get_basic_parameters(parameters, source, user)
-    get_user_parameters(parameters, source, web_user)
-    get_category_parameters(parameters, source, web_user)
-    get_person_parameters(parameters, source, user_as_person)
+    get_basic_parameters(parameters, source)
+    get_user_parameters(parameters, source)
+    get_category_parameters(parameters, source)
+    get_person_parameters(parameters, source)
     return parameters
 
 
