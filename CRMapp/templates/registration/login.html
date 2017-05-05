@@ -6,7 +6,7 @@
 
 <!--URL login: account/login ->login OK -> se redirige por defecto  a /accounts/profile/ -->
 
-    <form method="post" action="{% url 'login' %}">
+    <form method="post" id="login_form" action="{% url 'login' %}">
         <table>
             <tr>
                 <td>{{ form.username.label_tag }}</td>

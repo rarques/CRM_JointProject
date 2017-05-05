@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^register-company/$', register_company, name='register_company'),
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout, name='logout'),
+    url(r'^accounts/profile/$', modify_person)
 ]
