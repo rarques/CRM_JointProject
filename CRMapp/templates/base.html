@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="shortcut icon" href="images/favicon.ico"/>
+    <meta charset="UTF-8">
+
+    <title>{{ TitleHeader }}</title>
+</head>
+
+<body>
+<div class="page-header">
+    <div class="close-image"></div>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <i class="fa fa-unlock-alt"
+       style="color: rgb(12, 12, 12); font-size: 82px; box-sizing: content-box; line-height: 135px; text-align: center; width: 135px; height: 135px; display: inline-block; overflow: hidden; border-radius: 50%; background-color: rgb(224, 231, 237);"></i>
+</div>
+</div>
+<div>
+    <nav>
+        <ul>
+            <li><a href="default.asp">Home</a></li>
+            <li><a href="news.asp">News</a></li>
+            <li><a href="contact.asp">Contact</a></li>
+            <li><a href="about.asp">About</a></li>
+        </ul>
+    </nav>
+</div>
+<div class="page-title">
+    <h2><strong>{{ PageTitle }}</strong></h2>
+</div>
+<hr>
+
+{% block content %}
+{% endblock %}
+
+<footer></footer>
+
+</body>
+</html>

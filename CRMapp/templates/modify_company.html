@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div id="modify_company">
+        <form id="modify_company_form" action="{% url 'modify_company' %}" method="post">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <label>
+                            Basic
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            User name :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ username }}"
+                               name="username" id="username"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Email :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="email" value="{{ email }}"
+                               name="email" id="email"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label>
+                            User information
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Country :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ country }}"
+                               name="country" id="country"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Province :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ province }}"
+                               name="province" id="province"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            City :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ city }}"
+                               name="city" id="city"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Zip code :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" size="5"
+                               value="{{ zip_code }}"
+                               name="zip_code" id="zip_code"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Street :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ street }}"
+                               name="street" id="street"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Phone :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="tel" value="{{ phone }}"
+                               name="phone" id="phone"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label>
+                            Categories
+                        </label>
+                    </td>
+                </tr>
+                {% for category in categories %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="{{ category.name }}" name="category"
+                                   value="{{ category }}">
+                            <label for="{{ category.name }}">{{ category }}</label>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2">
+                        <label>
+                            Company information
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            CIF :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" size="9"
+                               value="{{ cif }}"
+                               name="cif" id="cif"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Apply"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}
