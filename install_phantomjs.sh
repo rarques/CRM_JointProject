@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # First, install or update to the latest system software.
 sudo apt-get update
 sudo apt-get install build-essential chrpath libssl-dev libxft-dev

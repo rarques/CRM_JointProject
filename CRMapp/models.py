@@ -30,7 +30,7 @@ class CategoryPerUser(models.Model):
     category = models.ForeignKey(Category)
 
     def __unicode__(self):
-        return self.user.django_user.username+"   "+self.category.name
+        return self.user.django_user.username + "   " + self.category.name
 
 
 class UserAsPerson(models.Model):
@@ -102,4 +102,6 @@ class Sale(models.Model):
     client = models.ForeignKey(WebUser)
     product = models.ForeignKey(Product)
     opinion = models.ForeignKey(Opinion, blank=True, null=True)
-    incidence = models.ForeignKey(Incidence, blank=True, null=True)
+
+
+incidence = models.ForeignKey(Incidence, blank=True, null=True)
