@@ -4,6 +4,7 @@ Feature: Register a new user
   So I can use the different services of the web page.
 
   Background: The user wants to register and visits the register page
+    Given There are product categories in the data base
 
   Scenario: Register new person user
     Given I'm not registered
@@ -14,6 +15,10 @@ Feature: Register a new user
     And I fill the form's specific fields
       | street      | city     | zip_code | province  | country      | DNI       |
       | Croissant I | Isengard | 23230    | Enedwaith | Middle Earth | 12345678A |
+    And I select the categories I'm interested in
+      | category      |
+      | Keyboard      |
+      | Graphic cards |
     And I submit the form
     Then I'm redirected to my profile page
     And Exists a UserAsPerson with DNI = 12345678A
@@ -27,6 +32,10 @@ Feature: Register a new user
     And I fill the form's specific fields
       | street      | city     | zip_code | province  | country      | CIF       |
       | Croissant I | Isengard | 23230    | Enedwaith | Middle Earth | 98765432Z |
+    And I select the categories I'm interested in
+      | category      |
+      | Keyboard      |
+      | Graphic cards |
     And I submit the form
     Then I'm redirected to my profile page
     And Exists a UserAsCompany with CIF = 98765432Z
