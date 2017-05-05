@@ -8,7 +8,12 @@
                     {{ basic_form.as_table }}
                     {{ form.as_table }}
                     {{ specific_form.as_table }}
-                    <p>Select the product categories that interest you:</p>
+                    <tr>
+                        <td>
+                            <p>Select the product categories that interest you:</p>
+                        </td>
+                    </tr>
+
                     {% for category in categories %}
                         <tr>
                             <td>
