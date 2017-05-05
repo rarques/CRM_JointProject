@@ -108,38 +108,21 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input type="checkbox" name="categories"
-                               value="category 1"/>
-                    </td>
-                    <td>
+                    <td colspan="2">
                         <label>
-                            Category 1
+                            Categories
                         </label>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="categories"
-                               value="category 2">
-                    </td>
-                    <td>
-                        <label>
-                            Category 2
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="categories"
-                               value="category 3">
-                    </td>
-                    <td>
-                        <label>
-                            Category 3
-                        </label>
-                    </td>
-                </tr>
+                {% for category in categories %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="{{ category.name }}" name="category"
+                                   value="{{ category }}">
+                            <label for="{{ category.name }}">{{ category }}</label>
+                        </td>
+                    </tr>
+                {% endfor %}
                 <tr>
                     <td colspan="2">
                         <label>

@@ -4,7 +4,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from forms import *
 
-from CRMapp.models import WebUser, UserAsPerson, UserAsCompany, CategoryPerUser
+from CRMapp.models import WebUser, UserAsPerson, UserAsCompany, CategoryPerUser, Category
 
 
 @login_required
@@ -30,7 +30,7 @@ def person_profile(request):
                           'zip_code': web_user.zip_code,
                           'street': web_user.street,
                           'phone': web_user.phone,
-                          'categories' : categories,
+                          'categories': categories,
                           'dni': user_as_person.DNI
                       })
 
@@ -58,7 +58,7 @@ def company_profile(request):
                           'zip_code': web_user.zip_code,
                           'street': web_user.street,
                           'phone': web_user.phone,
-                          'categories' : categories,
+                          'categories': categories,
                           'cif': user_as_company.CIF
                       })
 
@@ -71,8 +71,10 @@ def modify_person(request):
     """
     user = request.user
     web_user = WebUser.objects.get(django_user=user)
+    categories_per_user = Category.objects.all()
     user_as_person = UserAsPerson.objects.get(web_user=web_user)
     if request.method == 'POST':
+        CategoryPerUser.objects.filter(user=web_user).delete()
         parameters = get_person_profile_parameters(request.POST,
                                                    user, web_user,
                                                    user_as_person)
@@ -89,6 +91,7 @@ def modify_person(request):
                           'zip_code': web_user.zip_code,
                           'street': web_user.street,
                           'phone': web_user.phone,
+                          'categories': categories_per_user,
                           'dni': user_as_person.DNI
                       }
                       )
@@ -103,8 +106,10 @@ def modify_company(request):
     """
     user = request.user
     web_user = WebUser.objects.get(django_user=user)
+    categories_per_user = Category.objects.all()
     user_as_company = UserAsCompany.objects.get(web_user=web_user)
     if request.method == 'POST':
+        CategoryPerUser.objects.filter(user=web_user).delete()
         parameters = get_company_profile_parameters(request.POST,
                                                     user, web_user, user_as_company)
         update_company_profile(parameters, user, web_user,
@@ -121,6 +126,7 @@ def modify_company(request):
                           'zip_code': web_user.zip_code,
                           'street': web_user.street,
                           'phone': web_user.phone,
+                          'categories': categories_per_user,
                           'cif': user_as_company.CIF
                       }
                       )
@@ -136,6 +142,7 @@ def get_company_profile_parameters(source, user, web_user, user_as_company):
     parameters = {}
     get_basic_parameters(parameters, source, user)
     get_user_parameters(parameters, source, web_user)
+    get_category_parameters(parameters, source, web_user)
     get_company_parameters(parameters, source, user_as_company)
     return parameters
 
@@ -149,6 +156,7 @@ def get_person_profile_parameters(source, user, web_user, user_as_person):
     parameters = {}
     get_basic_parameters(parameters, source, user)
     get_user_parameters(parameters, source, web_user)
+    get_category_parameters(parameters, source, web_user)
     get_person_parameters(parameters, source, user_as_person)
     return parameters
 
@@ -177,6 +185,11 @@ def get_user_parameters(parameters, source, web_user):
     parameters['zip_code'] = source['zip_code']
     parameters['street'] = source['street']
     parameters['phone'] = source['phone']
+
+
+def get_category_parameters(parameters, source, web_user):
+    parameters['categories'] = source.getlist('category')
+
 
 def get_company_parameters(parameters, source, user_as_company):
     """
@@ -208,6 +221,7 @@ def update_company_profile(parameters, user, web_user, user_as_company):
     """
     update_basic_parameters(parameters, user)
     update_user_parameters(parameters, web_user)
+    update_category_parameters(parameters, web_user)
     update_company_parameters(parameters, user_as_company)
     user.save(update_fields=["username", "email"])
     web_user.save(update_fields=["country", "province", "city", "zip_code",
@@ -225,6 +239,7 @@ def update_person_profile(parameters, user, web_user, user_as_person):
     """
     update_basic_parameters(parameters, user)
     update_user_parameters(parameters, web_user)
+    update_category_parameters(parameters, web_user)
     update_person_parameters(parameters, user_as_person)
     user.save(update_fields=["username", "email"])
     web_user.save(update_fields=["country", "province", "city", "zip_code",
@@ -254,6 +269,13 @@ def update_user_parameters(parameters, web_user):
     web_user.zip_code = parameters['zip_code']
     web_user.street = parameters['street']
     web_user.phone = parameters['phone']
+
+
+def update_category_parameters(parameters, web_user):
+    for cat in parameters['categories']:
+        print "-----------------------", cat
+        category = Category.objects.get(name=cat)
+        CategoryPerUser.objects.create(user=web_user, category=category)
 
 
 def update_company_parameters(parameters, user_as_company):
