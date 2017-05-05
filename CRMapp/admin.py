@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from CRMapp.models import *
 
 admin.site.register(Category)

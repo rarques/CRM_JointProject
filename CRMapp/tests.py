@@ -118,4 +118,4 @@ class ModelsTesting(TestCase):
         self.assertEqual(testing_product.discount.discount_identifier, "XX2D-AGS1")
 
 
-    """Starting the controller unit testing"""
+"""Starting the controller unit testing"""
