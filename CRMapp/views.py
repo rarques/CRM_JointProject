@@ -161,7 +161,7 @@ def get_person_profile_parameters(source, user, web_user, user_as_person):
     return parameters
 
 
-def get_basic_parameters(parameters, source, user):
+def get_basic_parameters(parameters, source):
     """
     Captures the parameters associated with the Django user model
     :param parameters: The dictionary where the parameters will be stored
@@ -172,7 +172,7 @@ def get_basic_parameters(parameters, source, user):
     parameters['email'] = source['email']
 
 
-def get_user_parameters(parameters, source, web_user):
+def get_user_parameters(parameters, source):
     """
     Captures the parameters associated with the WebUser model
     :param parameters: The dictionary where the parameters will be stored
@@ -187,11 +187,11 @@ def get_user_parameters(parameters, source, web_user):
     parameters['phone'] = source['phone']
 
 
-def get_category_parameters(parameters, source, web_user):
+def get_category_parameters(parameters, source):
     parameters['categories'] = source.getlist('category')
 
 
-def get_company_parameters(parameters, source, user_as_company):
+def get_company_parameters(parameters, source):
     """
     Captures the parameters associated with the UserAsCompany model
     :param parameters: The dictionary where the parameters will be stored
@@ -201,7 +201,7 @@ def get_company_parameters(parameters, source, user_as_company):
     parameters['cif'] = source['cif']
 
 
-def get_person_parameters(parameters, source, user_as_person):
+def get_person_parameters(parameters, source):
     """
     Captures the parameters associated with the UserAsPerson model
     :param parameters: The dictionary where the parameters will be stored

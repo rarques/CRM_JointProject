@@ -13,46 +13,46 @@ Feature: Modify user (person or company) profile information
       | used_name | patatapatata1 |
     And I visit the modify as person page
     When I change the form fields that interest me
-      | username | email                | country | province           | city         | zip_code | street | phone     | DNI       |
+      | username | email                | country | province           | city         | zip_code | street | phone     | dni       |
       | aragorn  | aragorn@arathorn.sil | gondor  | Campos de pelennor | minas tirith | 06660    | Anor   | 999666333 | 45236834T |
     And I submit the modify person form
     Then I am redirected to my profile page
     And Exists a UserAsPerson with DNI = "45236834T"
 
-#  Scenario: The user enters invalid information
-#    Given I'm registered as person
-#    And I am logged as person
-#      | username  | password      |
-#      | used_name | patatapatata1 |
-#    And I visit the modify as person page
-#    When Fields I've tried to modify contain invalid information
-#      | username | email                | country | province           | city         | zip_code | street | phone     | DNI       |
-#      | aragorn  | aragorn#arathorn-sil | gondor  | Campos de pelennor | minas tirith | 06660    | Anor   | 999666333 | 45236834T |
-#
-#    And I submit the modify person form
-#    Then I get an error telling me the invalid information
-#
-#  Scenario: User (company) updates profile information
-#    Given I'm registered as company
-#    And I am logged as company
-#      | username | password |
-#      | padre    | patata1  |
-#    And I visit the modify as company page
-#    When I change the form fields that interest me
-#      | username           | email                             | country       | province   | city         | zip_code | street              | phone     | CIF       |
-#      | oracle corporation | support_cloud_platform@oracle.com | Oracle Empire | California | Redwood city | 07421    | oracle headquarters | 323495156 | E43576214 |
-#    And I submit the modify company form
-#    Then I am redirected to my profile page
-#    And Exists a UserAsCompany with CIF = "E43576214"
-#
-#  Scenario: The user (company) enters invalid information
-#    Given I'm registered as company
-#    And I am logged as company
-#      | username | password |
-#      | padre    | patata1  |
-#    And I visit the modify as company page
-#    When Fields I've tried to modify contain invalid information
-#      | username           | email                                | country       | province   | city         | zip_code    | street              | phone     | CIF       |
-#      | oracle corporation | support_cloud_platform#~$oracle->com | Oracle Empire | California | Redwood city | 07421------ | oracle headquarters | 323495156 | E43576214 |
-#    And I submit the modify company form
-#    Then I get an error telling me the invalid information
+  Scenario: The user enters invalid information
+    Given I am registered as person
+    And I am logged as person
+      | username  | password      |
+      | used_name | patatapatata1 |
+    And I visit the modify as person page
+    When Fields I've tried to modify contain invalid information
+      | username | email                | country | province           | city         | zip_code | street | phone     | dni       |
+      | aragorn  | aragorn#arathorn-sil | gondor  | Campos de pelennor | minas tirith | 06660    | Anor   | 999666333 | 45236834T |
+
+    And I submit the modify person form
+    Then I get an error telling me the invalid information
+
+  Scenario: User (company) updates profile information
+    Given I am registered as company
+    And I am logged as company
+      | username | password |
+      | padre    | patata1  |
+    And I visit the modify as company page
+    When I change the form fields that interest me
+      | username           | email                             | country       | province   | city         | zip_code | street              | phone     | cif       |
+      | oracle corporation | support_cloud_platform@oracle.com | Oracle Empire | California | Redwood city | 07421    | oracle headquarters | 323495156 | E43576214 |
+    And I submit the modify company form
+    Then I am redirected to my profile page
+    And Exists a UserAsCompany with CIF = "E43576214"
+
+  Scenario: The user (company) enters invalid information
+    Given I am registered as company
+    And I am logged as company
+      | username | password |
+      | padre    | patata1  |
+    And I visit the modify as company page
+    When Fields I've tried to modify contain invalid information
+      | username           | email                                | country       | province   | city         | zip_code    | street              | phone     | cif       |
+      | oracle corporation | support_cloud_platform#~$oracle->com | Oracle Empire | California | Redwood city | 07421------ | oracle headquarters | 323495156 | E43576214 |
+    And I submit the modify company form
+    Then I get an error telling me the invalid information
