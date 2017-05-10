@@ -2,9 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 
-from CRMapp.Company import *
-from CRMapp.Person import *
-from CRMapp.User import *
+from CRMapp.CompanyController import *
+from CRMapp.PersonController import *
 from CRMapp.models import CategoryPerUser, Category
 from forms import *
 
@@ -76,11 +75,12 @@ def modify_person(request):
     categories_per_user = Category.objects.all()
     user_as_person = UserAsPerson.objects.get(web_user=web_user)
     if request.method == 'POST':
+        person = PersonController()
         CategoryPerUser.objects.filter(user=web_user).delete()
-        parameters = get_person_profile_parameters(request.POST,
+        parameters = person.get_person_profile_parameters(request.POST,
                                                    user, web_user,
                                                    user_as_person)
-        update_person_profile(parameters, user, web_user, user_as_person)
+        person.update_person_profile(parameters, user, web_user, user_as_person)
     else:
         return render(request,
                       'modify_person.html',
@@ -111,10 +111,11 @@ def modify_company(request):
     categories_per_user = Category.objects.all()
     user_as_company = UserAsCompany.objects.get(web_user=web_user)
     if request.method == 'POST':
+        company = CompanyController()
         CategoryPerUser.objects.filter(user=web_user).delete()
-        parameters = get_company_profile_parameters(request.POST,
+        parameters = company.get_company_profile_parameters(request.POST,
                                                     user, web_user, user_as_company)
-        update_company_profile(parameters, user, web_user,
+        company.update_company_profile(parameters, user, web_user,
                                user_as_company)
     else:
         return render(request,
@@ -166,10 +167,11 @@ def register_person(request):
         if user_form.is_valid() \
                 and web_user_form.is_valid() \
                 and user_as_person_form.is_valid():
-            new_user = create_new_django_user(user_form)
-            new_web_user = create_new_web_user(web_user_form, new_user)
-            register_interested_categories(new_web_user, interested_categories)
-            create_new_user_as_person(user_as_person_form, new_web_user)
+            person = PersonController()
+            new_user = person.create_new_django_user(user_form)
+            new_web_user = person.create_new_web_user(web_user_form, new_user)
+            person.register_interested_categories(new_web_user, interested_categories)
+            person.create_new_user_as_person(user_as_person_form, new_web_user)
             # return redirect(profile)
             return HttpResponse("Registered")
         else:
@@ -201,10 +203,11 @@ def register_company(request):
         if user_form.is_valid() \
                 and web_user_form.is_valid() \
                 and user_as_company_form.is_valid():
-            new_user = create_new_django_user(user_form)
-            new_web_user = create_new_web_user(web_user_form, new_user)
-            register_interested_categories(new_web_user, interested_categories)
-            create_new_company_user(user_as_company_form, new_web_user)
+            company = CompanyController()
+            new_user = company.create_new_django_user(user_form)
+            new_web_user = company.create_new_web_user(web_user_form, new_user)
+            company.register_interested_categories(new_web_user, interested_categories)
+            company.create_new_company_user(user_as_company_form, new_web_user)
             return HttpResponse("Registered")
         return render(request, 'register.html', {
             "title": "Register as Person",
@@ -213,5 +216,3 @@ def register_company(request):
             "specific_form": user_as_company_form,
             "destination_url": "/register-company/"
         })
-
-
