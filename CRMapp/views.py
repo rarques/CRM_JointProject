@@ -2,10 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 
-from CRMapp.models import Category, CategoryPerUser
+from CRMapp.User import get_basic_parameters, get_user_parameters, get_category_parameters, update_basic_parameters, \
+    update_user_parameters, update_category_parameters, create_new_django_user, create_new_web_user, \
+    register_interested_categories
+from CRMapp.models import CategoryPerUser, Category
 from forms import *
-
-from CRMapp.models import WebUser, UserAsPerson, UserAsCompany, CategoryPerUser, Category
 
 
 @login_required
@@ -162,36 +163,6 @@ def get_person_profile_parameters(source, user, web_user, user_as_person):
     return parameters
 
 
-def get_basic_parameters(parameters, source):
-    """
-    Captures the parameters associated with the Django user model
-    :param parameters: The dictionary where the parameters will be stored
-    :param request: HttpRequest
-    """
-    # basic fields
-    parameters['username'] = source['username']
-    parameters['email'] = source['email']
-
-
-def get_user_parameters(parameters, source):
-    """
-    Captures the parameters associated with the WebUser model
-    :param parameters: The dictionary where the parameters will be stored
-    :param request: HttpRequest
-    """
-    # user information
-    parameters['country'] = source['country']
-    parameters['province'] = source['province']
-    parameters['city'] = source['city']
-    parameters['zip_code'] = source['zip_code']
-    parameters['street'] = source['street']
-    parameters['phone'] = source['phone']
-
-
-def get_category_parameters(parameters, source):
-    parameters['categories'] = source.getlist('category')
-
-
 def get_company_parameters(parameters, source):
     """
     Captures the parameters associated with the UserAsCompany model
@@ -215,7 +186,7 @@ def get_person_parameters(parameters, source):
 def update_company_profile(parameters, user, web_user, user_as_company):
     """
     Update user profile of company type
-    :param parameters: Dictionary that contains all the parameters 
+    :param parameters: Dictionary that contains all the parameters
     :param user: Django user model
     :param web_user: WebUser model
     :param user_as_company: UserAsCompany model
@@ -246,37 +217,6 @@ def update_person_profile(parameters, user, web_user, user_as_person):
     web_user.save(update_fields=["country", "province", "city", "zip_code",
                                  "street", "phone"])
     user_as_person.save(update_fields=["DNI"])
-
-
-def update_basic_parameters(parameters, user):
-    """
-    Updates the parameters associated with the Django user model
-    :param parameters: Dictionary that contains all the parameters
-    :param user: Django user model
-    """
-    user.username = parameters['username']
-    user.email = parameters['email']
-
-
-def update_user_parameters(parameters, web_user):
-    """
-    Updates the parameters associated with the WebUser model
-    :param parameters: Dictionary that contains all the parameters
-    :param web_user: WebUser model
-    """
-    web_user.country = parameters['country']
-    web_user.province = parameters['province']
-    web_user.city = parameters['city']
-    web_user.zip_code = parameters['zip_code']
-    web_user.street = parameters['street']
-    web_user.phone = parameters['phone']
-
-
-def update_category_parameters(parameters, web_user):
-    for cat in parameters['categories']:
-        print "-----------------------", cat
-        category = Category.objects.get(name=cat)
-        CategoryPerUser.objects.create(user=web_user, category=category)
 
 
 def update_company_parameters(parameters, user_as_company):
@@ -375,27 +315,6 @@ def register_company(request):
             "specific_form": user_as_company_form,
             "destination_url": "/register-company/"
         })
-
-
-def create_new_django_user(user_form):
-    form_data = user_form.cleaned_data
-    new_user = user_form.save(commit=False)
-    new_user.set_password(form_data['password'])
-    new_user.save()
-    return new_user
-
-
-def create_new_web_user(web_user_form, django_user):
-    new_web_user = web_user_form.save(commit=False)
-    new_web_user.django_user = django_user
-    new_web_user.save()
-    return new_web_user
-
-
-def register_interested_categories(new_web_user, interested_categories):
-    for cat in interested_categories:
-        category = Category.objects.get(name=cat)
-        CategoryPerUser.objects.create(user=new_web_user, category=category)
 
 
 def create_new_user_as_person(user_as_person_form, web_user):
