@@ -1,34 +1,35 @@
 from CRMapp.models import Category, CategoryPerUser
 
 
-class WebUserController():
+class WebUserController:
 
-    def get_basic_parameters(self, parameters, source):
+    def __init__(self, request):
+        self.request = request
+
+    def get_basic_parameters(self, parameters):
         """
         Captures the parameters associated with the Django user model
         :param parameters: The dictionary where the parameters will be stored
-        :param request: HttpRequest
         """
         # basic fields
-        parameters['username'] = source['username']
-        parameters['email'] = source['email']
+        parameters['username'] = self.request['username']
+        parameters['email'] = self.request['email']
 
-    def get_user_parameters(self, parameters, source):
+    def get_user_parameters(self, parameters):
         """
         Captures the parameters associated with the WebUser model
         :param parameters: The dictionary where the parameters will be stored
-        :param request: HttpRequest
         """
         # user information
-        parameters['country'] = source['country']
-        parameters['province'] = source['province']
-        parameters['city'] = source['city']
-        parameters['zip_code'] = source['zip_code']
-        parameters['street'] = source['street']
-        parameters['phone'] = source['phone']
+        parameters['country'] = self.request['country']
+        parameters['province'] = self.request['province']
+        parameters['city'] = self.request['city']
+        parameters['zip_code'] = self.request['zip_code']
+        parameters['street'] = self.request['street']
+        parameters['phone'] = self.request['phone']
 
-    def get_category_parameters(self, parameters, source):
-        parameters['categories'] = source.getlist('category')
+    def get_category_parameters(self, parameters):
+        parameters['categories'] = self.request.getlist('category')
 
     def update_basic_parameters(self, parameters, user):
         """

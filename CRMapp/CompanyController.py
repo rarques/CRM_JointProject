@@ -2,52 +2,52 @@ from CRMapp.WebUserController import WebUserController
 
 
 class CompanyController(WebUserController):
-    def get_company_profile_parameters(self, request):
+
+    def __init__(self, request):
+        WebUserController.__init__(self, request)
+        self.parameters = self.get_company_profile_parameters()
+
+    def get_company_profile_parameters(self):
         """
         Capture the parameters of the company type user profile
-        :param request: HttpRequest
         :return: A dictionary with parameters
         """
         parameters = {}
-        self.get_basic_parameters(parameters, request)
-        self.get_user_parameters(parameters, request)
-        self.get_category_parameters(parameters, request)
-        self.get_company_parameters(parameters, request)
+        self.get_basic_parameters(parameters)
+        self.get_user_parameters(parameters)
+        self.get_category_parameters(parameters)
+        self.get_company_parameters(parameters)
         return parameters
 
-    def get_company_parameters(self, parameters, request):
+    def get_company_parameters(self, parameters):
         """
         Captures the parameters associated with the UserAsCompany model
-        :param parameters: The dictionary where the parameters will be stored
-        :param request: HttpRequest
         """
         # company information
-        parameters['cif'] = request['cif']
+        parameters['cif'] = self.request.get('cif')
 
-    def update_company_profile(self, parameters, user, web_user, user_as_company):
+    def update_company_profile(self, user, web_user, user_as_company):
         """
         Update user profile of company type
-        :param parameters: Dictionary that contains all the parameters
         :param user: Django user model
         :param web_user: WebUser model
         :param user_as_company: UserAsCompany model
         """
-        self.update_basic_parameters(parameters, user)
-        self.update_user_parameters(parameters, web_user)
-        self.update_category_parameters(parameters, web_user)
-        self.update_company_parameters(parameters, user_as_company)
+        self.update_basic_parameters(self.parameters, user)
+        self.update_user_parameters(self.parameters, web_user)
+        self.update_category_parameters(self.parameters, web_user)
+        self.update_company_parameters(user_as_company)
         user.save(update_fields=["username", "email"])
         web_user.save(update_fields=["country", "province", "city", "zip_code",
                                      "street", "phone"])
         user_as_company.save(update_fields=["CIF"])
 
-    def update_company_parameters(self, parameters, user_as_company):
+    def update_company_parameters(self, user_as_company):
         """
         Updates the parameters associated with the UserAsCompany model
-        :param parameters: Dictionary that contains all the parameters
         :param user_as_company: UserAsCompany model
         """
-        user_as_company.CIF = parameters['cif']
+        user_as_company.CIF = self.parameters['cif']
 
     def create_new_company_user(self, user_as_company_form, web_user):
         new_company_user = user_as_company_form.save(commit=False)

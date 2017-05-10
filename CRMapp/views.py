@@ -39,7 +39,7 @@ def register_person(request):
         if user_form.is_valid() \
                 and web_user_form.is_valid() \
                 and user_as_person_form.is_valid():
-            person = PersonController()
+            person = PersonController(request.POST)
             new_user = person.create_new_django_user(user_form)
             new_web_user = person.create_new_web_user(web_user_form, new_user)
             person.register_interested_categories(new_web_user, interested_categories)
@@ -75,7 +75,7 @@ def register_company(request):
         if user_form.is_valid() \
                 and web_user_form.is_valid() \
                 and user_as_company_form.is_valid():
-            company = CompanyController()
+            company = CompanyController(request.POST)
             new_user = company.create_new_django_user(user_form)
             new_web_user = company.create_new_web_user(web_user_form, new_user)
             company.register_interested_categories(new_web_user, interested_categories)
@@ -157,10 +157,9 @@ def modify_person(request):
     categories_per_user = Category.objects.all()
     user_as_person = UserAsPerson.objects.get(web_user=web_user)
     if request.method == 'POST':
-        person = PersonController()
         CategoryPerUser.objects.filter(user=web_user).delete()
-        parameters = person.get_person_profile_parameters(request.POST)
-        person.update_person_profile(parameters, user, web_user, user_as_person)
+        person = PersonController(request.POST)
+        person.update_person_profile(user, web_user, user_as_person)
     else:
         return render(request,
                       'modify_person.html',
@@ -191,10 +190,9 @@ def modify_company(request):
     categories_per_user = Category.objects.all()
     user_as_company = UserAsCompany.objects.get(web_user=web_user)
     if request.method == 'POST':
-        company = CompanyController()
         CategoryPerUser.objects.filter(user=web_user).delete()
-        parameters = company.get_company_profile_parameters(request.POST)
-        company.update_company_profile(parameters, user, web_user,
+        company = CompanyController(request.POST)
+        company.update_company_profile(user, web_user,
                                        user_as_company)
     else:
         return render(request,
