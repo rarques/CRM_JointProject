@@ -12,8 +12,8 @@ class WebUserController:
         :param parameters: The dictionary where the parameters will be stored
         """
         # basic fields
-        parameters['username'] = self.request['username']
-        parameters['email'] = self.request['email']
+        parameters['username'] = self.request.get('username')
+        parameters['email'] = self.request.get('email')
 
     def get_user_parameters(self, parameters):
         """
@@ -21,12 +21,12 @@ class WebUserController:
         :param parameters: The dictionary where the parameters will be stored
         """
         # user information
-        parameters['country'] = self.request['country']
-        parameters['province'] = self.request['province']
-        parameters['city'] = self.request['city']
-        parameters['zip_code'] = self.request['zip_code']
-        parameters['street'] = self.request['street']
-        parameters['phone'] = self.request['phone']
+        parameters['country'] = self.request.get('country')
+        parameters['province'] = self.request.get('province')
+        parameters['city'] = self.request.get('city')
+        parameters['zip_code'] = self.request.get('zip_code')
+        parameters['street'] = self.request.get('street')
+        parameters['phone'] = self.request.get('phone')
 
     def get_category_parameters(self, parameters):
         parameters['categories'] = self.request.getlist('category')
