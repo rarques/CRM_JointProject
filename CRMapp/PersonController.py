@@ -2,31 +2,27 @@ from CRMapp.WebUserController import WebUserController
 
 
 class PersonController(WebUserController):
-
-
-    def get_person_profile_parameters(self, source, user, web_user, user_as_person):
+    def get_person_profile_parameters(self, request):
         """
         Capture the parameters of the person type user profile
         :param request: HttpRequest
         :return: A dictionary with parameters
         """
         parameters = {}
-        self.get_basic_parameters(parameters, source)
-        self.get_user_parameters(parameters, source)
-        self.get_category_parameters(parameters, source)
-        self.get_person_parameters(parameters, source)
+        self.get_basic_parameters(parameters, request)
+        self.get_user_parameters(parameters, request)
+        self.get_category_parameters(parameters, request)
+        self.get_person_parameters(parameters, request)
         return parameters
 
-
-    def get_person_parameters(self, parameters, source):
+    def get_person_parameters(self, parameters, request):
         """
         Captures the parameters associated with the UserAsPerson model
         :param parameters: The dictionary where the parameters will be stored
         :param request: HttpRequest
         """
         # company information
-        parameters['dni'] = source['dni']
-
+        parameters['dni'] = request['dni']
 
     def update_person_profile(self, parameters, user, web_user, user_as_person):
         """
@@ -45,7 +41,6 @@ class PersonController(WebUserController):
                                      "street", "phone"])
         user_as_person.save(update_fields=["DNI"])
 
-
     def update_person_parameters(self, parameters, user_as_person):
         """
         Updates the parameters associated with the UserAsPerson model
@@ -53,7 +48,6 @@ class PersonController(WebUserController):
         :param user_as_person: UserAsPerson model
         """
         user_as_person.DNI = parameters['dni']
-
 
     def create_new_user_as_person(self, user_as_person_form, web_user):
         new_person_user = user_as_person_form.save(commit=False)

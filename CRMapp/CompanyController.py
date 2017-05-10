@@ -2,28 +2,27 @@ from CRMapp.WebUserController import WebUserController
 
 
 class CompanyController(WebUserController):
-
-    def get_company_profile_parameters(self, source, user, web_user, user_as_company):
+    def get_company_profile_parameters(self, request):
         """
         Capture the parameters of the company type user profile
         :param request: HttpRequest
         :return: A dictionary with parameters
         """
         parameters = {}
-        self.get_basic_parameters(parameters, source)
-        self.get_user_parameters(parameters, source)
-        self.get_category_parameters(parameters, source)
-        self.get_company_parameters(parameters, source)
+        self.get_basic_parameters(parameters, request)
+        self.get_user_parameters(parameters, request)
+        self.get_category_parameters(parameters, request)
+        self.get_company_parameters(parameters, request)
         return parameters
 
-    def get_company_parameters(self, parameters, source):
+    def get_company_parameters(self, parameters, request):
         """
         Captures the parameters associated with the UserAsCompany model
         :param parameters: The dictionary where the parameters will be stored
         :param request: HttpRequest
         """
         # company information
-        parameters['cif'] = source['cif']
+        parameters['cif'] = request['cif']
 
     def update_company_profile(self, parameters, user, web_user, user_as_company):
         """

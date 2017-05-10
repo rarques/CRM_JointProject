@@ -8,134 +8,6 @@ from CRMapp.models import CategoryPerUser, Category
 from forms import *
 
 
-@login_required
-def person_profile(request):
-    """
-    Shows the profile of a user of type person
-    :param request: HttpRequest
-    :return: Returns the profile template
-    """
-    if request.method == 'GET':
-        user = request.user
-        web_user = WebUser.objects.get(django_user=user)
-        categories = CategoryPerUser.objects.filter(user=web_user)
-        user_as_person = UserAsPerson.objects.get(web_user=web_user)
-        return render(request,
-                      'person_profile.html',
-                      {
-                          'username': user.username,
-                          'email': user.email,
-                          'country': web_user.country,
-                          'province': web_user.province,
-                          'city': web_user.province,
-                          'zip_code': web_user.zip_code,
-                          'street': web_user.street,
-                          'phone': web_user.phone,
-                          'categories': categories,
-                          'dni': user_as_person.DNI
-                      })
-
-
-@login_required
-def company_profile(request):
-    """
-    Shows the profile of a user type company
-    :param request: HttpRequest
-    :return: Returns the profile template
-    """
-    if request.method == 'GET':
-        user = request.user
-        web_user = WebUser.objects.get(django_user=user)
-        categories = CategoryPerUser.objects.filter(user=web_user)
-        user_as_company = UserAsCompany.objects.get(web_user=web_user)
-        return render(request,
-                      'company_profile.html',
-                      {
-                          'username': user.username,
-                          'email': user.email,
-                          'country': web_user.country,
-                          'province': web_user.province,
-                          'city': web_user.province,
-                          'zip_code': web_user.zip_code,
-                          'street': web_user.street,
-                          'phone': web_user.phone,
-                          'categories': categories,
-                          'cif': user_as_company.CIF
-                      })
-
-
-@login_required
-def modify_person(request):
-    """
-    Modifies the profile of a user of type person
-    :param request: HttpRequest
-    """
-    user = request.user
-    web_user = WebUser.objects.get(django_user=user)
-    categories_per_user = Category.objects.all()
-    user_as_person = UserAsPerson.objects.get(web_user=web_user)
-    if request.method == 'POST':
-        person = PersonController()
-        CategoryPerUser.objects.filter(user=web_user).delete()
-        parameters = person.get_person_profile_parameters(request.POST,
-                                                   user, web_user,
-                                                   user_as_person)
-        person.update_person_profile(parameters, user, web_user, user_as_person)
-    else:
-        return render(request,
-                      'modify_person.html',
-                      {
-                          'username': user.username,
-                          'email': user.email,
-                          'country': web_user.country,
-                          'province': web_user.province,
-                          'city': web_user.province,
-                          'zip_code': web_user.zip_code,
-                          'street': web_user.street,
-                          'phone': web_user.phone,
-                          'categories': categories_per_user,
-                          'dni': user_as_person.DNI
-                      }
-                      )
-    return redirect(to='../person_profile')
-
-
-@login_required
-def modify_company(request):
-    """
-    Modifies the profile of a user of type company
-    :param request: HttpRequest
-    """
-    user = request.user
-    web_user = WebUser.objects.get(django_user=user)
-    categories_per_user = Category.objects.all()
-    user_as_company = UserAsCompany.objects.get(web_user=web_user)
-    if request.method == 'POST':
-        company = CompanyController()
-        CategoryPerUser.objects.filter(user=web_user).delete()
-        parameters = company.get_company_profile_parameters(request.POST,
-                                                    user, web_user, user_as_company)
-        company.update_company_profile(parameters, user, web_user,
-                               user_as_company)
-    else:
-        return render(request,
-                      'modify_company.html',
-                      {
-                          'username': user.username,
-                          'email': user.email,
-                          'country': web_user.country,
-                          'province': web_user.province,
-                          'city': web_user.province,
-                          'zip_code': web_user.zip_code,
-                          'street': web_user.street,
-                          'phone': web_user.phone,
-                          'categories': categories_per_user,
-                          'cif': user_as_company.CIF
-                      }
-                      )
-    return redirect(to='../company_profile')
-
-
 def base(request):
     return render(request, 'base.html',
                   {'PageTitle': 'Base',
@@ -216,3 +88,128 @@ def register_company(request):
             "specific_form": user_as_company_form,
             "destination_url": "/register-company/"
         })
+
+
+@login_required
+def person_profile(request):
+    """
+    Shows the profile of a user of type person
+    :param request: HttpRequest
+    :return: Returns the profile template
+    """
+    if request.method == 'GET':
+        user = request.user
+        web_user = WebUser.objects.get(django_user=user)
+        categories = CategoryPerUser.objects.filter(user=web_user)
+        user_as_person = UserAsPerson.objects.get(web_user=web_user)
+        return render(request,
+                      'person_profile.html',
+                      {
+                          'username': user.username,
+                          'email': user.email,
+                          'country': web_user.country,
+                          'province': web_user.province,
+                          'city': web_user.province,
+                          'zip_code': web_user.zip_code,
+                          'street': web_user.street,
+                          'phone': web_user.phone,
+                          'categories': categories,
+                          'dni': user_as_person.DNI
+                      })
+
+
+@login_required
+def company_profile(request):
+    """
+    Shows the profile of a user type company
+    :param request: HttpRequest
+    :return: Returns the profile template
+    """
+    if request.method == 'GET':
+        user = request.user
+        web_user = WebUser.objects.get(django_user=user)
+        categories = CategoryPerUser.objects.filter(user=web_user)
+        user_as_company = UserAsCompany.objects.get(web_user=web_user)
+        return render(request,
+                      'company_profile.html',
+                      {
+                          'username': user.username,
+                          'email': user.email,
+                          'country': web_user.country,
+                          'province': web_user.province,
+                          'city': web_user.province,
+                          'zip_code': web_user.zip_code,
+                          'street': web_user.street,
+                          'phone': web_user.phone,
+                          'categories': categories,
+                          'cif': user_as_company.CIF
+                      })
+
+
+@login_required
+def modify_person(request):
+    """
+    Modifies the profile of a user of type person
+    :param request: HttpRequest
+    """
+    user = request.user
+    web_user = WebUser.objects.get(django_user=user)
+    categories_per_user = Category.objects.all()
+    user_as_person = UserAsPerson.objects.get(web_user=web_user)
+    if request.method == 'POST':
+        person = PersonController()
+        CategoryPerUser.objects.filter(user=web_user).delete()
+        parameters = person.get_person_profile_parameters(request.POST)
+        person.update_person_profile(parameters, user, web_user, user_as_person)
+    else:
+        return render(request,
+                      'modify_person.html',
+                      {
+                          'username': user.username,
+                          'email': user.email,
+                          'country': web_user.country,
+                          'province': web_user.province,
+                          'city': web_user.province,
+                          'zip_code': web_user.zip_code,
+                          'street': web_user.street,
+                          'phone': web_user.phone,
+                          'categories': categories_per_user,
+                          'dni': user_as_person.DNI
+                      }
+                      )
+    return redirect(to='../person_profile')
+
+
+@login_required
+def modify_company(request):
+    """
+    Modifies the profile of a user of type company
+    :param request: HttpRequest
+    """
+    user = request.user
+    web_user = WebUser.objects.get(django_user=user)
+    categories_per_user = Category.objects.all()
+    user_as_company = UserAsCompany.objects.get(web_user=web_user)
+    if request.method == 'POST':
+        company = CompanyController()
+        CategoryPerUser.objects.filter(user=web_user).delete()
+        parameters = company.get_company_profile_parameters(request.POST)
+        company.update_company_profile(parameters, user, web_user,
+                                       user_as_company)
+    else:
+        return render(request,
+                      'modify_company.html',
+                      {
+                          'username': user.username,
+                          'email': user.email,
+                          'country': web_user.country,
+                          'province': web_user.province,
+                          'city': web_user.province,
+                          'zip_code': web_user.zip_code,
+                          'street': web_user.street,
+                          'phone': web_user.phone,
+                          'categories': categories_per_user,
+                          'cif': user_as_company.CIF
+                      }
+                      )
+    return redirect(to='../company_profile')
