@@ -5,28 +5,15 @@ class PersonController(WebUserController):
 
     def __init__(self, request):
         WebUserController.__init__(self, request)
-        self.parameters = self.get_person_profile_parameters(request)
+        self.get_person_parameters()
 
-    def get_person_profile_parameters(self, request):
-        """
-        Capture the parameters of the person type user profile
-        :param request: HttpRequest
-        :return: A dictionary with parameters
-        """
-        parameters = {}
-        self.get_basic_parameters(parameters)
-        self.get_user_parameters(parameters)
-        self.get_category_parameters(parameters)
-        self.get_person_parameters(parameters)
-        return parameters
-
-    def get_person_parameters(self, parameters):
+    def get_person_parameters(self):
         """
         Captures the parameters associated with the UserAsPerson model
         :param request: HttpRequest
         """
         # company information
-        parameters['dni'] = self.request.get('dni')
+        self.parameters['dni'] = self.request.get('dni')
 
     def update_person_profile(self, user, web_user, user_as_person):
         """

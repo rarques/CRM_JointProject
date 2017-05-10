@@ -5,6 +5,16 @@ class WebUserController:
 
     def __init__(self, request):
         self.request = request
+        self.parameters = self.get_profile_parameters()
+
+    def get_profile_parameters(self):
+        parameters = {}
+        self.get_basic_parameters(parameters)
+        self.get_user_parameters(parameters)
+        self.get_category_parameters(parameters)
+
+        return parameters
+
 
     def get_basic_parameters(self, parameters):
         """

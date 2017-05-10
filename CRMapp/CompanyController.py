@@ -5,26 +5,14 @@ class CompanyController(WebUserController):
 
     def __init__(self, request):
         WebUserController.__init__(self, request)
-        self.parameters = self.get_company_profile_parameters()
+        self.get_company_parameters()
 
-    def get_company_profile_parameters(self):
-        """
-        Capture the parameters of the company type user profile
-        :return: A dictionary with parameters
-        """
-        parameters = {}
-        self.get_basic_parameters(parameters)
-        self.get_user_parameters(parameters)
-        self.get_category_parameters(parameters)
-        self.get_company_parameters(parameters)
-        return parameters
-
-    def get_company_parameters(self, parameters):
+    def get_company_parameters(self):
         """
         Captures the parameters associated with the UserAsCompany model
         """
         # company information
-        parameters['cif'] = self.request.get('cif')
+        self.parameters['cif'] = self.request.get('cif')
 
     def update_company_profile(self, user, web_user, user_as_company):
         """
