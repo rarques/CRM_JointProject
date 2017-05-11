@@ -2,7 +2,6 @@ from CRMapp.WebUserController import WebUserController
 
 
 class CompanyController(WebUserController):
-
     def __init__(self, request):
         WebUserController.__init__(self, request)
         self.get_company_parameters()

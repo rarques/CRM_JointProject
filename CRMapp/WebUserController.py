@@ -2,7 +2,6 @@ from CRMapp.models import Category, CategoryPerUser
 
 
 class WebUserController:
-
     def __init__(self, request):
         self.request = request
         self.parameters = self.get_profile_parameters()
@@ -14,7 +13,6 @@ class WebUserController:
         self.get_category_parameters(parameters)
 
         return parameters
-
 
     def get_basic_parameters(self, parameters):
         """

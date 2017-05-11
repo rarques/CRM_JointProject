@@ -2,7 +2,6 @@ from CRMapp.WebUserController import WebUserController
 
 
 class PersonController(WebUserController):
-
     def __init__(self, request):
         WebUserController.__init__(self, request)
         self.get_person_parameters()
@@ -10,7 +9,6 @@ class PersonController(WebUserController):
     def get_person_parameters(self):
         """
         Captures the parameters associated with the UserAsPerson model
-        :param request: HttpRequest
         """
         # company information
         self.parameters['dni'] = self.request.get('dni')
