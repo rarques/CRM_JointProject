@@ -1,4 +1,4 @@
-from CRMapp.WebUserController import WebUserController
+from CRMapp.Controller.WebUserController import WebUserController
 
 
 class CompanyController(WebUserController):

@@ -2,8 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 
-from CRMapp.CompanyController import *
-from CRMapp.PersonController import *
+from CRMapp.Controller.PersonController import *
+from CRMapp.Controller.CompanyController import *
 from CRMapp.models import CategoryPerUser, Category
 from forms import *
 
