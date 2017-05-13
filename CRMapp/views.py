@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
+from django.views.generic import ListView
 
 from CRMapp.Controller.PersonController import *
 from CRMapp.Controller.CompanyController import *
-from CRMapp.models import CategoryPerUser, Category
+from CRMapp.models import CategoryPerUser, Category, Employee
 from forms import *
 
 
@@ -211,3 +212,9 @@ def modify_company(request):
                       }
                       )
     return redirect(to='../company_profile')
+
+
+class SalesHistory(ListView):
+    model = Employee
+    template_name = 'SalesHistory.html'
+    queryset = ""
