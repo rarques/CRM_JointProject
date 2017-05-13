@@ -20,7 +20,6 @@ class ModelsTesting(TestCase):
         return user1, user2, user3
 
     def create_web_users(self, user1, user2):
-        category = Category.objects.create(name="Tractor")
         web_user1 = WebUser.objects.create(django_user=user1, country="Spain", province="Lleida",
                                            city="Cervera", zip_code=25200,
                                            street="Ramon Balcells n2", phone=288)

@@ -6,7 +6,7 @@ from django.views.generic import ListView
 from CRMapp.Controller.CompanyController import *
 from CRMapp.Controller.PersonController import *
 from CRMapp.Controller.SalesHistoryProcesser import SalesHistoryProcesser
-from CRMapp.models import CategoryPerUser, Category, Employee
+from CRMapp.models import CategoryPerUser, Category, Employee, Sale
 from forms import *
 
 
@@ -230,4 +230,5 @@ class ShowProcessedSales(ListView):
         salesProcesser = SalesHistoryProcesser()
         salesProcesser.catch_data()
         salesProcesser.process_data()
-        return HttpResponse(salesProcesser.save_data())
+        salesProcesser.save_data()
+        return HttpResponse(Sale.objects.all())

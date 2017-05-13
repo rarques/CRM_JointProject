@@ -1,6 +1,10 @@
 import requests
 import json
 
+from CRMapp.models import Category, WebUser, UserAsPerson, UserAsCompany, Product, Sale
+from django.contrib.auth.models import User
+
+
 class SalesHistoryProcesser():
     def __init__(self):
         self.url = "https://technogad.herokuapp.com/api"
@@ -22,5 +26,42 @@ class SalesHistoryProcesser():
         self.sales_data = json.loads(self.sales.text)
 
     def save_data(self):
-        
-        return self.clients_data
+        for category in self.categories_data:
+            if not Category.objects.filter(name=category["categoryName"]).exists():
+                Category.objects.create(name=category["categoryName"])
+
+        for client in self.clients_data:
+            if client["clientType"] == "clientType_1":
+                if not User.objects.filter(username=client["idClient"]).exists():
+                    UserAsPerson.objects.create(
+                        web_user=WebUser.objects.create(
+                            django_user=User.objects.create(username=client["idClient"], first_name=client["name"]),
+                            country="X", province="X",
+                            city="X", zip_code=1,
+                            street="X", phone=2),
+                        DNI=client["nif"])
+            else:
+                if not User.objects.filter(username=client["idClient"]).exists():
+                    UserAsCompany.objects.create(
+                        web_user=WebUser.objects.create(
+                            django_user=User.objects.create(username=client["idClient"], first_name=client["name"]),
+                            country="X", province="X",
+                            city="X", zip_code=1,
+                            street="X", phone=2),
+                        CIF=client["nif"])
+
+        for product in self.products_data:
+            if not Product.objects.filter(product_code=product["ProductCode"]).exists():
+                Product.objects.create(product_code=product["ProductCode"], name=product["productName"],
+                                       category=Category.objects.get(name=product["productCategory"]),
+                                       price=product["price"])
+
+        for sale in self.sales_data:
+            if UserAsPerson.objects.filter(DNI=sale["client"]).exists():
+                Sale.objects.create(client=UserAsPerson.objects.get(DNI=sale["client"]).web_user,
+                                    product=Product.objects.get(
+                                        product_code=sale["product"]))
+            elif UserAsCompany.objects.filter(CIF=sale["client"]).exists():
+                Sale.objects.create(client=UserAsCompany.objects.get(CIF=sale["client"]).web_user,
+                                    product=Product.objects.get(
+                                        product_code=sale["product"]))

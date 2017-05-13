@@ -65,10 +65,11 @@ class Discount(models.Model):
 
 
 class Product(models.Model):
+    product_code = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
     category = models.ForeignKey(Category)
     price = models.IntegerField()
-    discount = models.ForeignKey(Discount)
+    discount = models.ForeignKey(Discount, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -102,6 +103,4 @@ class Sale(models.Model):
     client = models.ForeignKey(WebUser)
     product = models.ForeignKey(Product)
     opinion = models.ForeignKey(Opinion, blank=True, null=True)
-
-
-incidence = models.ForeignKey(Incidence, blank=True, null=True)
+    incidence = models.ForeignKey(Incidence, blank=True, null=True)
