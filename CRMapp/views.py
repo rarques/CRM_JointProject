@@ -3,8 +3,9 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
 
-from CRMapp.Controller.PersonController import *
 from CRMapp.Controller.CompanyController import *
+from CRMapp.Controller.PersonController import *
+from CRMapp.Controller.SalesHistoryProcesser import SalesHistoryProcesser
 from CRMapp.models import CategoryPerUser, Category, Employee
 from forms import *
 
@@ -218,3 +219,15 @@ class SalesHistory(ListView):
     model = Employee
     template_name = 'SalesHistory.html'
     queryset = ""
+
+
+class ShowProcessedSales(ListView):
+    model = Employee
+    template_name = 'ProcessedSales.html'
+    queryset = ""
+
+    def post(self, *args, **kwargs):
+        salesProcesser = SalesHistoryProcesser()
+        salesProcesser.catch_data()
+        salesProcesser.process_data()
+        return HttpResponse(salesProcesser.save_data())
