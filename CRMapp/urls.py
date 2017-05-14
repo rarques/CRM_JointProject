@@ -1,4 +1,6 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
+
 from views import SalesHistory, ShowProcessedSales
 
 urlpatterns = [
@@ -8,6 +10,6 @@ urlpatterns = [
         name='salesdpt'),
 
     url(r'salesinfo/$',
-        ShowProcessedSales.as_view())
+        login_required(ShowProcessedSales.as_view()))
 
 ]
