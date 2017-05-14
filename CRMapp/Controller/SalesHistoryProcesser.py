@@ -32,7 +32,7 @@ class SalesHistoryProcesser():
 
         for client in self.clients_data:
             if client["clientType"] == "clientType_1":
-                if not User.objects.filter(username=client["idClient"]).exists():
+                if not UserAsPerson.objects.filter(DNI=client["nif"]).exists():
                     UserAsPerson.objects.create(
                         web_user=WebUser.objects.create(
                             django_user=User.objects.create(username=client["idClient"], first_name=client["name"]),
@@ -41,7 +41,7 @@ class SalesHistoryProcesser():
                             street="X", phone=2),
                         DNI=client["nif"])
             else:
-                if not User.objects.filter(username=client["idClient"]).exists():
+                if not UserAsCompany.objects.filter(CIF=client["nif"]).exists():
                     UserAsCompany.objects.create(
                         web_user=WebUser.objects.create(
                             django_user=User.objects.create(username=client["idClient"], first_name=client["name"]),

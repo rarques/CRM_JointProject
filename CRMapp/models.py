@@ -105,4 +105,3 @@ class Sale(models.Model):
     product = models.ForeignKey(Product)
     opinion = models.ForeignKey(Opinion, blank=True, null=True)
     incidence = models.ForeignKey(Incidence, blank=True, null=True)
-    date = models.DateTimeField(blank=True, null=True)
