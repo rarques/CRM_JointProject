@@ -38,7 +38,7 @@ class UserAsPerson(models.Model):
     DNI = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.django_user.username
+        return self.DNI
 
 
 class UserAsCompany(models.Model):
@@ -46,7 +46,7 @@ class UserAsCompany(models.Model):
     CIF = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.django_user.username
+        return self.CIF
 
 
 class Employee(models.Model):
@@ -105,4 +105,4 @@ class Sale(models.Model):
     product = models.ForeignKey(Product)
     opinion = models.ForeignKey(Opinion, blank=True, null=True)
     incidence = models.ForeignKey(Incidence, blank=True, null=True)
-    date = models.DateField(default=now)
+    date = models.DateTimeField(blank=True, null=True)

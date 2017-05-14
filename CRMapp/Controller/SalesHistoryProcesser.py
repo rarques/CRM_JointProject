@@ -57,13 +57,32 @@ class SalesHistoryProcesser():
                                        price=product["price"])
 
         for sale in self.sales_data:
+            api_date = str(sale["saleDate"])
+            unprocessed_date = api_date.split(' ')
+            if unprocessed_date[2] == "AM":
+                day = unprocessed_date[0].split("/")
+                processed_day = day[2] + "-" + day[1] + "-" + day[0]
+                processed_date = processed_day + " " + unprocessed_date[1]
+            else:
+                processed_date = self.change_hours_format(unprocessed_date)
+
             if UserAsPerson.objects.filter(DNI=sale["client"]).exists():
                 Sale.objects.create(client=UserAsPerson.objects.get(DNI=sale["client"]).web_user,
                                     product=Product.objects.get(
                                         product_code=sale["product"]),
-                                    date=sale["saleDate"])
+                                    date=processed_date)
             elif UserAsCompany.objects.filter(CIF=sale["client"]).exists():
                 Sale.objects.create(client=UserAsCompany.objects.get(CIF=sale["client"]).web_user,
                                     product=Product.objects.get(
                                         product_code=sale["product"]),
-                                    date=sale["saleDate"])
+                                    date=processed_date)
+
+    def change_hours_format(self, unprocessed_date):
+        time = unprocessed_date[1]
+        time = time.split(":")
+        hours = time[0]
+        minutes = time[1]
+        hours = str(int(hours) + 12)
+        day = unprocessed_date[0].split("/")
+        processed_day = day[2]+"-"+day[1]+"-"+day[0]
+        return processed_day + " " + hours + ":" + minutes

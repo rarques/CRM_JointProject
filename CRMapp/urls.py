@@ -6,7 +6,7 @@ from views import SalesHistory, ShowProcessedSales
 urlpatterns = [
 
     url(r'sales/$',
-        SalesHistory.as_view(),
+        login_required(SalesHistory.as_view()),
         name='salesdpt'),
 
     url(r'salesinfo/$',
