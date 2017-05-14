@@ -65,11 +65,12 @@ class Discount(models.Model):
 
 
 class Product(models.Model):
-    product_code = models.CharField(max_length=30, blank=True, null=True)
     name = models.CharField(max_length=30)
     category = models.ForeignKey(Category)
     price = models.IntegerField()
     discount = models.ForeignKey(Discount, blank=True, null=True)
+    '''This parameter is optional because it is used only for the company API connection'''
+    product_code = models.CharField(max_length=30, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
