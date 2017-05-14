@@ -65,7 +65,7 @@ class Discount(models.Model):
 
 
 class Product(models.Model):
-    product_code = models.CharField(max_length=30)
+    product_code = models.CharField(max_length=30, blank=True, null=True)
     name = models.CharField(max_length=30)
     category = models.ForeignKey(Category)
     price = models.IntegerField()
