@@ -60,8 +60,10 @@ class SalesHistoryProcesser():
             if UserAsPerson.objects.filter(DNI=sale["client"]).exists():
                 Sale.objects.create(client=UserAsPerson.objects.get(DNI=sale["client"]).web_user,
                                     product=Product.objects.get(
-                                        product_code=sale["product"]))
+                                        product_code=sale["product"]),
+                                    date=sale["saleDate"])
             elif UserAsCompany.objects.filter(CIF=sale["client"]).exists():
                 Sale.objects.create(client=UserAsCompany.objects.get(CIF=sale["client"]).web_user,
                                     product=Product.objects.get(
-                                        product_code=sale["product"]))
+                                        product_code=sale["product"]),
+                                    date=sale["saleDate"])
