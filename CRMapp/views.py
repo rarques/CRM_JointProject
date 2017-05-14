@@ -231,4 +231,4 @@ class ShowProcessedSales(ListView):
         salesProcesser.catch_data()
         salesProcesser.process_data()
         salesProcesser.save_data()
-        return HttpResponse(Sale.objects.filter().values('date'))
+        return HttpResponse(Sale.objects.filter())
