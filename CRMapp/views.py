@@ -1,10 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
-
-from CRMapp.models import Category, CategoryPerUser
 from forms import *
-
 from CRMapp.models import WebUser, UserAsPerson, UserAsCompany, CategoryPerUser, Category
 
 
@@ -408,3 +405,9 @@ def create_new_company_user(user_as_company_form, web_user):
     new_company_user = user_as_company_form.save(commit=False)
     new_company_user.web_user = web_user
     new_company_user.save()
+
+def process_person_JSON(request):
+    pass
+
+def process_company_JSON(request):
+    pass
