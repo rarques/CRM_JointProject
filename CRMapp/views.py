@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
+from django.views.generic import ListView
 
 from CRMapp.Controller.PersonController import *
 from CRMapp.Controller.CompanyController import *
-from CRMapp.models import CategoryPerUser, Category
+from CRMapp.models import CategoryPerUser, Category, Sale
 from forms import *
 
 
@@ -211,3 +212,14 @@ def modify_company(request):
                       }
                       )
     return redirect(to='../company_profile')
+
+
+@login_required
+def salesHistoryPerUser(request):
+    user = request.user
+    web_user = WebUser.objects.get(django_user=user)
+    sales = Sale.objects.filter(client=web_user)
+
+    return render(request, 'sales_list.html', {
+        "sales": sales,
+    })
