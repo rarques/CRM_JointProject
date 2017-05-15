@@ -57,13 +57,15 @@ class SalesHistoryProcesser():
                                        price=product["price"])
 
         for sale in self.sales_data:
-
-            if UserAsPerson.objects.filter(DNI=sale["client"]).exists():
+            if UserAsPerson.objects.filter(DNI=sale["client"]).exists() and not Sale.objects.filter(
+                    client=UserAsPerson.objects.get(DNI=sale["client"]).web_user,
+                    product=Product.objects.get(product_code=sale["product"])).exists():
                 Sale.objects.create(client=UserAsPerson.objects.get(DNI=sale["client"]).web_user,
                                     product=Product.objects.get(
                                         product_code=sale["product"]))
-            elif UserAsCompany.objects.filter(CIF=sale["client"]).exists():
+            elif UserAsCompany.objects.filter(CIF=sale["client"]).exists() and not Sale.objects.filter(
+                    client=UserAsCompany.objects.get(CIF=sale["client"]).web_user,
+                    product=Product.objects.get(product_code=sale["product"])).exists():
                 Sale.objects.create(client=UserAsCompany.objects.get(CIF=sale["client"]).web_user,
                                     product=Product.objects.get(
                                         product_code=sale["product"]))
-
