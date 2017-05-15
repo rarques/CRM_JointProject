@@ -34,5 +34,6 @@ urlpatterns = [
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout, name='logout'),
     url(r'^accounts/profile/$', modify_person),
-    url(r'^sales/$', salesHistoryPerUser, name='sales_list')
+    url(r'^sales/$', purchases_per_user, name='sales_list'),
+    url(r'^incidence/(?P<pk>[0-9]+)', register_incidence, name='incidence'),
 ]
