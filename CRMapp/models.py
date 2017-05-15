@@ -68,7 +68,7 @@ class Product(models.Model):
     name = models.CharField(max_length=30)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.IntegerField()
-    discount = models.ForeignKey(Discount, on_delete=models.CASCADE)
+    discount = models.ForeignKey(Discount, on_delete=models.CASCADE, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
