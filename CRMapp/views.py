@@ -238,10 +238,12 @@ def register_incidence(request, pk):
         incidence_form = IncidenceForm(request.POST)
         if incidence_form.is_valid():
             incidence = incidence_form.save(commit=False)
+            incidence_category = request.POST.get("category")
             product = Product.objects.get(id=pk)
             web_user = WebUser.objects.get(django_user=request.user)
             incidence.user = web_user
             incidence.product = product
+            incidence.category = incidence_category
             incidence.save()
             return render(request, 'register_incidence.html', {
                 "submitted": True
