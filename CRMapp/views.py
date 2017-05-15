@@ -215,7 +215,7 @@ def modify_company(request):
 
 
 @login_required
-def salesHistoryPerUser(request):
+def purchases_per_user(request):
     user = request.user
     web_user = WebUser.objects.get(django_user=user)
     sales = Sale.objects.filter(client=web_user)
