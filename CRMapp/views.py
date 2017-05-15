@@ -250,3 +250,28 @@ def register_incidence(request, pk):
             })
     else:
         pass
+
+
+@login_required
+def post_opinion(request, pk):
+    if request.method == 'GET':
+        product = Product.objects.get(id=pk)
+        return render(request, 'post_opinion.html', {
+            "product": product,
+            "opinion_form": OpinionForm(),
+            "submitted": False,
+        })
+    elif request.method == 'POST':
+        opinion_form = OpinionForm(request.POST)
+        if opinion_form.is_valid():
+            opinion = opinion_form.save(commit=False)
+            product = Product.objects.get(id=pk)
+            web_user = WebUser.objects.get(django_user=request.user)
+            opinion.user = web_user
+            opinion.product = product
+            opinion.save()
+            return render(request, 'register_incidence.html', {
+                "submitted": True
+            })
+    else:
+        pass
