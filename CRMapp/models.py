@@ -26,8 +26,8 @@ class WebUser(models.Model):
 
 
 class CategoryPerUser(models.Model):
-    user = models.ForeignKey(WebUser)
-    category = models.ForeignKey(Category)
+    user = models.ForeignKey(WebUser, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.user.django_user.username + "   " + self.category.name
@@ -66,17 +66,17 @@ class Discount(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=30)
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.IntegerField()
-    discount = models.ForeignKey(Discount)
+    discount = models.ForeignKey(Discount, on_delete=models.CASCADE, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
 
 
 class Opinion(models.Model):
-    user = models.ForeignKey(WebUser)
-    product = models.ForeignKey(Product)
+    user = models.ForeignKey(WebUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     comment = models.TextField(max_length=200)
     rating = models.IntegerField()
@@ -87,8 +87,8 @@ class Opinion(models.Model):
 
 
 class Incidence(models.Model):
-    user = models.ForeignKey(WebUser)
-    product = models.ForeignKey(Product)
+    user = models.ForeignKey(WebUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     explanation = models.TextField(max_length=300)
     category = models.CharField(max_length=30)
@@ -99,8 +99,8 @@ class Incidence(models.Model):
 
 
 class Sale(models.Model):
-    client = models.ForeignKey(WebUser)
-    product = models.ForeignKey(Product)
+    client = models.ForeignKey(WebUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     opinion = models.ForeignKey(Opinion, blank=True, null=True)
 
 
