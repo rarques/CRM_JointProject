@@ -1,10 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
-from django.views.generic import ListView
 
-from CRMapp.Controller.PersonController import *
 from CRMapp.Controller.CompanyController import *
+from CRMapp.Controller.PersonController import *
 from CRMapp.models import CategoryPerUser, Category, Sale, Product
 from forms import *
 
@@ -255,7 +254,8 @@ def register_incidence(request, pk):
 @login_required
 def post_opinion(request, pk):
     if request.method == 'GET':
-        product = Product.objects.get(id=pk)
+        sale = Sale.objects.get(id=pk)
+        product = Product.objects.get(sale=sale)
         return render(request, 'post_opinion.html', {
             "product": product,
             "opinion_form": OpinionForm(),
@@ -265,12 +265,17 @@ def post_opinion(request, pk):
         opinion_form = OpinionForm(request.POST)
         if opinion_form.is_valid():
             opinion = opinion_form.save(commit=False)
-            product = Product.objects.get(id=pk)
+            sale = Sale.objects.get(id=pk)
+            product = Product.objects.get(sale=sale)
             web_user = WebUser.objects.get(django_user=request.user)
+            if Opinion.objects.filter(product=product, user=web_user).exists():
+                Opinion.objects.get(product=product, user=web_user).delete()
             opinion.user = web_user
             opinion.product = product
             opinion.save()
-            return render(request, 'register_incidence.html', {
+            sale.opinion = opinion
+            sale.save()
+            return render(request, 'post_opinion.html', {
                 "submitted": True
             })
     else:
