@@ -32,6 +32,6 @@ urlpatterns = [
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout, name='logout'),
     url(r'^accounts/profile/$', modify_person),
-    url(r'^process_person.json', process_person_JSON, name='process_person_JSON'),
-    url(r'^process_company.json', process_company_JSON, name='process_company_JSON')
+    url(r'^process_client.json', process_client_JSON, name='process_client_JSON'),
+
 ]

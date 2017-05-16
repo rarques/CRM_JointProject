@@ -3,6 +3,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from CRMapp.Controller.PersonController import *
 from CRMapp.Controller.CompanyController import *
+from CRMapp.Controller.Process_clients_controller import Process_clients_controller
 from CRMapp.models import CategoryPerUser, Category
 from forms import *
 
@@ -212,9 +213,12 @@ def modify_company(request):
     return redirect(to='../company_profile')
 
 
-def process_person_JSON(request):
-    pass
-
-def process_company_JSON(request):
-    pass
-
+def process_client_JSON(request):
+    if request.method == 'GET':
+        return render(request, 'process_client.html', {
+            'categories': Category.objects.all()
+        })
+    elif request.method == 'POST':
+        process_clients_controller = Process_clients_controller(request)
+        process_clients_controller.captureFields()
+        return process_clients_controller.filter_clients_and_return('json')
