@@ -26,10 +26,37 @@ class SalesHistoryProcesser():
         self.sales_data = json.loads(self.sales.text)
 
     def save_data(self):
-        for category in self.categories_data:
-            if not Category.objects.filter(name=category["categoryName"]).exists():
-                Category.objects.create(name=category["categoryName"])
+        self.save_category()
 
+        self.save_client()
+
+        self.save_product()
+
+        self.save_sales()
+
+    def save_sales(self):
+        for sale in self.sales_data:
+            if UserAsPerson.objects.filter(DNI=sale["client"]).exists() and not Sale.objects.filter(
+                    client=UserAsPerson.objects.get(DNI=sale["client"]).web_user,
+                    product=Product.objects.get(product_code=sale["product"])).exists():
+                Sale.objects.create(client=UserAsPerson.objects.get(DNI=sale["client"]).web_user,
+                                    product=Product.objects.get(
+                                        product_code=sale["product"]))
+            elif UserAsCompany.objects.filter(CIF=sale["client"]).exists() and not Sale.objects.filter(
+                    client=UserAsCompany.objects.get(CIF=sale["client"]).web_user,
+                    product=Product.objects.get(product_code=sale["product"])).exists():
+                Sale.objects.create(client=UserAsCompany.objects.get(CIF=sale["client"]).web_user,
+                                    product=Product.objects.get(
+                                        product_code=sale["product"]))
+
+    def save_product(self):
+        for product in self.products_data:
+            if not Product.objects.filter(product_code=product["ProductCode"]).exists():
+                Product.objects.create(product_code=product["ProductCode"], name=product["productName"],
+                                       category=Category.objects.get(name=product["productCategory"]),
+                                       price=product["price"])
+
+    def save_client(self):
         for client in self.clients_data:
             if client["clientType"] == "clientType_1":
                 if not UserAsPerson.objects.filter(DNI=client["nif"]).exists():
@@ -50,22 +77,7 @@ class SalesHistoryProcesser():
                             street="X", phone=2),
                         CIF=client["nif"])
 
-        for product in self.products_data:
-            if not Product.objects.filter(product_code=product["ProductCode"]).exists():
-                Product.objects.create(product_code=product["ProductCode"], name=product["productName"],
-                                       category=Category.objects.get(name=product["productCategory"]),
-                                       price=product["price"])
-
-        for sale in self.sales_data:
-            if UserAsPerson.objects.filter(DNI=sale["client"]).exists() and not Sale.objects.filter(
-                    client=UserAsPerson.objects.get(DNI=sale["client"]).web_user,
-                    product=Product.objects.get(product_code=sale["product"])).exists():
-                Sale.objects.create(client=UserAsPerson.objects.get(DNI=sale["client"]).web_user,
-                                    product=Product.objects.get(
-                                        product_code=sale["product"]))
-            elif UserAsCompany.objects.filter(CIF=sale["client"]).exists() and not Sale.objects.filter(
-                    client=UserAsCompany.objects.get(CIF=sale["client"]).web_user,
-                    product=Product.objects.get(product_code=sale["product"])).exists():
-                Sale.objects.create(client=UserAsCompany.objects.get(CIF=sale["client"]).web_user,
-                                    product=Product.objects.get(
-                                        product_code=sale["product"]))
+    def save_category(self):
+        for category in self.categories_data:
+            if not Category.objects.filter(name=category["categoryName"]).exists():
+                Category.objects.create(name=category["categoryName"])
