@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from CRMapp.Controller.ProcessedData import ProcessedData
 from models import *
 
 
@@ -12,6 +13,9 @@ class ModelsTesting(TestCase):
         self.create_person_company_employee(user3, web_user1, web_user2)
 
         self.create_product()
+
+        Sale.objects.create(client=web_user1, product=Product.objects.get(name="croissant"))
+        self.pd = ProcessedData()
 
     def create_django_users(self):
         user1 = User.objects.create(username="user1")
@@ -31,6 +35,7 @@ class ModelsTesting(TestCase):
     def create_product(self):
         category = Category.objects.create(name="menjar")
         Product.objects.create(name="croissant", category=category, price=2)
+        Product.objects.create(name="bocata", category=category, price=3)
 
     def create_person_company_employee(self, user3, web_user1, web_user2):
         UserAsPerson.objects.create(web_user=web_user1, DNI="312W")
@@ -112,6 +117,16 @@ class ModelsTesting(TestCase):
         CategoryPerUser.objects.create(user=user2, category=category)
         return category, user1, user2
 
+    '''Testing views'''
 
+    def test_top_clients(self):
+        actual = self.pd.get_top_buyers().pop()
+        self.assertEqual(actual, "user1")
 
-"""Starting the controller unit testing"""
+    def test_top_products(self):
+        actual = self.pd.get_top_products().pop()
+        self.assertEqual(actual, "croissant")
+
+    def test_bot_products(self):
+        actual = self.pd.get_bot_products().pop()
+        self.assertEqual(actual, "bocata")
