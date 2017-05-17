@@ -5,6 +5,9 @@ from CRMapp.Controller.PersonController import *
 from CRMapp.Controller.CompanyController import *
 from CRMapp.Controller.Process_clients_controller import Process_clients_controller
 from CRMapp.models import CategoryPerUser, Category
+from CRMapp.Controller.PersonController import *
+from CRMapp.Controller.CompanyController import *
+from CRMapp.models import CategoryPerUser, Category, Sale, Product
 from forms import *
 
 
@@ -222,3 +225,40 @@ def process_client_JSON(request):
         process_clients_controller = Process_clients_controller(request)
         process_clients_controller.captureFields()
         return process_clients_controller.filter_clients_and_return('json')
+
+@login_required
+def purchases_per_user(request):
+    user = request.user
+    web_user = WebUser.objects.get(django_user=user)
+    sales = Sale.objects.filter(client=web_user)
+
+    return render(request, 'sales_list.html', {
+        "sales": sales,
+    })
+
+
+@login_required
+def register_incidence(request, pk):
+    if request.method == 'GET':
+        product = Product.objects.get(id=pk)
+        return render(request, 'register_incidence.html', {
+            "product": product,
+            "incidence_form": IncidenceForm(),
+            "submitted": False,
+        })
+    elif request.method == 'POST':
+        incidence_form = IncidenceForm(request.POST)
+        if incidence_form.is_valid():
+            incidence = incidence_form.save(commit=False)
+            incidence_category = request.POST.get("category")
+            product = Product.objects.get(id=pk)
+            web_user = WebUser.objects.get(django_user=request.user)
+            incidence.user = web_user
+            incidence.product = product
+            incidence.category = incidence_category
+            incidence.save()
+            return render(request, 'register_incidence.html', {
+                "submitted": True
+            })
+    else:
+        pass
