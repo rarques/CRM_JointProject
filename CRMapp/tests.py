@@ -30,8 +30,7 @@ class ModelsTesting(TestCase):
 
     def create_product(self):
         category = Category.objects.create(name="menjar")
-        discount = Discount.objects.create(discount_identifier="XX2D-AGS1", percent=20, expiring_data="2006-10-25")
-        Product.objects.create(name="croissant", category=category, price=2, discount=discount)
+        Product.objects.create(name="croissant", category=category, price=2)
 
     def create_person_company_employee(self, user3, web_user1, web_user2):
         UserAsPerson.objects.create(web_user=web_user1, DNI="312W")
@@ -113,9 +112,6 @@ class ModelsTesting(TestCase):
         CategoryPerUser.objects.create(user=user2, category=category)
         return category, user1, user2
 
-    def test_discount_on_product(self):
-        testing_product = Product.objects.get(name="croissant")
-        self.assertEqual(testing_product.discount.discount_identifier, "XX2D-AGS1")
 
 
 """Starting the controller unit testing"""
