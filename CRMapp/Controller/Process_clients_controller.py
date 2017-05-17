@@ -5,12 +5,13 @@ from django.core import serializers
 
 
 class Process_clients_controller(object):
-    def __init__(self, request, country=None, province=None, city=None, category=None):
+    def __init__(self, request):
         self.request = request
-        self.country = country
-        self.province = province
-        self.city = city
-        self.category = category
+        self.country = None
+        self.province = None
+        self.city = None
+        self.category = None
+        self.data = None
         self.web_users = []
         self.users = []
 
@@ -32,5 +33,5 @@ class Process_clients_controller(object):
         users = [user.user for user in CategoryPerUser.objects.filter(category=self.category)
                  if user.user in web_users]
 
-        data = serializers.serialize('json', users)
-        return HttpResponse(data, content_type='application/{0}'.format(format))
+        self.data = serializers.serialize('json', users)
+        return HttpResponse(self.data, content_type='application/{0}'.format(format))
