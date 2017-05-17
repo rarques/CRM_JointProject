@@ -58,7 +58,6 @@ def step_impl(context):
 @then("I'm redirected to my profile page")
 def step_impl(context):
     pass
-    # raise NotImplementedError("Not implemented")
 
 
 @step("Exists a UserAsPerson with DNI = 12345678A")
