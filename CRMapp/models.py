@@ -102,4 +102,6 @@ class Sale(models.Model):
     client = models.ForeignKey(WebUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     opinion = models.ForeignKey(Opinion, blank=True, null=True)
-    incidence = models.ForeignKey(Incidence, blank=True, null=True)
+
+
+incidence = models.ForeignKey(Incidence, blank=True, null=True)
