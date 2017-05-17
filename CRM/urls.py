@@ -17,8 +17,6 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
-from django.views.generic import ListView
-
 from CRMapp.views import *
 
 urlpatterns = [
@@ -34,6 +32,7 @@ urlpatterns = [
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout, name='logout'),
     url(r'^accounts/profile/$', modify_person),
+    url(r'^process_client.json', process_client_JSON, name='process_client_JSON'),
     url(r'^sales/$', purchases_per_user, name='sales_list'),
     url(r'^incidence/(?P<pk>[0-9]+)', register_incidence, name='incidence'),
 ]
