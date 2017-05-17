@@ -228,10 +228,26 @@ class ShowProcessedSales(ListView):
     queryset = ""
 
     def post(self, *args, **kwargs):
+        self.save_api_information()
+        bot_products, top_buyers, top_products = self.process_sale_data()
+        return render(self.request,
+                      self.template_name,
+                      {
+                          'top_buyers': top_buyers,
+                          'top_products': top_products,
+                          'bot_products': bot_products
+                      }
+                      )
+
+    def process_sale_data(self):
+        processedData = ProcessedData()
+        top_buyers = processedData.get_top_buyers()
+        top_products = processedData.get_top_products()
+        bot_products = processedData.get_bot_products()
+        return bot_products, top_buyers, top_products
+
+    def save_api_information(self):
         salesProcesser = SalesHistoryProcesser()
         salesProcesser.catch_data()
         salesProcesser.process_data()
         salesProcesser.save_data()
-        processedData = ProcessedData()
-        top_buyers = processedData.get_top_buyers()
-        return HttpResponse(top_buyers)
