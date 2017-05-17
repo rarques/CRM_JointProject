@@ -10,6 +10,7 @@ urlpatterns = [
         name='salesdpt'),
 
     url(r'salesinfo/$',
-        login_required(ShowProcessedSales.as_view()))
+        login_required(ShowProcessedSales.as_view()),
+        name='salesinfo')
 
 ]

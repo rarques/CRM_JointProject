@@ -22,7 +22,7 @@ from CRMapp.views import *
 
 urlpatterns = [
     url(r'^$', base),
-    url(r'^worker/', include('CRMapp.urls')),
+    url(r'^worker/', include('CRMapp.urls', namespace='crm')),
     url(r'^admin/', admin.site.urls),
     url(r'^person_profile/', person_profile, name='person_profile'),
     url(r'^company_profile/', company_profile, name='company_profile'),
