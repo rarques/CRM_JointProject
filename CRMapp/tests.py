@@ -1,6 +1,9 @@
 from django.test import TestCase
-
+from CRMapp.Controller.Process_clients_controller import Process_clients_controller
 from models import *
+from CRMapp.models import WebUser, UserAsPerson
+from django.contrib.auth.models import User
+import json
 
 
 class ModelsTesting(TestCase):
@@ -120,3 +123,43 @@ class ModelsTesting(TestCase):
 
 
 """Starting the controller unit testing"""
+
+
+class Process_clients_test_case(TestCase):
+    def setUp(self):
+        user1 = User.objects.create(username='used_name', email='used_name')
+        user1.set_password('patatapatata1')
+        web_user1 = WebUser.objects.create(django_user=user1, country="Mordor",
+                                           province="Gorgoroth",
+                                           city="Barad dur", zip_code=25200,
+                                           street="Ramon Balcells n2", phone=288)
+        user1.save()
+        web_user1.save()
+
+        category1 = Category.objects.create(name="Slavery")
+        category1.save()
+
+        category_per_user1 = CategoryPerUser.objects.create(user=web_user1,
+                                                            category=category1)
+        category_per_user1.save()
+
+    def test_process_client(self):
+        http_request_mock = Process_clients_test_case.HttpRequestMock()
+        process_clients_controller = Process_clients_controller(
+            request=http_request_mock)
+
+        process_clients_controller.captureFields()
+        process_clients_controller.filter_clients_and_return('json')
+        json_data = json.loads(process_clients_controller.data)
+
+        self.assertEqual(http_request_mock.POST['country'],
+                         json_data[0]['fields']['country'])
+        self.assertEqual(http_request_mock.POST['province'],
+                         json_data[0]['fields']['province'])
+        self.assertEqual(http_request_mock.POST['city'],
+                         json_data[0]['fields']['city'])
+
+    class HttpRequestMock(object):
+        def __init__(self):
+            self.POST = {'country': 'Mordor', 'province': 'Gorgoroth',
+                         'city': 'Barad dur', 'category': 'Slavery'}
