@@ -128,7 +128,7 @@ aside {
     }
 
     .navbar-default .navbar-header .navbar-brand:focus, .navbar-default .navbar-header .navbar-brand:hover {
-        color: #fff
+        color: #222
     }
 
     .navbar-default .nav > li > a, .navbar-default .nav > li > a:focus {
@@ -136,7 +136,7 @@ aside {
     }
 
     .navbar-default .nav > li > a:focus:hover, .navbar-default .nav > li > a:hover {
-        color: #fff
+        color: #222
     }
 
     .navbar-default.affix {
@@ -167,7 +167,7 @@ body {
     background-size: cover;
     background-position: center;
     background: url(../img/header.jpg) no-repeat center center fixed;
-    color: #fff
+    color: #222
 }
 
 p[class="legal"] {
@@ -215,11 +215,8 @@ header .header-content .header-content-inner p {
         padding: 0 50px
     }
     #content {
-        position: absolute;
-        top: 20%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
+        position: relative;
+        top: -50vh;
         padding: 0 50px
     }
 
@@ -268,7 +265,7 @@ header .header-content .header-content-inner p {
 }
 
 .portfolio-box .portfolio-box-caption {
-    color: #fff;
+    color: #222;
     opacity: 0;
     display: block;
     background: rgba(240, 95, 64, .9);
@@ -352,17 +349,17 @@ header .header-content .header-content-inner p {
 }
 
 .btn-default.disabled, .btn-default.disabled.active, .btn-default.disabled.focus, .btn-default.disabled:active, .btn-default.disabled:focus, .btn-default.disabled:hover, .btn-default[disabled], .btn-default[disabled].active, .btn-default[disabled].focus, .btn-default[disabled]:active, .btn-default[disabled]:focus, .btn-default[disabled]:hover, fieldset[disabled] .btn-default, fieldset[disabled] .btn-default.active, fieldset[disabled] .btn-default.focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default:hover {
-    background-color: #fff;
+    background-color: #22;
     border-color: #fff
 }
 
 .btn-default .badge {
-    color: #fff;
+    color: #222;
     background-color: #222
 }
 
 .btn-primary {
-    color: #fff;
+    color: #222;
     background-color: #F05F40;
     border-color: #F05F40;
     -webkit-transition: all .35s;
@@ -371,7 +368,7 @@ header .header-content .header-content-inner p {
 }
 
 .btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open > .dropdown-toggle.btn-primary {
-    color: #fff;
+    color: #222;
     background-color: #ee4b28;
     border-color: #ed431f
 }
@@ -398,23 +395,23 @@ header .header-content .header-content-inner p {
 }
 
 ::-moz-selection {
-    color: #fff;
+    color: #222;
     text-shadow: none;
     background: #222
 }
 
 ::selection {
-    color: #fff;
+    color: #222;
     text-shadow: none;
     background: #222
 }
 
 img::selection {
-    color: #fff;
+    color: #222;
     background: 0 0
 }
 
 img::-moz-selection {
-    color: #fff;
+    color: #222;
     background: 0 0
 }
