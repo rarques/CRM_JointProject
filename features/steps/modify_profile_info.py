@@ -92,7 +92,7 @@ def step_impl(context):
 
 @step("I am logged as person")
 def step_impl(context):
-    context.browser.visit(context.get_url('/accounts/login/'))
+    context.browser.visit(context.get_url('login'))
     form = context.browser.find_by_id('login_form').first
     for row in context.table:
         for heading in row.headings:
@@ -102,7 +102,7 @@ def step_impl(context):
 
 @step("I am logged as company")
 def step_impl(context):
-    context.browser.visit(context.get_url('/accounts/login/'))
+    context.browser.visit(context.get_url('login'))
     form = context.browser.find_by_id('login_form').first
     for row in context.table:
         for heading in row.headings:

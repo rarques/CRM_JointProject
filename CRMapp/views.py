@@ -1,13 +1,15 @@
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
-from CRMapp.Controller.PersonController import *
-from CRMapp.Controller.CompanyController import *
-from CRMapp.Controller.Process_clients_controller import Process_clients_controller
-from CRMapp.models import CategoryPerUser, Category
-from CRMapp.Controller.PersonController import *
-from CRMapp.Controller.CompanyController import *
-from CRMapp.models import CategoryPerUser, Category, Sale, Product
+from django.views.generic import ListView
+
+from CRMapp.controller.ProcessedData import ProcessedData
+from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
+from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
+from CRMapp.controller.PersonController import *
+from CRMapp.controller.CompanyController import *
+from CRMapp.controller.Process_clients_controller import Process_clients_controller
 from forms import *
 
 
@@ -216,6 +218,44 @@ def modify_company(request):
     return redirect(to='../company_profile')
 
 
+
+class SalesHistory(ListView):
+    model = Employee
+    template_name = 'SalesHistory.html'
+    queryset = ""
+
+
+class ShowProcessedSales(ListView):
+    model = Employee
+    template_name = 'ProcessedSales.html'
+    queryset = ""
+
+    def post(self, *args, **kwargs):
+        self.save_api_information()
+        bot_products, top_buyers, top_products = self.process_sale_data()
+        return render(self.request,
+                      self.template_name,
+                      {
+                          'top_buyers': top_buyers,
+                          'top_products': top_products,
+                          'bot_products': bot_products
+                      }
+                      )
+
+    def process_sale_data(self):
+        processedData = ProcessedData()
+        top_buyers = processedData.get_top_buyers()
+        top_products = processedData.get_top_products()
+        bot_products = processedData.get_bot_products()
+        return bot_products, top_buyers, top_products
+
+    def save_api_information(self):
+        salesProcesser = SalesHistoryProcesser()
+        salesProcesser.catch_data()
+        salesProcesser.process_data()
+        salesProcesser.save_data()
+
+
 def process_client_JSON(request):
     if request.method == 'GET':
         return render(request, 'process_client.html', {
@@ -261,8 +301,7 @@ def register_incidence(request, pk):
             return render(request, 'register_incidence.html', {
                 "submitted": True
             })
-    else:
-        pass
+          
 
 def profile(request):
     if UserAsPerson.objects.filter(web_user=WebUser.objects.filter(django_user=request.user)).exists():
