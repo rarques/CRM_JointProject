@@ -8,7 +8,7 @@ Feature: Modify user (person or company) profile information
 
   Scenario: User (person) updates profile information
     Given I am registered as person
-    And I am logged as person
+    And I login
       | username  | password      |
       | used_name | patatapatata1 |
     And I visit the modify as person page
@@ -21,7 +21,7 @@ Feature: Modify user (person or company) profile information
 
   Scenario: The user enters invalid information
     Given I am registered as person
-    And I am logged as person
+    And I login
       | username  | password      |
       | used_name | patatapatata1 |
     And I visit the modify as person page

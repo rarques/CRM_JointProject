@@ -9,7 +9,7 @@ Feature: Register a product incidence
 
   Scenario: Register incidence
     Given I am registered as person
-    And I am logged as person
+    And I login
       | username  | password      |
       | used_name | patatapatata1 |
     And I have bought a product

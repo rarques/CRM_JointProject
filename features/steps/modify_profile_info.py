@@ -90,7 +90,7 @@ def step_impl(context):
     assert UserAsCompany.objects.filter(CIF='E43576214').exists()
 
 
-@step("I am logged as person")
+@step("I login")
 def step_impl(context):
     context.browser.visit(context.get_url('login'))
     for row in context.table:
