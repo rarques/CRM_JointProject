@@ -265,7 +265,6 @@ def process_client_JSON(request):
         process_clients_controller.captureFields()
         return process_clients_controller.filter_clients_and_return('json')
 
-
 @login_required
 def purchases_per_user(request):
     user = request.user
@@ -300,3 +299,4 @@ def register_incidence(request, pk):
             return render(request, 'register_incidence.html', {
                 "submitted": True
             })
+
