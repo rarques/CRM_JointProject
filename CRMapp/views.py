@@ -242,17 +242,17 @@ class ShowProcessedSales(ListView):
                       )
 
     def process_sale_data(self):
-        processedData = ProcessedData()
-        top_buyers = processedData.get_top_buyers()
-        top_products = processedData.get_top_products()
-        bot_products = processedData.get_bot_products()
+        processed_data = ProcessedData()
+        top_buyers = processed_data.get_top_buyers()
+        top_products = processed_data.get_top_products()
+        bot_products = processed_data.get_bot_products()
         return bot_products, top_buyers, top_products
 
     def save_api_information(self):
-        salesProcesser = SalesHistoryProcesser()
-        salesProcesser.catch_data()
-        salesProcesser.process_data()
-        salesProcesser.save_data()
+        sales_processer = SalesHistoryProcesser()
+        sales_processer.catch_data()
+        sales_processer.process_data()
+        sales_processer.save_data()
 
 
 def process_client_JSON(request):
