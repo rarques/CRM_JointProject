@@ -2,7 +2,7 @@
 {% block content %}
     {% if not submitted %}
         <h2>Register an Incidence about the product: {{ product.name }}</h2>
-        <form action="#" method="post">
+        <form action="#" method="post" id="incidence-form">
             {% csrf_token %}
             {{ incidence_form.as_p }}
             <p>Please, select the motive of the incidence:</p>

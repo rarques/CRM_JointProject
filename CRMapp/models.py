@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils.timezone import now
 
 
@@ -38,7 +38,7 @@ class UserAsPerson(models.Model):
     DNI = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.django_user.username
+        return self.DNI
 
 
 class UserAsCompany(models.Model):
@@ -46,7 +46,7 @@ class UserAsCompany(models.Model):
     CIF = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.django_user.username
+        return self.CIF
 
 
 class Employee(models.Model):
@@ -58,17 +58,12 @@ class Employee(models.Model):
         return self.django_user.username
 
 
-class Discount(models.Model):
-    discount_identifier = models.CharField(max_length=30)
-    percent = models.IntegerField()
-    expiring_data = models.DateField(blank=True, null=True)
-
-
 class Product(models.Model):
     name = models.CharField(max_length=30)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.IntegerField()
-    discount = models.ForeignKey(Discount, on_delete=models.CASCADE, blank=True, null=True)
+    '''This parameter is optional because it is used only for the company API connection'''
+    product_code = models.CharField(max_length=30, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
