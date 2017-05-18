@@ -308,3 +308,5 @@ def profile(request):
         return redirect(to='../../person_profile/')
     elif UserAsCompany.objects.filter(web_user=web_user).exists():
         return redirect(to='../../modify_company/')
+    else:
+        raise Exception()
