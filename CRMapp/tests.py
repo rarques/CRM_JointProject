@@ -122,7 +122,7 @@ class ModelsTesting(TestCase):
         CategoryPerUser.objects.create(user=user2, category=category)
         return category, user1, user2
 
-"""Starting the controller unit testing"""
+    """Starting the controller unit testing"""
 
     def test_top_clients(self):
         actual = self.pd.get_top_buyers().pop()
