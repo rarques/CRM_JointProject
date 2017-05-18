@@ -1,14 +1,15 @@
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
 
-from CRMapp.Controller.ProcessedData import ProcessedData
-from CRMapp.Controller.SalesHistoryProcesser import SalesHistoryProcesser
+from CRMapp.controller.ProcessedData import ProcessedData
+from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
 from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
-from CRMapp.Controller.PersonController import *
-from CRMapp.Controller.CompanyController import *
-from CRMapp.Controller.Process_clients_controller import Process_clients_controller
+from CRMapp.controller.PersonController import *
+from CRMapp.controller.CompanyController import *
+from CRMapp.controller.Process_clients_controller import Process_clients_controller
 from forms import *
 
 
@@ -254,6 +255,7 @@ class ShowProcessedSales(ListView):
         salesProcesser.process_data()
         salesProcesser.save_data()
 
+
 def process_client_JSON(request):
     if request.method == 'GET':
         return render(request, 'process_client.html', {
@@ -298,6 +300,4 @@ def register_incidence(request, pk):
             return render(request, 'register_incidence.html', {
                 "submitted": True
             })
-    else:
-        pass
 

@@ -1,8 +1,8 @@
 from django.test import TestCase
 
-from CRMapp.Controller.ProcessedData import ProcessedData
+from CRMapp.controller.ProcessedData import ProcessedData
 
-from CRMapp.Controller.Process_clients_controller import Process_clients_controller
+from CRMapp.controller.Process_clients_controller import Process_clients_controller
 from models import *
 from CRMapp.models import WebUser, UserAsPerson
 from django.contrib.auth.models import User
