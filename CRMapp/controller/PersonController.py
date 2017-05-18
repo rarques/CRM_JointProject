@@ -1,4 +1,4 @@
-from CRMapp.Controller.WebUserController import WebUserController
+from CRMapp.controller.WebUserController import WebUserController
 
 
 class PersonController(WebUserController):
