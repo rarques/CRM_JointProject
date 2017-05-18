@@ -306,6 +306,8 @@ def register_incidence(request, pk):
 def profile(request):
     web_user = WebUser.objects.filter(django_user=request.user)
     if UserAsPerson.objects.filter(web_user=web_user).exists():
-        return redirect(to='../../person_profile/')
+        # return redirect(to='../../person_profile/')
+        return person_profile(request)
     elif UserAsCompany.objects.filter(web_user=web_user).exists():
-        return redirect(to='../../company_profile/')
+        # return redirect(to='../../company_profile/')
+        return company_profile(request)
