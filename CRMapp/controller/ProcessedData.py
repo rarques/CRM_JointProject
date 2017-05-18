@@ -13,7 +13,7 @@ class ProcessedData():
                 index_to_modify = top_buyers_register.index(min(top_buyers_register))
                 top_buyers.pop(index_to_modify)
                 top_buyers_register.pop(index_to_modify)
-                top_buyers.append(client.django_user.username)
+                top_buyers.append(client.django_user.username+"   Name:"+client.django_user.first_name)
                 top_buyers_register.append(number_of_sales)
 
         return top_buyers
