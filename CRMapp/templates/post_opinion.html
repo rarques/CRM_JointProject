@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if not submitted %}
-        <h2>Say your opinion about this product: {{ product.name }}</h2>
-        <form action="#" method="post">
+        <h2>Tell us your opinion about this product: {{ product.name }}</h2>
+        <form action="#" method="post" id="opinion-form">
             {% csrf_token %}
             {{ opinion_form.as_p }}
             <p><input type="submit" value="Submit"/></p>
