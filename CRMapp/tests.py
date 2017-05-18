@@ -126,7 +126,7 @@ class ModelsTesting(TestCase):
 
     def test_top_clients(self):
         actual = self.pd.get_top_buyers().pop()
-        self.assertEqual(actual, "user1   Name:")
+        self.assertEqual(actual, "user1")
 
     def test_top_products(self):
         actual = self.pd.get_top_products().pop()
