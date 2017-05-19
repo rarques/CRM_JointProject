@@ -351,7 +351,7 @@ class SendReminder(ListView):
             send_mail(
                 'Technogad Sistems',
                 'We have new products, come and see them!',
-                'technogad@hotmail.com',
+                'technogado@gmail.com',
                 [client.email]
             )
         return HttpResponse("Users Notified")
