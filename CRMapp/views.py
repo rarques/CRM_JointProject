@@ -224,6 +224,14 @@ class SalesHistory(ListView):
     queryset = ""
 
 
+class SendReminder(ListView):
+    model = WebUser
+    template_name = 'SendReminders.html'
+
+    def get_context_data(self, **kwargs):
+        pass
+
+
 class ShowProcessedSales(ListView):
     model = Employee
     template_name = 'ProcessedSales.html'
@@ -254,7 +262,6 @@ class ShowProcessedSales(ListView):
         sales_processer.process_data()
         sales_processer.save_data()
 
-
 def process_client_JSON(request):
     if request.method == 'GET':
         return render(request, 'process_client.html', {
@@ -265,6 +272,7 @@ def process_client_JSON(request):
         process_clients_controller.captureFields()
         return process_clients_controller.filter_clients_and_return('json')
 
+
 @login_required
 def purchases_per_user(request):
     user = request.user
@@ -274,7 +282,6 @@ def purchases_per_user(request):
     return render(request, 'sales_list.html', {
         "sales": sales,
     })
-
 
 @login_required
 def register_incidence(request, pk):
@@ -299,6 +306,7 @@ def register_incidence(request, pk):
             return render(request, 'register_incidence.html', {
                 "submitted": True
             })
+
 
 @login_required
 def post_opinion(request, pk):
