@@ -3,7 +3,7 @@
     <h2>PRODUCTS PURCHASED BY USER: {{ request.user.username }}</h2>
     {% for sale in sales %}
         <p>Sale: {{ sale.product }} ; Price: {{ sale.product.price }}</p>
-        <p><a href="">Make opinion</a></p>
+        <p><a href="{% url 'opinion' sale.id %}">Make opinion</a></p>
         <p><a href="{% url 'incidence' sale.product.id %}">Register incidence</a></p>
         <hr>
     {% endfor %}

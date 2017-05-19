@@ -3,7 +3,7 @@
 from django.contrib.auth.models import User
 from django.forms import *
 
-from models import WebUser, UserAsPerson, UserAsCompany, Incidence
+from models import WebUser, UserAsPerson, UserAsCompany, Incidence, Opinion
 
 
 class UserForm(ModelForm):
@@ -59,3 +59,12 @@ class IncidenceForm(ModelForm):
 
     def clean(self):
         return super(IncidenceForm, self).clean()
+
+
+class OpinionForm(ModelForm):
+    class Meta:
+        model = Opinion
+        exclude = ['user', 'product', 'date']
+
+    def clean(self):
+        return super(OpinionForm, self).clean()

@@ -1,15 +1,14 @@
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
 
+from CRMapp.controller.CompanyController import *
+from CRMapp.controller.PersonController import *
+from CRMapp.controller.Process_clients_controller import Process_clients_controller
 from CRMapp.controller.ProcessedData import ProcessedData
 from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
 from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
-from CRMapp.controller.PersonController import *
-from CRMapp.controller.CompanyController import *
-from CRMapp.controller.Process_clients_controller import Process_clients_controller
 from forms import *
 
 
@@ -298,6 +297,35 @@ def register_incidence(request, pk):
             incidence.category = incidence_category
             incidence.save()
             return render(request, 'register_incidence.html', {
+                "submitted": True
+            })
+
+
+@login_required
+def post_opinion(request, pk):
+    if request.method == 'GET':
+        sale = Sale.objects.get(id=pk)
+        product = Product.objects.get(sale=sale)
+        return render(request, 'post_opinion.html', {
+            "product": product,
+            "opinion_form": OpinionForm(),
+            "submitted": False,
+        })
+    elif request.method == 'POST':
+        opinion_form = OpinionForm(request.POST)
+        if opinion_form.is_valid():
+            opinion = opinion_form.save(commit=False)
+            sale = Sale.objects.get(id=pk)
+            product = Product.objects.get(sale=sale)
+            web_user = WebUser.objects.get(django_user=request.user)
+            if Opinion.objects.filter(product=product, user=web_user).exists():
+                Opinion.objects.get(product=product, user=web_user).delete()
+            opinion.user = web_user
+            opinion.product = product
+            opinion.save()
+            sale.opinion = opinion
+            sale.save()
+            return render(request, 'post_opinion.html', {
                 "submitted": True
             })
 
