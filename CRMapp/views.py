@@ -300,3 +300,39 @@ def register_incidence(request, pk):
                 "submitted": True
             })
 
+@login_required
+def post_opinion(request, pk):
+    if request.method == 'GET':
+        sale = Sale.objects.get(id=pk)
+        product = Product.objects.get(sale=sale)
+        return render(request, 'post_opinion.html', {
+            "product": product,
+            "opinion_form": OpinionForm(),
+            "submitted": False,
+        })
+    elif request.method == 'POST':
+        opinion_form = OpinionForm(request.POST)
+        if opinion_form.is_valid():
+            opinion = opinion_form.save(commit=False)
+            sale = Sale.objects.get(id=pk)
+            product = Product.objects.get(sale=sale)
+            web_user = WebUser.objects.get(django_user=request.user)
+            if Opinion.objects.filter(product=product, user=web_user).exists():
+                Opinion.objects.get(product=product, user=web_user).delete()
+            opinion.user = web_user
+            opinion.product = product
+            opinion.save()
+            sale.opinion = opinion
+            sale.save()
+            return render(request, 'post_opinion.html', {
+                "submitted": True
+            })
+
+
+@login_required
+def profile(request):
+    web_user = WebUser.objects.filter(django_user=request.user)
+    if UserAsPerson.objects.filter(web_user=web_user).exists():
+        return redirect(to='../../person_profile/')
+    elif UserAsCompany.objects.filter(web_user=web_user).exists():
+        return redirect(to='../../company_profile/')
