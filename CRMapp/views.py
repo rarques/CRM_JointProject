@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
+from django.core.mail import send_mail
+from django.utils.timezone import now
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
@@ -228,8 +229,16 @@ class SendReminder(ListView):
     model = WebUser
     template_name = 'SendReminders.html'
 
-    def get_context_data(self, **kwargs):
-        pass
+    def post(self):
+        notify_clients = list(User.objects.filter(last_login=now).email)
+
+        send_mail(
+            'Technogad Sistems',
+            'We have new products, come and see them!',
+            'technogad@hotmail.com',
+            notify_clients
+        )
+        return HttpResponse("Users Notified")
 
 
 class ShowProcessedSales(ListView):
