@@ -30,9 +30,6 @@ def step_impl(context):
 @when("I click the Incidence button")
 def step_impl(context):
     context.browser.click_link_by_partial_href('/incidence/1')
-    f = open('log.txt', 'w+')
-    f.write(context.browser.html)
-    f.close()
     assert context.browser.is_text_present('Register an Incidence about the product')
 
 
