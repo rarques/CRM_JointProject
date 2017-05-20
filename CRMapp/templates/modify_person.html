@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
     <div id="modify_person">
-    <p>PELOTAS</p>
         <form id="modify_person_form" action="{% url 'modify_person' %}" method="post">
             {% csrf_token %}
             <table>

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+<head>
+    <p>
+        Send Reminders
+    </p>
+</head>
+
+{% block content %}
+    <form action="" method="post">{% csrf_token %}
+        <input type="submit" value="Send reminder to afk clients"/>
+    </form>
+{% endblock %}
