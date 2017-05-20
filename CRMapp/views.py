@@ -10,7 +10,7 @@ from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
 from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
 from CRMapp.controller.PersonController import *
 from CRMapp.controller.CompanyController import *
-from CRMapp.controller.Process_clients_controller import Process_clients_controller
+from CRMapp.controller.ProcessClients import ProcessClients
 from forms import *
 
 
@@ -221,13 +221,13 @@ def modify_company(request):
 
 class SalesHistory(ListView):
     model = Employee
-    template_name = 'SalesHistory.html'
+    template_name = 'sales_history.html'
     queryset = ""
 
 
 class ShowProcessedSales(ListView):
     model = Employee
-    template_name = 'ProcessedSales.html'
+    template_name = 'processed_sales.html'
     queryset = ""
 
     def post(self, *args, **kwargs):
@@ -262,7 +262,7 @@ def process_client_JSON(request):
             'categories': Category.objects.all()
         })
     elif request.method == 'POST':
-        process_clients_controller = Process_clients_controller(request)
+        process_clients_controller = ProcessClients(request)
         process_clients_controller.captureFields()
         return process_clients_controller.filter_clients_and_return('json')
 
@@ -343,7 +343,7 @@ def profile(request):
 
 class SendReminder(ListView):
     model = WebUser
-    template_name = 'SendReminders.html'
+    template_name = 'send_reminders.html'
 
     def post(self, *args, **kwargs):
         remainder_date = datetime.now() - timedelta(days=15)
@@ -356,3 +356,20 @@ class SendReminder(ListView):
                 [client.email]
             )
         return HttpResponse("Users Notified")
+
+
+class SendRecommendation(ListView):
+    model = WebUser
+    template_name = 'recommendation.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SendRecommendation, self).get_context_data(**kwargs)
+        user = WebUser.objects.get(django_user=self.request.user)
+        category = CategoryPerUser.objects.get(user=user).category
+        pd = ProcessedData()
+        top_products = pd.get_top_products()
+        for product in top_products:
+            if Product.objects.filter(name=product, category=category).exists():
+                context['recommended'] = Product.objects.get(name=product, category=category)
+
+        return context
