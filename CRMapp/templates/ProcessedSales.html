@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<ul>
+    <p>Best Buyers</p>
+    {% for buyer in top_buyers %}
+        <li>{{ buyer }}</li>
+    {% endfor %}
+</ul>
+<ul>
+    <p>Best Products</p>
+    {% for product in top_products %}
+        <li>{{ product }}</li>
+    {% endfor %}
+</ul>
+<ul>
+    <p>Worst Products</p>
+    {% for product in bot_products %}
+        <li>{{ product }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -1,6 +1,12 @@
 from django.test import TestCase
 
+from CRMapp.controller.ProcessedData import ProcessedData
+
+from CRMapp.controller.Process_clients_controller import Process_clients_controller
 from models import *
+from CRMapp.models import WebUser, UserAsPerson
+from django.contrib.auth.models import User
+import json
 
 
 class ModelsTesting(TestCase):
@@ -13,6 +19,9 @@ class ModelsTesting(TestCase):
 
         self.create_product()
 
+        Sale.objects.create(client=web_user1, product=Product.objects.get(name="croissant"))
+        self.pd = ProcessedData()
+
     def create_django_users(self):
         user1 = User.objects.create(username="user1")
         user2 = User.objects.create(username="user2")
@@ -20,7 +29,6 @@ class ModelsTesting(TestCase):
         return user1, user2, user3
 
     def create_web_users(self, user1, user2):
-        category = Category.objects.create(name="Tractor")
         web_user1 = WebUser.objects.create(django_user=user1, country="Spain", province="Lleida",
                                            city="Cervera", zip_code=25200,
                                            street="Ramon Balcells n2", phone=288)
@@ -31,8 +39,8 @@ class ModelsTesting(TestCase):
 
     def create_product(self):
         category = Category.objects.create(name="menjar")
-        discount = Discount.objects.create(discount_identifier="XX2D-AGS1", percent=20, expiring_data="2006-10-25")
-        Product.objects.create(name="croissant", category=category, price=2, discount=discount)
+        Product.objects.create(name="croissant", category=category, price=2)
+        Product.objects.create(name="bocata", category=category, price=3)
 
     def create_person_company_employee(self, user3, web_user1, web_user2):
         UserAsPerson.objects.create(web_user=web_user1, DNI="312W")
@@ -114,9 +122,57 @@ class ModelsTesting(TestCase):
         CategoryPerUser.objects.create(user=user2, category=category)
         return category, user1, user2
 
-    def test_discount_on_product(self):
-        testing_product = Product.objects.get(name="croissant")
-        self.assertEqual(testing_product.discount.discount_identifier, "XX2D-AGS1")
+    """Starting the controller unit testing"""
+
+    def test_top_clients(self):
+        actual = self.pd.get_top_buyers().pop()
+        self.assertEqual(actual, "user1   Name:")
+
+    def test_top_products(self):
+        actual = self.pd.get_top_products().pop()
+        self.assertEqual(actual, "croissant")
+
+    def test_bot_products(self):
+        actual = self.pd.get_bot_products().pop()
+        self.assertEqual(actual, "bocata")
 
 
-"""Starting the controller unit testing"""
+class Process_clients_test_case(TestCase):
+    def setUp(self):
+        user1 = User.objects.create(username='used_name', email='used_name')
+        user1.set_password('patatapatata1')
+        web_user1 = WebUser.objects.create(django_user=user1, country="Mordor",
+                                           province="Gorgoroth",
+                                           city="Barad dur", zip_code=25200,
+                                           street="Ramon Balcells n2", phone=288)
+        user1.save()
+        web_user1.save()
+
+        category1 = Category.objects.create(name="Slavery")
+        category1.save()
+
+        category_per_user1 = CategoryPerUser.objects.create(user=web_user1,
+                                                            category=category1)
+        category_per_user1.save()
+
+    def test_process_client(self):
+        http_request_mock = Process_clients_test_case.HttpRequestMock()
+        process_clients_controller = Process_clients_controller(
+            request=http_request_mock)
+
+        process_clients_controller.captureFields()
+        process_clients_controller.filter_clients_and_return('json')
+        json_data = json.loads(process_clients_controller.data)
+
+        self.assertEqual(http_request_mock.POST['country'],
+                         json_data[0]['fields']['country'])
+        self.assertEqual(http_request_mock.POST['province'],
+                         json_data[0]['fields']['province'])
+        self.assertEqual(http_request_mock.POST['city'],
+                         json_data[0]['fields']['city'])
+
+    class HttpRequestMock(object):
+        def __init__(self):
+            self.POST = {'country': 'Mordor', 'province': 'Gorgoroth',
+                         'city': 'Barad dur', 'category': 'Slavery'}
+

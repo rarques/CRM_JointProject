@@ -26,8 +26,8 @@ class WebUser(models.Model):
 
 
 class CategoryPerUser(models.Model):
-    user = models.ForeignKey(WebUser)
-    category = models.ForeignKey(Category)
+    user = models.ForeignKey(WebUser, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.user.django_user.username + "   " + self.category.name
@@ -38,7 +38,7 @@ class UserAsPerson(models.Model):
     DNI = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.django_user.username
+        return self.DNI
 
 
 class UserAsCompany(models.Model):
@@ -46,7 +46,7 @@ class UserAsCompany(models.Model):
     CIF = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return self.web_user.django_user.username
+        return self.CIF
 
 
 class Employee(models.Model):
@@ -58,25 +58,20 @@ class Employee(models.Model):
         return self.django_user.username
 
 
-class Discount(models.Model):
-    discount_identifier = models.CharField(max_length=30)
-    percent = models.IntegerField()
-    expiring_data = models.DateField(blank=True, null=True)
-
-
 class Product(models.Model):
     name = models.CharField(max_length=30)
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.IntegerField()
-    discount = models.ForeignKey(Discount)
+    '''This parameter is optional because it is used only for the company API connection'''
+    product_code = models.CharField(max_length=30, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
 
 
 class Opinion(models.Model):
-    user = models.ForeignKey(WebUser)
-    product = models.ForeignKey(Product)
+    user = models.ForeignKey(WebUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     comment = models.TextField(max_length=200)
     rating = models.IntegerField()
@@ -87,8 +82,8 @@ class Opinion(models.Model):
 
 
 class Incidence(models.Model):
-    user = models.ForeignKey(WebUser)
-    product = models.ForeignKey(Product)
+    user = models.ForeignKey(WebUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     explanation = models.TextField(max_length=300)
     category = models.CharField(max_length=30)
@@ -99,9 +94,7 @@ class Incidence(models.Model):
 
 
 class Sale(models.Model):
-    client = models.ForeignKey(WebUser)
-    product = models.ForeignKey(Product)
+    client = models.ForeignKey(WebUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     opinion = models.ForeignKey(Opinion, blank=True, null=True)
-
-
-incidence = models.ForeignKey(Incidence, blank=True, null=True)
+    incidence = models.ForeignKey(Incidence, blank=True, null=True)
