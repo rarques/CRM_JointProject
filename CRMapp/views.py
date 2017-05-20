@@ -350,7 +350,7 @@ class SendReminder(ListView):
         for client in notify_clients:
             send_mail(
                 'Technogad Sistems',
-                'We have new products, come and see them!',
+                'We have new products, come and see them at technogad.herokuapp.com',
                 'technogado@gmail.com',
                 [client.email]
             )
