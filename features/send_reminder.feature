@@ -9,8 +9,8 @@ Feature: Send reminders to afk clients
   Scenario: Send emails
     Given I am logged in
     And I visit the send reminders page
-    And I click the send button
     When There is an afk client
-    | username | password | last_login | email |
-    | pepito   | palote   | 2017-05-02 | pepito@palotes.com |
+      | username | password | last_login | email |
+      | pepito   | palote   | 2017-05-02 | pepito@palotes.com |
+    And I click the send button
     Then I see the reminder sent page
