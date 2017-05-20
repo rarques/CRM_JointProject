@@ -1,11 +1,98 @@
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
+from django.views.generic import ListView
 
-from CRMapp.models import Category, CategoryPerUser
+from CRMapp.controller.ProcessedData import ProcessedData
+from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
+from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
+from CRMapp.controller.PersonController import *
+from CRMapp.controller.CompanyController import *
+from CRMapp.controller.Process_clients_controller import Process_clients_controller
 from forms import *
 
-from CRMapp.models import WebUser, UserAsPerson, UserAsCompany, CategoryPerUser, Category
+
+def base(request):
+    return render(request, 'base.html',
+                  {'PageTitle': 'Base',
+                   'TitleHeader': 'Base'})
+
+
+def register(request):
+    return render_to_response('register.html', {
+        "title": "Register as a Person or as a Company",
+    })
+
+
+def register_person(request):
+    if request.method == 'GET':
+        return render(request, 'register.html', {
+            "title": "Register as Person",
+            "basic_form": UserForm(),
+            "form": WebUserForm(),
+            "specific_form": UserAsPersonForm(),
+            "categories": Category.objects.all(),
+            "destination_url": "/register-person/"
+        })
+    elif request.method == 'POST':
+        # Register person
+        user_form = UserForm(request.POST)
+        web_user_form = WebUserForm(request.POST)
+        user_as_person_form = UserAsPersonForm(request.POST)
+        interested_categories = request.POST.getlist('category')
+        if user_form.is_valid() \
+                and web_user_form.is_valid() \
+                and user_as_person_form.is_valid():
+            person = PersonController(request.POST)
+            new_user = person.create_new_django_user(user_form)
+            new_web_user = person.create_new_web_user(web_user_form, new_user)
+            person.register_interested_categories(new_web_user, interested_categories)
+            person.create_new_user_as_person(user_as_person_form, new_web_user)
+            # return redirect(profile)
+            return HttpResponse("Registered")
+        else:
+            return render(request, 'register.html', {
+                "title": "Register as Person",
+                "basic_form": user_form,
+                "form": web_user_form,
+                "specific_form": user_as_person_form,
+                "destination_url": "/register-person/"
+            })
+
+
+def register_company(request):
+    if request.method == 'GET':
+        return render(request, 'register.html', {
+            "title": "Register as Company",
+            "basic_form": UserForm(),
+            "form": WebUserForm(),
+            "specific_form": UserAsCompanyForm(),
+            "categories": Category.objects.all(),
+            "destination_url": "/register-company/"
+        })
+    elif request.method == 'POST':
+        # Register company
+        user_form = UserForm(request.POST)
+        web_user_form = WebUserForm(request.POST)
+        user_as_company_form = UserAsCompanyForm(request.POST)
+        interested_categories = request.POST.getlist('category')
+        if user_form.is_valid() \
+                and web_user_form.is_valid() \
+                and user_as_company_form.is_valid():
+            company = CompanyController(request.POST)
+            new_user = company.create_new_django_user(user_form)
+            new_web_user = company.create_new_web_user(web_user_form, new_user)
+            company.register_interested_categories(new_web_user, interested_categories)
+            company.create_new_company_user(user_as_company_form, new_web_user)
+            return HttpResponse("Registered")
+        return render(request, 'register.html', {
+            "title": "Register as Person",
+            "basic_form": user_form,
+            "form": web_user_form,
+            "specific_form": user_as_company_form,
+            "destination_url": "/register-company/"
+        })
 
 
 @login_required
@@ -76,10 +163,8 @@ def modify_person(request):
     user_as_person = UserAsPerson.objects.get(web_user=web_user)
     if request.method == 'POST':
         CategoryPerUser.objects.filter(user=web_user).delete()
-        parameters = get_person_profile_parameters(request.POST,
-                                                   user, web_user,
-                                                   user_as_person)
-        update_person_profile(parameters, user, web_user, user_as_person)
+        person = PersonController(request.POST)
+        person.update_person_profile(user, web_user, user_as_person)
     else:
         return render(request,
                       'modify_person.html',
@@ -111,10 +196,9 @@ def modify_company(request):
     user_as_company = UserAsCompany.objects.get(web_user=web_user)
     if request.method == 'POST':
         CategoryPerUser.objects.filter(user=web_user).delete()
-        parameters = get_company_profile_parameters(request.POST,
-                                                    user, web_user, user_as_company)
-        update_company_profile(parameters, user, web_user,
-                               user_as_company)
+        company = CompanyController(request.POST)
+        company.update_company_profile(user, web_user,
+                                       user_as_company)
     else:
         return render(request,
                       'modify_company.html',
@@ -134,277 +218,94 @@ def modify_company(request):
     return redirect(to='../company_profile')
 
 
-def get_company_profile_parameters(source, user, web_user, user_as_company):
-    """
-    Capture the parameters of the company type user profile
-    :param request: HttpRequest
-    :return: A dictionary with parameters
-    """
-    parameters = {}
-    get_basic_parameters(parameters, source)
-    get_user_parameters(parameters, source)
-    get_category_parameters(parameters, source)
-    get_company_parameters(parameters, source)
-    return parameters
+class SalesHistory(ListView):
+    model = Employee
+    template_name = 'SalesHistory.html'
+    queryset = ""
 
 
-def get_person_profile_parameters(source, user, web_user, user_as_person):
-    """
-    Capture the parameters of the person type user profile
-    :param request: HttpRequest
-    :return: A dictionary with parameters
-    """
-    parameters = {}
-    get_basic_parameters(parameters, source)
-    get_user_parameters(parameters, source)
-    get_category_parameters(parameters, source)
-    get_person_parameters(parameters, source)
-    return parameters
+class ShowProcessedSales(ListView):
+    model = Employee
+    template_name = 'ProcessedSales.html'
+    queryset = ""
+
+    def post(self, *args, **kwargs):
+        self.save_api_information()
+        bot_products, top_buyers, top_products = self.process_sale_data()
+        return render(self.request,
+                      self.template_name,
+                      {
+                          'top_buyers': top_buyers,
+                          'top_products': top_products,
+                          'bot_products': bot_products
+                      }
+                      )
+
+    def process_sale_data(self):
+        processedData = ProcessedData()
+        top_buyers = processedData.get_top_buyers()
+        top_products = processedData.get_top_products()
+        bot_products = processedData.get_bot_products()
+        return bot_products, top_buyers, top_products
+
+    def save_api_information(self):
+        salesProcesser = SalesHistoryProcesser()
+        salesProcesser.catch_data()
+        salesProcesser.process_data()
+        salesProcesser.save_data()
 
 
-def get_basic_parameters(parameters, source):
-    """
-    Captures the parameters associated with the Django user model
-    :param parameters: The dictionary where the parameters will be stored
-    :param request: HttpRequest
-    """
-    # basic fields
-    parameters['username'] = source['username']
-    parameters['email'] = source['email']
+def process_client_JSON(request):
+    if request.method == 'GET':
+        return render(request, 'process_client.html', {
+            'categories': Category.objects.all()
+        })
+    elif request.method == 'POST':
+        process_clients_controller = Process_clients_controller(request)
+        process_clients_controller.captureFields()
+        return process_clients_controller.filter_clients_and_return('json')
 
 
-def get_user_parameters(parameters, source):
-    """
-    Captures the parameters associated with the WebUser model
-    :param parameters: The dictionary where the parameters will be stored
-    :param request: HttpRequest
-    """
-    # user information
-    parameters['country'] = source['country']
-    parameters['province'] = source['province']
-    parameters['city'] = source['city']
-    parameters['zip_code'] = source['zip_code']
-    parameters['street'] = source['street']
-    parameters['phone'] = source['phone']
+@login_required
+def purchases_per_user(request):
+    user = request.user
+    web_user = WebUser.objects.get(django_user=user)
+    sales = Sale.objects.filter(client=web_user)
 
-
-def get_category_parameters(parameters, source):
-    parameters['categories'] = source.getlist('category')
-
-
-def get_company_parameters(parameters, source):
-    """
-    Captures the parameters associated with the UserAsCompany model
-    :param parameters: The dictionary where the parameters will be stored
-    :param request: HttpRequest
-    """
-    # company information
-    parameters['cif'] = source['cif']
-
-
-def get_person_parameters(parameters, source):
-    """
-    Captures the parameters associated with the UserAsPerson model
-    :param parameters: The dictionary where the parameters will be stored
-    :param request: HttpRequest
-    """
-    # company information
-    parameters['dni'] = source['dni']
-
-
-def update_company_profile(parameters, user, web_user, user_as_company):
-    """
-    Update user profile of company type
-    :param parameters: Dictionary that contains all the parameters 
-    :param user: Django user model
-    :param web_user: WebUser model
-    :param user_as_company: UserAsCompany model
-    """
-    update_basic_parameters(parameters, user)
-    update_user_parameters(parameters, web_user)
-    update_category_parameters(parameters, web_user)
-    update_company_parameters(parameters, user_as_company)
-    user.save(update_fields=["username", "email"])
-    web_user.save(update_fields=["country", "province", "city", "zip_code",
-                                 "street", "phone"])
-    user_as_company.save(update_fields=["CIF"])
-
-
-def update_person_profile(parameters, user, web_user, user_as_person):
-    """
-    Update user profile of person type
-    :param parameters: Dictionary that contains all the parameters
-    :param user: Django user model
-    :param web_user: WebUser model
-    :param user_as_person: user_as_company: UserAsPerson model
-    """
-    update_basic_parameters(parameters, user)
-    update_user_parameters(parameters, web_user)
-    update_category_parameters(parameters, web_user)
-    update_person_parameters(parameters, user_as_person)
-    user.save(update_fields=["username", "email"])
-    web_user.save(update_fields=["country", "province", "city", "zip_code",
-                                 "street", "phone"])
-    user_as_person.save(update_fields=["DNI"])
-
-
-def update_basic_parameters(parameters, user):
-    """
-    Updates the parameters associated with the Django user model
-    :param parameters: Dictionary that contains all the parameters
-    :param user: Django user model
-    """
-    user.username = parameters['username']
-    user.email = parameters['email']
-
-
-def update_user_parameters(parameters, web_user):
-    """
-    Updates the parameters associated with the WebUser model
-    :param parameters: Dictionary that contains all the parameters
-    :param web_user: WebUser model
-    """
-    web_user.country = parameters['country']
-    web_user.province = parameters['province']
-    web_user.city = parameters['city']
-    web_user.zip_code = parameters['zip_code']
-    web_user.street = parameters['street']
-    web_user.phone = parameters['phone']
-
-
-def update_category_parameters(parameters, web_user):
-    for cat in parameters['categories']:
-        print "-----------------------", cat
-        category = Category.objects.get(name=cat)
-        CategoryPerUser.objects.create(user=web_user, category=category)
-
-
-def update_company_parameters(parameters, user_as_company):
-    """
-    Updates the parameters associated with the UserAsCompany model
-    :param parameters: Dictionary that contains all the parameters
-    :param user_as_company: UserAsCompany model
-    """
-    user_as_company.CIF = parameters['cif']
-
-
-def update_person_parameters(parameters, user_as_person):
-    """
-    Updates the parameters associated with the UserAsPerson model
-    :param parameters: Dictionary that contains all the parameters
-    :param user_as_person: UserAsPerson model
-    """
-    user_as_person.DNI = parameters['dni']
-
-
-def base(request):
-    return render(request, 'base.html',
-                  {'PageTitle': 'Base',
-                   'TitleHeader': 'Base'})
-
-
-def register(request):
-    return render_to_response('register.html', {
-        "title": "Register as a Person or as a Company",
+    return render(request, 'sales_list.html', {
+        "sales": sales,
     })
 
 
-def register_person(request):
+@login_required
+def register_incidence(request, pk):
     if request.method == 'GET':
-        return render(request, 'register.html', {
-            "title": "Register as Person",
-            "basic_form": UserForm(),
-            "form": WebUserForm(),
-            "specific_form": UserAsPersonForm(),
-            "categories": Category.objects.all(),
-            "destination_url": "/register-person/"
+        product = Product.objects.get(id=pk)
+        return render(request, 'register_incidence.html', {
+            "product": product,
+            "incidence_form": IncidenceForm(),
+            "submitted": False,
         })
     elif request.method == 'POST':
-        # Register person
-        user_form = UserForm(request.POST)
-        web_user_form = WebUserForm(request.POST)
-        user_as_person_form = UserAsPersonForm(request.POST)
-        interested_categories = request.POST.getlist('category')
-        if user_form.is_valid() \
-                and web_user_form.is_valid() \
-                and user_as_person_form.is_valid():
-            new_user = create_new_django_user(user_form)
-            new_web_user = create_new_web_user(web_user_form, new_user)
-            register_interested_categories(new_web_user, interested_categories)
-            create_new_user_as_person(user_as_person_form, new_web_user)
-            # return redirect(profile)
-            return HttpResponse("Registered")
-        else:
-            return render(request, 'register.html', {
-                "title": "Register as Person",
-                "basic_form": user_form,
-                "form": web_user_form,
-                "specific_form": user_as_person_form,
-                "destination_url": "/register-person/"
+        incidence_form = IncidenceForm(request.POST)
+        if incidence_form.is_valid():
+            incidence = incidence_form.save(commit=False)
+            incidence_category = request.POST.get("category")
+            product = Product.objects.get(id=pk)
+            web_user = WebUser.objects.get(django_user=request.user)
+            incidence.user = web_user
+            incidence.product = product
+            incidence.category = incidence_category
+            incidence.save()
+            return render(request, 'register_incidence.html', {
+                "submitted": True
             })
 
 
-def register_company(request):
-    if request.method == 'GET':
-        return render(request, 'register.html', {
-            "title": "Register as Company",
-            "basic_form": UserForm(),
-            "form": WebUserForm(),
-            "specific_form": UserAsCompanyForm(),
-            "categories": Category.objects.all(),
-            "destination_url": "/register-company/"
-        })
-    elif request.method == 'POST':
-        # Register company
-        user_form = UserForm(request.POST)
-        web_user_form = WebUserForm(request.POST)
-        user_as_company_form = UserAsCompanyForm(request.POST)
-        interested_categories = request.POST.getlist('category')
-        if user_form.is_valid() \
-                and web_user_form.is_valid() \
-                and user_as_company_form.is_valid():
-            new_user = create_new_django_user(user_form)
-            new_web_user = create_new_web_user(web_user_form, new_user)
-            register_interested_categories(new_web_user, interested_categories)
-            create_new_company_user(user_as_company_form, new_web_user)
-            return HttpResponse("Registered")
-        return render(request, 'register.html', {
-            "title": "Register as Person",
-            "basic_form": user_form,
-            "form": web_user_form,
-            "specific_form": user_as_company_form,
-            "destination_url": "/register-company/"
-        })
-
-
-def create_new_django_user(user_form):
-    form_data = user_form.cleaned_data
-    new_user = user_form.save(commit=False)
-    new_user.set_password(form_data['password'])
-    new_user.save()
-    return new_user
-
-
-def create_new_web_user(web_user_form, django_user):
-    new_web_user = web_user_form.save(commit=False)
-    new_web_user.django_user = django_user
-    new_web_user.save()
-    return new_web_user
-
-
-def register_interested_categories(new_web_user, interested_categories):
-    for cat in interested_categories:
-        category = Category.objects.get(name=cat)
-        CategoryPerUser.objects.create(user=new_web_user, category=category)
-
-
-def create_new_user_as_person(user_as_person_form, web_user):
-    new_person_user = user_as_person_form.save(commit=False)
-    new_person_user.web_user = web_user
-    new_person_user.save()
-
-
-def create_new_company_user(user_as_company_form, web_user):
-    new_company_user = user_as_company_form.save(commit=False)
-    new_company_user.web_user = web_user
-    new_company_user.save()
+@login_required
+def profile(request):
+    web_user = WebUser.objects.filter(django_user=request.user)
+    if UserAsPerson.objects.filter(web_user=web_user).exists():
+        return redirect(to='../../person_profile/')
+    elif UserAsCompany.objects.filter(web_user=web_user).exists():
+        return redirect(to='../../company_profile/')

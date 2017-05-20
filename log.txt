@@ -1,2 +1,0 @@
-heading :username used_name
-heading :password patatapatata1
