@@ -53,6 +53,15 @@ p {
     margin-bottom: 20px
 }
 
+.bg-primary {
+    background-color: #F05F40
+}
+
+.bg-dark {
+    background-color: #222;
+    color: #fff
+}
+
 .text-faded {
     color: rgba(255, 255, 255, .7)
 }
@@ -128,7 +137,7 @@ aside {
     }
 
     .navbar-default .navbar-header .navbar-brand:focus, .navbar-default .navbar-header .navbar-brand:hover {
-        color: #222
+        color: #fff
     }
 
     .navbar-default .nav > li > a, .navbar-default .nav > li > a:focus {
@@ -136,7 +145,7 @@ aside {
     }
 
     .navbar-default .nav > li > a:focus:hover, .navbar-default .nav > li > a:hover {
-        color: #222
+        color: #fff
     }
 
     .navbar-default.affix {
@@ -162,20 +171,10 @@ aside {
     }
 }
 
-body {
+header {
     min-height: auto;
-    background-size: cover;
-    background-position: center;
-    background: url(../img/header.jpg) no-repeat center center fixed;
-    color: #222
-}
-
-p[class="legal"] {
-    text-align: center;
-    padding-left: 2vw;
-    padding-right: 2vw;
-    padding-top: 2vh;
-    padding-bottom: 2vh;
+    background-color: #222;
+    color: #fff
 }
 
 header .header-content {
@@ -203,20 +202,15 @@ header .header-content .header-content-inner p {
 
 @media (min-width: 768px) {
     header {
-        min-height: 100%
+        min-height: 30vh
     }
 
-    header .header-content, {
+    header .header-content {
         position: absolute;
-        top: 15%;
+        top: 50%;
         -webkit-transform: translateY(-50%);
         -ms-transform: translateY(-50%);
         transform: translateY(-50%);
-        padding: 0 50px
-    }
-    #content {
-        position: relative;
-        top: -50vh;
         padding: 0 50px
     }
 
@@ -265,7 +259,7 @@ header .header-content .header-content-inner p {
 }
 
 .portfolio-box .portfolio-box-caption {
-    color: #222;
+    color: #fff;
     opacity: 0;
     display: block;
     background: rgba(240, 95, 64, .9);
@@ -349,17 +343,17 @@ header .header-content .header-content-inner p {
 }
 
 .btn-default.disabled, .btn-default.disabled.active, .btn-default.disabled.focus, .btn-default.disabled:active, .btn-default.disabled:focus, .btn-default.disabled:hover, .btn-default[disabled], .btn-default[disabled].active, .btn-default[disabled].focus, .btn-default[disabled]:active, .btn-default[disabled]:focus, .btn-default[disabled]:hover, fieldset[disabled] .btn-default, fieldset[disabled] .btn-default.active, fieldset[disabled] .btn-default.focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default:hover {
-    background-color: #22;
+    background-color: #fff;
     border-color: #fff
 }
 
 .btn-default .badge {
-    color: #222;
+    color: #fff;
     background-color: #222
 }
 
 .btn-primary {
-    color: #222;
+    color: #fff;
     background-color: #F05F40;
     border-color: #F05F40;
     -webkit-transition: all .35s;
@@ -368,7 +362,7 @@ header .header-content .header-content-inner p {
 }
 
 .btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open > .dropdown-toggle.btn-primary {
-    color: #222;
+    color: white;
     background-color: #ee4b28;
     border-color: #ed431f
 }
@@ -379,7 +373,7 @@ header .header-content .header-content-inner p {
 }
 
 .btn-primary .badge {
-    color: #F05F40;
+    color: white;
     background-color: #fff
 }
 
@@ -395,23 +389,68 @@ header .header-content .header-content-inner p {
 }
 
 ::-moz-selection {
-    color: #222;
+    color: white;
     text-shadow: none;
     background: #222
 }
 
 ::selection {
-    color: #222;
+    color: white;
     text-shadow: none;
     background: #222
 }
 
 img::selection {
-    color: #222;
+    color: white;
     background: 0 0
 }
 
 img::-moz-selection {
-    color: #222;
+    color: white;
     background: 0 0
+}
+
+body {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    background-position: center;
+    background-image: url(../img/header.jpg);
+}
+
+footer {
+    height: 5vh;
+    padding: 1%;
+    text-align: center;
+    border-top-style: solid;
+    border-top-width: 0.5vh;
+    border-top-color: #fff;
+    display: block;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+}
+
+header {
+    top: 9%;
+    color: white !important;
+}
+
+section {
+    color: white !important;
+}
+
+footer {
+    position: relative !important;
+    bottom: 0px !important;
+    color: whitesmoke !important;
+}
+
+a {
+    color: orange !important;
+}
+
+input {
+    color: black !important;
 }
