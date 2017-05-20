@@ -36,8 +36,9 @@ from CRMapp.views import *
 
 urlpatterns = [
     url(r'^$', base),
-    url(r'^worker/', include('CRMapp.urls', namespace='crm')),
     url(r'^admin/', admin.site.urls),
+    url(r'^worker/', include('CRMapp.urls', namespace='crm')),
+    url(r'^recommendation/', SendRecommendation.as_view(), name='send_recommendation'),
     url(r'^person_profile/$', person_profile, name='person_profile'),
     url(r'^company_profile/$', company_profile, name='company_profile'),
     url(r'^modify_person/$', modify_person, name='modify_person'),
