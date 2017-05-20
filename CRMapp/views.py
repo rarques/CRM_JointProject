@@ -1,7 +1,6 @@
-from datetime import timedelta, datetime, date
+from datetime import timedelta, datetime
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.utils.timezone import now
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView

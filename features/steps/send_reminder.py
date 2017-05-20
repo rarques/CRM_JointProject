@@ -1,3 +1,4 @@
+from __future__ import print_function
 from behave import *
 
 use_step_matcher("re")
@@ -22,17 +23,17 @@ def step_impl(context):
 @when("There is an afk client")
 def step_impl(context):
     from django.contrib.auth.models import User
+    from datetime import timedelta, datetime
     user_info = []
     for row in context.table:
         for heading in row.headings:
             user_info = row[heading]
-    User.objects.create(username=user_info[0], password=user_info[1], email=user_info[2], last_login=user_info[3])
+    User.objects.create(username=user_info[0], password=user_info[1], last_login=(datetime.now() - timedelta(days=15)), email=user_info[3])
 
 
 @step("I click the send button")
 def step_impl(context):
-    form = context.browser.find_by_id('Send')
-    form.find_by_value('Send reminder to afk clients').first.click()
+    context.browser.find_by_tag('form').find_by_tag('input').click()
 
 
 @then("I see the reminder sent page")
