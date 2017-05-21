@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from views import SalesHistory, ShowProcessedSales
+from views import SalesHistory, ShowProcessedSales, SendReminder
 
 urlpatterns = [
 
@@ -11,6 +11,10 @@ urlpatterns = [
 
     url(r'salesinfo/$',
         login_required(ShowProcessedSales.as_view()),
-        name='salesinfo')
+        name='salesinfo'),
+
+    url(r'reminder/$',
+        login_required(SendReminder.as_view()),
+        name='client_reminder')
 
 ]
