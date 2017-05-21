@@ -35,7 +35,7 @@ from django.contrib.auth.views import login, logout
 from CRMapp.views import *
 
 urlpatterns = [
-    url(r'^$', base),
+    url(r'^$', base, name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^worker/', include('CRMapp.urls', namespace='crm')),
     url(r'^recommendation/', login_required(SendRecommendation.as_view()), name='send_recommendation'),
