@@ -368,6 +368,7 @@ class SendRecommendation(ListView):
         category = CategoryPerUser.objects.get(user=user).category
         pd = ProcessedData()
         top_products = pd.get_top_products()
+        context['recommended'] = Product.objects.all().first
         for product in top_products:
             if Product.objects.filter(name=product, category=category).exists():
                 context['recommended'] = Product.objects.get(name=product, category=category)
