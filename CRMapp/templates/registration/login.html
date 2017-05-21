@@ -1,8 +1,10 @@
-
+{% extends 'base.html' %}
+{% block content %}
     {% if form.errors %}
         <p>Sorry, that's not a valid username or password. Please try again!</p>
     {% endif %}
     <h2>Login</h2>
+
 
 <!--URL login: account/login ->login OK -> se redirige por defecto  a /recommendation/ -->
 
@@ -21,8 +23,9 @@
             </tr>
         </table>
 
-        <input type="submit" value="login" />
+        <input type="submit" value="login"/>
 
         {% csrf_token %}
     </form>
     <li><a href="{% url 'register' %}"> Register</a></li>
+{% endblock %}
