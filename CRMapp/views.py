@@ -321,10 +321,9 @@ def post_opinion(request, pk):
             sale = Sale.objects.get(id=pk)
             product = Product.objects.get(sale=sale)
             web_user = WebUser.objects.get(django_user=request.user)
-            if Opinion.objects.filter(product=product, user=web_user).exists():
-                Opinion.objects.get(product=product, user=web_user).delete()
+            if Opinion.objects.filter(sale=sale, user=web_user).exists():
+                Opinion.objects.get(sale=sale, user=web_user).delete()
             opinion.user = web_user
-            opinion.product = product
             opinion.save()
             sale.opinion = opinion
             sale.save()
