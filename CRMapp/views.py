@@ -1,5 +1,4 @@
 from datetime import timedelta, datetime
-from itertools import product
 
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
@@ -7,12 +6,12 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
 
+from CRMapp.controller.CompanyController import *
+from CRMapp.controller.PersonController import *
+from CRMapp.controller.ProcessClients import ProcessClients
 from CRMapp.controller.ProcessedData import ProcessedData
 from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
 from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
-from CRMapp.controller.PersonController import *
-from CRMapp.controller.CompanyController import *
-from CRMapp.controller.ProcessClients import ProcessClients
 from forms import *
 
 
@@ -384,3 +383,9 @@ class SendRecommendation(ListView):
 class SendIncidences(ListView):
     model = Opinion
     template_name = 'incidence_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SendIncidences, self).get_context_data(**kwargs)
+        incidences = Incidence.objects.all().order_by('category')
+        context['incidences'] = incidences
+        return context
