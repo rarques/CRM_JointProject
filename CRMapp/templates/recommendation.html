@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+<head>
+    <p>
+        Recommendation
+    </p>
+</head>
+
+{% block content %}
+    <p>
+        We have the best product for you! ;)
+    </p>
+    <p>
+        {{ recommended.name }}
+    </p>
+        It does not matter if you are poor! We have low prices.
+    <p>
+        {{ recommended.price }} Euros!
+    </p>
+    <li><a href="{% url 'home' %}"> Go home</a></li>
+{% endblock %}

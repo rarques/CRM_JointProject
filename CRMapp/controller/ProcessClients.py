@@ -4,7 +4,7 @@ from CRMapp.models import WebUser, CategoryPerUser
 from django.core import serializers
 
 
-class Process_clients_controller(object):
+class ProcessClients(object):
     def __init__(self, request):
         self.request = request
         self.country = None
