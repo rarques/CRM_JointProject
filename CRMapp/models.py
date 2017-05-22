@@ -71,7 +71,6 @@ class Product(models.Model):
 
 class Opinion(models.Model):
     user = models.ForeignKey(WebUser, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     comment = models.TextField(max_length=200)
     rating = models.IntegerField()
@@ -83,7 +82,6 @@ class Opinion(models.Model):
 
 class Incidence(models.Model):
     user = models.ForeignKey(WebUser, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     explanation = models.TextField(max_length=300)
     category = models.CharField(max_length=30)
