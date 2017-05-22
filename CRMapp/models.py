@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils.timezone import now
 
 
@@ -80,19 +80,19 @@ class Opinion(models.Model):
         return self.name
 
 
+class Sale(models.Model):
+    client = models.ForeignKey(WebUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    opinion = models.ForeignKey(Opinion, blank=True, null=True, on_delete=models.SET_NULL)
+
+
 class Incidence(models.Model):
     user = models.ForeignKey(WebUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     explanation = models.TextField(max_length=300)
     category = models.CharField(max_length=30)
     date = models.DateField(default=now)
+    sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.name
-
-
-class Sale(models.Model):
-    client = models.ForeignKey(WebUser, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    opinion = models.ForeignKey(Opinion, blank=True, null=True, on_delete=models.SET_NULL)
-    incidence = models.ForeignKey(Incidence, blank=True, null=True, on_delete=models.SET_NULL)
