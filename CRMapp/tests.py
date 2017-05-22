@@ -68,21 +68,21 @@ class ModelsTesting(TestCase):
     def test_person_opinion(self):
         person = UserAsPerson.objects.get(DNI="312W")
         product = Product.objects.get(name="croissant")
-        Opinion.objects.create(user=person.web_user, product=product, name="maravilla", comment="roto2", rating=5)
+        Opinion.objects.create(user=person.web_user, name="maravilla", comment="roto2", rating=5)
         opinion = Opinion.objects.get(name="maravilla")
         self.assertEqual(opinion.rating, 5)
 
     def test_company_opinion(self):
         company = UserAsCompany.objects.get(CIF="12w2")
         product = Product.objects.get(name="croissant")
-        Opinion.objects.create(user=company.web_user, product=product, name="maravilla", comment="roto2", rating=4)
+        Opinion.objects.create(user=company.web_user, name="maravilla", comment="roto2", rating=4)
         opinion = Opinion.objects.get(name="maravilla")
         self.assertEqual(opinion.rating, 4)
 
     def test_person_incidence(self):
         person = UserAsPerson.objects.get(DNI="312W")
         product = Product.objects.get(name="croissant")
-        Incidence.objects.create(user=person.web_user, product=product, name="que collons", explanation="lulz",
+        Incidence.objects.create(user=person.web_user, name="que collons", explanation="lulz",
                                  category="Trencat")
         incidence = Incidence.objects.get(category="Trencat")
         self.assertEqual(incidence.explanation, "lulz")
@@ -90,7 +90,7 @@ class ModelsTesting(TestCase):
     def test_company_incidence(self):
         company = UserAsCompany.objects.get(CIF="12w2")
         product = Product.objects.get(name="croissant")
-        Incidence.objects.create(user=company.web_user, product=product, name="que collons", explanation="lulz",
+        Incidence.objects.create(user=company.web_user, name="que collons", explanation="lulz",
                                  category="Defectuos")
         incidence = Incidence.objects.get(category="Defectuos")
         self.assertEqual(incidence.explanation, "lulz")
