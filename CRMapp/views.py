@@ -297,9 +297,8 @@ def register_incidence(request, pk):
             web_user = WebUser.objects.get(django_user=request.user)
             incidence.user = web_user
             incidence.category = incidence_category
+            incidence.sale = sale
             incidence.save()
-            sale.incidence = incidence
-            sale.save()
             return render(request, 'register_incidence.html', {
                 "submitted": True
             })
@@ -381,11 +380,11 @@ class SendRecommendation(ListView):
 
 
 class SendIncidences(ListView):
-    model = Opinion
+    model = Sale
     template_name = 'incidence_list.html'
 
     def get_context_data(self, **kwargs):
         context = super(SendIncidences, self).get_context_data(**kwargs)
-        incidences = Incidence.objects.all().order_by('category')
+        incidences = Incidence.objects.all()
         context['incidences'] = incidences
         return context
