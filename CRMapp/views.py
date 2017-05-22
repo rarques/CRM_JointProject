@@ -1,4 +1,6 @@
 from datetime import timedelta, datetime
+from itertools import product
+
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http.response import HttpResponse
@@ -292,12 +294,13 @@ def register_incidence(request, pk):
         if incidence_form.is_valid():
             incidence = incidence_form.save(commit=False)
             incidence_category = request.POST.get("category")
-            product = Product.objects.get(id=pk)
+            sale = Sale.objects.get(id=pk)
             web_user = WebUser.objects.get(django_user=request.user)
             incidence.user = web_user
-            incidence.product = product
             incidence.category = incidence_category
             incidence.save()
+            sale.incidence = incidence
+            sale.save()
             return render(request, 'register_incidence.html', {
                 "submitted": True
             })
@@ -376,3 +379,8 @@ class SendRecommendation(ListView):
                     context['recommended'] = Product.objects.get(name=product, category=category)
 
         return context
+
+
+class SendIncidences(ListView):
+    model = Opinion
+    template_name = 'incidence_list.html'
