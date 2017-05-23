@@ -8,16 +8,10 @@ class Send_new_information:
     def __init__(self, request):
         self.request = request
         self.clients = WebUser.objects.all()
-        self.products = Sale.objects.all()
-        self.sales = Product.objects.all()
+        self.products = Product.objects.all()
+        self.sales = Sale.objects.all()
 
-    def return_http_response(self):
-        return render(request=self.request, template_name='list_information.html', context=
-        {
-            'clients': self.clients,
-            'sales': self.sales,
-            'products': self.products
-        })
+
     def return_json(self):
         if self.request.POST.get('clients'):
             return self.return_clients_json()

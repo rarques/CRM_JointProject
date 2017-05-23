@@ -382,7 +382,11 @@ class SendRecommendation(ListView):
 
 def send_new_information(request):
     send_new_information = Send_new_information(request)
-    return send_new_information.return_http_response()
+    return render(request=request, template_name='list_information.html', context={
+            'clients': send_new_information.clients,
+            'sales': send_new_information.sales,
+            'products': send_new_information.products
+        })
 
 def send_new_information_json(request):
     send_new_information = Send_new_information(request)
