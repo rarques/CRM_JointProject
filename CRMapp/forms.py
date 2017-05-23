@@ -55,7 +55,7 @@ class UserAsCompanyForm(ModelForm):
 class IncidenceForm(ModelForm):
     class Meta:
         model = Incidence
-        exclude = ['user', 'product', 'category']
+        exclude = ['user', 'product', 'category', 'sale']
 
     def clean(self):
         return super(IncidenceForm, self).clean()

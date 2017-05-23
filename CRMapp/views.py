@@ -8,10 +8,10 @@ from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
 from django.views.generic.base import View
 
+from CRMapp.controller import Send_new_information
 from CRMapp.controller.CompanyController import *
 from CRMapp.controller.PersonController import *
 from CRMapp.controller.ProcessClients import ProcessClients
-from CRMapp.controller import Send_new_information
 from CRMapp.controller.ProcessedData import ProcessedData
 from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
 from CRMapp.controller.Send_new_information import Send_new_information
@@ -417,6 +417,7 @@ class OpinionsJSON(View):
         data = serializers.serialize('json', opinions)
         return HttpResponse(data, content_type='application/json')
 
+
 def send_new_information(request):
     send_new_information = Send_new_information(request)
     return render(request=request, template_name='list_information.html', context={
@@ -429,4 +430,3 @@ def send_new_information(request):
 def send_new_information_json(request):
     send_new_information = Send_new_information(request)
     return send_new_information.return_json()
-
