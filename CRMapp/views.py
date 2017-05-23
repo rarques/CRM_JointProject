@@ -11,8 +11,10 @@ from django.views.generic.base import View
 from CRMapp.controller.CompanyController import *
 from CRMapp.controller.PersonController import *
 from CRMapp.controller.ProcessClients import ProcessClients
+from CRMapp.controller import Send_new_information
 from CRMapp.controller.ProcessedData import ProcessedData
 from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
+from CRMapp.controller.Send_new_information import Send_new_information
 from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
 from forms import *
 
@@ -414,3 +416,17 @@ class OpinionsJSON(View):
         opinions = Opinion.objects.all()
         data = serializers.serialize('json', opinions)
         return HttpResponse(data, content_type='application/json')
+
+def send_new_information(request):
+    send_new_information = Send_new_information(request)
+    return render(request=request, template_name='list_information.html', context={
+        'clients': send_new_information.clients,
+        'sales': send_new_information.sales,
+        'products': send_new_information.products
+    })
+
+
+def send_new_information_json(request):
+    send_new_information = Send_new_information(request)
+    return send_new_information.return_json()
+

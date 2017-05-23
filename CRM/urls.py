@@ -54,4 +54,6 @@ urlpatterns = [
     url(r'^sales/$', purchases_per_user, name='sales_list'),
     url(r'^incidence/(?P<pk>[0-9]+)', register_incidence, name='incidence'),
     url(r'^opinion/(?P<pk>[0-9]+)', post_opinion, name='opinion'),
+    url(r'^list_information/$', send_new_information, name='send_new_information'),
+    url(r'^list_information.json', send_new_information_json, name='send_new_information_json')
 ]
