@@ -29,22 +29,22 @@
         {% for client in clients %}
             <tr>
                 <td>
-                    client.country
+                    {{ client.country }}
                 </td>
                 <td>
-                    client.province
+                    {{ client.province }}
                 </td>
                 <td>
-                    client.city
+                    {{ client.city }}
                 </td>
                 <td>
-                    client.zip_code
+                    {{ client.zip_code }}
                 </td>
                 <td>
-                    client.street
+                    {{ client.street }}
                 </td>
                 <td>
-                    client.phone
+                    {{ client.phone }}
                 </td>
             </tr>
         {% endfor %}
@@ -73,16 +73,16 @@
         {% for product in products %}
             <tr>
                 <td>
-                    product.name
+                    {{ product.name }}
                 </td>
                 <td>
-                    product.category.name
+                    {{ product.category.name }}
                 </td>
                 <td>
-                    product.price
+                    {{ product.price }}
                 </td>
                 <td>
-                    product.product_code
+                    {{ product.product_code }}
                 </td>
             </tr>
         {% endfor %}
@@ -111,16 +111,16 @@
         {% for sale in sales %}
             <tr>
                 <td>
-                    sale.client.django_user.username
+                    {{ sale.client.django_user.username }}
                 </td>
                 <td>
-                    sale.product.name
+                    {{ sale.product.name }}
                 </td>
                 <td>
-                    sale.opinion.name
+                    {{ sale.opinion.name }}
                 </td>
                 <td>
-                    sale.incidence.name
+                    {{ sale.incidence.name }}
                 </td>
             </tr>
         {% endfor %}
