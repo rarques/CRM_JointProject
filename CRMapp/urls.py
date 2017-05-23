@@ -1,7 +1,8 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from views import SalesHistory, ShowProcessedSales, SendReminder, SendIncidences, IncidencesJSON
+from views import SalesHistory, ShowProcessedSales, SendReminder, SendIncidences, IncidencesJSON, SendOpinions, \
+    OpinionsJSON
 
 urlpatterns = [
 
@@ -21,6 +22,12 @@ urlpatterns = [
         name='incidences'),
     url(r'^incidences.json/$',
         IncidencesJSON.as_view(),
-        name='incidence_json')
+        name='incidence_json'),
+    url(r'^opinions/$',
+        SendOpinions.as_view(),
+        name='opinions'),
+    url(r'^opinions.json/$',
+        OpinionsJSON.as_view(),
+        name='opinions_json')
 
 ]
