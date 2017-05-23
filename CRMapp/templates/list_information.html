@@ -1,31 +1,34 @@
 {% extends 'base.html' %}
 {% block content %}
     <table class="table table-bordered" border="1">
+        <thead class="thead-default">
         <tr>
-            <td colspan="6">
+            <th colspan="6">
                 Clients
-            </td>
+            </th>
         </tr>
         <tr>
-            <td>
+            <th>
                 country
-            </td>
-            <td>
+            </th>
+            <th>
                 province
-            </td>
-            <td>
+            </th>
+            <th>
                 city
-            </td>
-            <td>
+            </th>
+            <th>
                 zip code
-            </td>
-            <td>
+            </th>
+            <th>
                 street
-            </td>
-            <td>
+            </th>
+            <th>
                 phone
-            </td>
+            </th>
         </tr>
+        </thead>
+        <tbody>
         {% for client in clients %}
             <tr>
                 <td>
@@ -48,28 +51,32 @@
                 </td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
     <hr/>
     <table class="table table-bordered" border="1">
+        <thead>
         <tr>
-            <td colspan="6">
+            <th colspan="6">
                 Products
-            </td>
+            </th>
         </tr>
         <tr>
-            <td>
+            <th>
                 name
-            </td>
-            <td>
+            </th>
+            <th>
                 category
-            </td>
-            <td>
+            </th>
+            <th>
                 price
-            </td>
-            <td>
+            </th>
+            <th>
                 product code
-            </td>
+            </th>
         </tr>
+        </thead>
+        <tbody>
         {% for product in products %}
             <tr>
                 <td>
@@ -86,22 +93,26 @@
                 </td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
     <hr/>
     <table class="table table-bordered" border="1">
+        <thead>
         <tr>
-            <td colspan="6">
+            <th colspan="6">
                 Sales
-            </td>
+            </th>
         </tr>
         <tr>
-            <td>
+            <th>
                 client
-            </td>
-            <td>
+            </th>
+            <th>
                 product
-            </td>
+            </th>
         </tr>
+        </thead>
+        <tbody>
         {% for sale in sales %}
             <tr>
                 <td>
@@ -112,12 +123,13 @@
                 </td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
     <hr/>
     <form method="post" action="../list_information.json">
-    {% csrf_token %}
-    <input class="btn btn-default" type="submit" name="clients" id="clients" value="Export Clients to JSON"/>
-    <input class="btn btn-default" type="submit" name="products" id="products" value="Export Products to JSON"/>
-    <input class="btn btn-default" type="submit" name="sales" id="sales" value="Export Sales to JSON"/>
+        {% csrf_token %}
+        <input class="btn btn-default" type="submit" name="clients" id="clients" value="Export Clients to JSON"/>
+        <input class="btn btn-default" type="submit" name="products" id="products" value="Export Products to JSON"/>
+        <input class="btn btn-default" type="submit" name="sales" id="sales" value="Export Sales to JSON"/>
     </form>
 {% endblock %}

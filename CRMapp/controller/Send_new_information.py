@@ -1,5 +1,4 @@
 from django.http.response import HttpResponse
-from django.shortcuts import render
 from django.core import serializers
 from CRMapp.models import WebUser, Sale, Product
 
@@ -10,7 +9,6 @@ class Send_new_information:
         self.clients = WebUser.objects.all()
         self.products = Product.objects.all()
         self.sales = Sale.objects.all()
-
 
     def return_json(self):
         if self.request.POST.get('clients'):
