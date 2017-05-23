@@ -350,7 +350,7 @@ class SendReminder(ListView):
         notify_clients = list(User.objects.filter(last_login__lt=remainder_date))
         for client in notify_clients:
             send_mail(
-                'Technogad Sistems',
+                'Technogad Systems',
                 'We have new products, come and see them at technogad.herokuapp.com',
                 'technogado@gmail.com',
                 [client.email]
@@ -379,7 +379,7 @@ class SendRecommendation(ListView):
 
 
 class SendIncidences(ListView):
-    model = Sale
+    model = Incidence
     template_name = 'incidence_list.html'
 
     def get_context_data(self, **kwargs):
