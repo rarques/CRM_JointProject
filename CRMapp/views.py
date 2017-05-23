@@ -1,10 +1,12 @@
 from datetime import timedelta, datetime
 
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.core.mail import send_mail
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
+from django.views.generic.base import View
 
 from CRMapp.controller.CompanyController import *
 from CRMapp.controller.PersonController import *
@@ -387,3 +389,10 @@ class SendIncidences(ListView):
         incidences = Incidence.objects.all()
         context['incidences'] = incidences
         return context
+
+
+class IncidencesJSON(View):
+    def get(self, request):
+        incidences = Incidence.objects.all()
+        data = serializers.serialize('json', incidences)
+        return HttpResponse(data, content_type='application/json')
