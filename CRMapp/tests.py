@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from CRMapp.controller.ProcessedData import ProcessedData
 
-from CRMapp.controller.Process_clients_controller import Process_clients_controller
+from CRMapp.controller.ProcessClients import ProcessClients
 from models import *
 from CRMapp.models import WebUser, UserAsPerson
 from django.contrib.auth.models import User
@@ -157,7 +157,7 @@ class Process_clients_test_case(TestCase):
 
     def test_process_client(self):
         http_request_mock = Process_clients_test_case.HttpRequestMock()
-        process_clients_controller = Process_clients_controller(
+        process_clients_controller = ProcessClients(
             request=http_request_mock)
 
         process_clients_controller.captureFields()

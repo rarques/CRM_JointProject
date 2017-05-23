@@ -26,6 +26,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'technogado@gmail.com'
+EMAIL_HOST_PASSWORD = 'admin123456789'
+EMAIL_PORT = 587
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -114,3 +121,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_REDIRECT_URL = '/recommendation/'

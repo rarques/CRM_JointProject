@@ -1,15 +1,18 @@
+from datetime import timedelta, datetime
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
+from django.core.mail import send_mail
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
 
+from CRMapp.controller import Send_new_information
 from CRMapp.controller.ProcessedData import ProcessedData
 from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
+from CRMapp.controller.Send_new_information import Send_new_information
 from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
 from CRMapp.controller.PersonController import *
 from CRMapp.controller.CompanyController import *
-from CRMapp.controller.Process_clients_controller import Process_clients_controller
+from CRMapp.controller.ProcessClients import ProcessClients
 from forms import *
 
 
@@ -220,13 +223,13 @@ def modify_company(request):
 
 class SalesHistory(ListView):
     model = Employee
-    template_name = 'SalesHistory.html'
+    template_name = 'sales_history.html'
     queryset = ""
 
 
 class ShowProcessedSales(ListView):
     model = Employee
-    template_name = 'ProcessedSales.html'
+    template_name = 'processed_sales.html'
     queryset = ""
 
     def post(self, *args, **kwargs):
@@ -242,17 +245,17 @@ class ShowProcessedSales(ListView):
                       )
 
     def process_sale_data(self):
-        processedData = ProcessedData()
-        top_buyers = processedData.get_top_buyers()
-        top_products = processedData.get_top_products()
-        bot_products = processedData.get_bot_products()
+        processed_data = ProcessedData()
+        top_buyers = processed_data.get_top_buyers()
+        top_products = processed_data.get_top_products()
+        bot_products = processed_data.get_bot_products()
         return bot_products, top_buyers, top_products
 
     def save_api_information(self):
-        salesProcesser = SalesHistoryProcesser()
-        salesProcesser.catch_data()
-        salesProcesser.process_data()
-        salesProcesser.save_data()
+        sales_processer = SalesHistoryProcesser()
+        sales_processer.catch_data()
+        sales_processer.process_data()
+        sales_processer.save_data()
 
 
 def process_client_JSON(request):
@@ -261,7 +264,7 @@ def process_client_JSON(request):
             'categories': Category.objects.all()
         })
     elif request.method == 'POST':
-        process_clients_controller = Process_clients_controller(request)
+        process_clients_controller = ProcessClients(request)
         process_clients_controller.captureFields()
         return process_clients_controller.filter_clients_and_return('json')
 
@@ -303,9 +306,86 @@ def register_incidence(request, pk):
 
 
 @login_required
+def post_opinion(request, pk):
+    if request.method == 'GET':
+        sale = Sale.objects.get(id=pk)
+        product = Product.objects.get(sale=sale)
+        return render(request, 'post_opinion.html', {
+            "product": product,
+            "opinion_form": OpinionForm(),
+            "submitted": False,
+        })
+    elif request.method == 'POST':
+        opinion_form = OpinionForm(request.POST)
+        if opinion_form.is_valid():
+            opinion = opinion_form.save(commit=False)
+            sale = Sale.objects.get(id=pk)
+            product = Product.objects.get(sale=sale)
+            web_user = WebUser.objects.get(django_user=request.user)
+            if Opinion.objects.filter(product=product, user=web_user).exists():
+                Opinion.objects.get(product=product, user=web_user).delete()
+            opinion.user = web_user
+            opinion.product = product
+            opinion.save()
+            sale.opinion = opinion
+            sale.save()
+            return render(request, 'post_opinion.html', {
+                "submitted": True
+            })
+
+
+@login_required
 def profile(request):
     web_user = WebUser.objects.filter(django_user=request.user)
     if UserAsPerson.objects.filter(web_user=web_user).exists():
         return redirect(to='../../person_profile/')
     elif UserAsCompany.objects.filter(web_user=web_user).exists():
         return redirect(to='../../company_profile/')
+
+
+class SendReminder(ListView):
+    model = WebUser
+    template_name = 'send_reminders.html'
+
+    def post(self, *args, **kwargs):
+        remainder_date = datetime.now() - timedelta(days=15)
+        notify_clients = list(User.objects.filter(last_login__lt=remainder_date))
+        for client in notify_clients:
+            send_mail(
+                'Technogad Sistems',
+                'We have new products, come and see them at technogad.herokuapp.com',
+                'technogado@gmail.com',
+                [client.email]
+            )
+        return HttpResponse("Users Notified")
+
+
+class SendRecommendation(ListView):
+    model = WebUser
+    template_name = 'recommendation.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SendRecommendation, self).get_context_data(**kwargs)
+        user = WebUser.objects.get(django_user=self.request.user)
+        pd = ProcessedData()
+        top_products = pd.get_top_products()
+        context['recommended'] = Product.objects.all().first
+
+        if CategoryPerUser.objects.filter(user=user).exists():
+            category = CategoryPerUser.objects.get(user=user).category
+            for product in top_products:
+                if Product.objects.filter(name=product, category=category).exists():
+                    context['recommended'] = Product.objects.get(name=product, category=category)
+
+        return context
+
+
+def send_new_information(request):
+    send_new_information = Send_new_information(request)
+    return send_new_information.return_http_response()
+
+def send_new_information_json(request):
+    send_new_information = Send_new_information(request)
+    return send_new_information.return_json()
+
+
