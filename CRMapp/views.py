@@ -396,3 +396,14 @@ class IncidencesJSON(View):
         incidences = Incidence.objects.all()
         data = serializers.serialize('json', incidences)
         return HttpResponse(data, content_type='application/json')
+
+
+class SendOpinions(ListView):
+    model = Opinion
+    template_name = 'opinion_list.html'
+
+    def get_context_object_name(self, object_list):
+        context = super(SendOpinions, self).get_context_object_name(object_list)
+        sales_with_opinion = Sale.objects.filter(opinion__isnull=False)
+        context['sales_with_opinion'] = sales_with_opinion
+        return context
