@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>INCIDENCES:</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Product affected</th>
+            <th>Affected sale's Id</th>
+            <th>Explanation</th>
+            <th>Category</th>
+        </tr>
+        </thead>
+        {% for incidence in incidences %}
+            <tr>
+                <td>
+                    {{ incidence.user.django_user.username }}
+                </td>
+                <td>
+                    {{ incidence.sale.product.name }}
+                </td>
+                <td>
+                    {{ incidence.sale.id }}
+                </td>
+                <td>
+                    {{ incidence.explanation }}
+                </td>
+                <td>
+                    {{ incidence.category }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
