@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block content %}
+    <table class="table table-bordered" border="1">
+        <thead class="thead-default">
+        <tr>
+            <th colspan="6">
+                Clients
+            </th>
+        </tr>
+        <tr>
+            <th>
+                country
+            </th>
+            <th>
+                province
+            </th>
+            <th>
+                city
+            </th>
+            <th>
+                zip code
+            </th>
+            <th>
+                street
+            </th>
+            <th>
+                phone
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for client in clients %}
+            <tr>
+                <td>
+                    {{ client.country }}
+                </td>
+                <td>
+                    {{ client.province }}
+                </td>
+                <td>
+                    {{ client.city }}
+                </td>
+                <td>
+                    {{ client.zip_code }}
+                </td>
+                <td>
+                    {{ client.street }}
+                </td>
+                <td>
+                    {{ client.phone }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr/>
+    <table class="table table-bordered" border="1">
+        <thead>
+        <tr>
+            <th colspan="6">
+                Products
+            </th>
+        </tr>
+        <tr>
+            <th>
+                name
+            </th>
+            <th>
+                category
+            </th>
+            <th>
+                price
+            </th>
+            <th>
+                product code
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>
+                    {{ product.name }}
+                </td>
+                <td>
+                    {{ product.category.name }}
+                </td>
+                <td>
+                    {{ product.price }}
+                </td>
+                <td>
+                    {{ product.product_code }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr/>
+    <table class="table table-bordered" border="1">
+        <thead>
+        <tr>
+            <th colspan="6">
+                Sales
+            </th>
+        </tr>
+        <tr>
+            <th>
+                client
+            </th>
+            <th>
+                product
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sale in sales %}
+            <tr>
+                <td>
+                    {{ sale.client.django_user.username }}
+                </td>
+                <td>
+                    {{ sale.product.name }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr/>
+    <form method="post" action="../list_information.json">
+        {% csrf_token %}
+        <input class="btn btn-default" type="submit" name="clients" id="clients" value="Export Clients to JSON"/>
+        <input class="btn btn-default" type="submit" name="products" id="products" value="Export Products to JSON"/>
+        <input class="btn btn-default" type="submit" name="sales" id="sales" value="Export Sales to JSON"/>
+    </form>
+{% endblock %}
