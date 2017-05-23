@@ -394,5 +394,12 @@ class SendIncidences(ListView):
 class IncidencesJSON(View):
     def get(self, request):
         incidences = Incidence.objects.all()
-        data = serializers.serialize('json', incidences)
+        users = WebUser.objects.filter(sale__incidence__in=incidences)
+        sales = Sale.objects.filter(incidence__user__in=users)
+        products = Product.objects.filter(sale__in=sales)
+        all_objects = list(incidences) \
+                      + list(users) \
+                      + list(sales) \
+                      + list(products)
+        data = serializers.serialize('json', all_objects)
         return HttpResponse(data, content_type='application/json')
