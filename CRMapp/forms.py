@@ -55,6 +55,9 @@ class UserAsCompanyForm(ModelForm):
 class IncidenceForm(ModelForm):
     class Meta:
         model = Incidence
+        widgets = {
+            'explanation': TextInput(attrs={'class': 'form-control'})
+        }
         exclude = ['user', 'product', 'category', 'sale']
 
     def clean(self):
