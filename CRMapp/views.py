@@ -408,9 +408,9 @@ class SendOpinions(ListView):
         context['sales_with_opinion'] = sales_with_opinion
         return context
 
+
 class OpinionsJSON(View):
     def get(self, request):
         opinions = Opinion.objects.all()
         data = serializers.serialize('json', opinions)
         return HttpResponse(data, content_type='application/json')
-
