@@ -410,9 +410,9 @@ class SendOpinions(ListView):
 
 class OpinionsJSON(View):
     def get(self, request):
-        sales_with_opinion = Sale.objects.filter(opinion__isnull=False)
         opinions = Opinion.objects.all()
-        clients = WebUser.objects.filter(sale__opinion__isnull=False)
+        sales_with_opinion = Sale.objects.filter(opinion__in=opinions)
+        clients = WebUser.objects.filter(sale__in=sales_with_opinion)
         all_objects = list(sales_with_opinion) \
                       + list(opinions) \
                       + list(clients)
