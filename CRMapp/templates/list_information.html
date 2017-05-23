@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <table border="1">
+    <table class="table table-bordered" border="1">
         <tr>
             <td colspan="6">
                 Clients
@@ -50,7 +50,7 @@
         {% endfor %}
     </table>
     <hr/>
-    <table border="1">
+    <table class="table table-bordered" border="1">
         <tr>
             <td colspan="6">
                 Products
@@ -88,7 +88,7 @@
         {% endfor %}
     </table>
     <hr/>
-    <table border="1">
+    <table class="table table-bordered" border="1">
         <tr>
             <td colspan="6">
                 Sales
@@ -101,12 +101,6 @@
             <td>
                 product
             </td>
-            <td>
-                opinion
-            </td>
-            <td>
-                incidence
-            </td>
         </tr>
         {% for sale in sales %}
             <tr>
@@ -116,20 +110,14 @@
                 <td>
                     {{ sale.product.name }}
                 </td>
-                <td>
-                    {{ sale.opinion.name }}
-                </td>
-                <td>
-                    {{ sale.incidence.name }}
-                </td>
             </tr>
         {% endfor %}
     </table>
     <hr/>
     <form method="post" action="../list_information.json">
     {% csrf_token %}
-    <input type="submit" name="clients" id="clients" value="Export Clients to JSON"/>
-    <input type="submit" name="products" id="products" value="Export Products to JSON"/>
-    <input type="submit" name="sales" id="sales" value="Export Sales to JSON"/>
+    <input class="btn btn-default" type="submit" name="clients" id="clients" value="Export Clients to JSON"/>
+    <input class="btn btn-default" type="submit" name="products" id="products" value="Export Products to JSON"/>
+    <input class="btn btn-default" type="submit" name="sales" id="sales" value="Export Sales to JSON"/>
     </form>
 {% endblock %}
