@@ -376,3 +376,15 @@ class SendRecommendation(ListView):
                     context['recommended'] = Product.objects.get(name=product, category=category)
 
         return context
+
+
+def send_new_information(request):
+    clients = WebUser.objects.all()
+    sales = Sale.objects.all()
+    products = Product.objects.all()
+    return render(request=request, template_name='list_information.html', context=
+    {
+        'clients': clients,
+        'sales': sales,
+        'products': products
+    })

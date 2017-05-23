@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+    <table border="1">
+        <tr>
+            <td colspan="6">
+                Clients
+            </td>
+        </tr>
+        <tr>
+            <td>
+                country
+            </td>
+            <td>
+                province
+            </td>
+            <td>
+                city
+            </td>
+            <td>
+                zip code
+            </td>
+            <td>
+                street
+            </td>
+            <td>
+                phone
+            </td>
+        </tr>
+        {% for client in clients %}
+            <tr>
+                <td>
+                    client.country
+                </td>
+                <td>
+                    client.province
+                </td>
+                <td>
+                    client.city
+                </td>
+                <td>
+                    client.zip_code
+                </td>
+                <td>
+                    client.street
+                </td>
+                <td>
+                    client.phone
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr/>
+    <table border="1">
+        <tr>
+            <td colspan="6">
+                Products
+            </td>
+        </tr>
+        <tr>
+            <td>
+                name
+            </td>
+            <td>
+                category
+            </td>
+            <td>
+                price
+            </td>
+            <td>
+                product code
+            </td>
+        </tr>
+        {% for product in products %}
+            <tr>
+                <td>
+                    product.name
+                </td>
+                <td>
+                    product.category.name
+                </td>
+                <td>
+                    product.price
+                </td>
+                <td>
+                    product.product_code
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr/>
+    <table border="1">
+        <tr>
+            <td colspan="6">
+                Sales
+            </td>
+        </tr>
+        <tr>
+            <td>
+                client
+            </td>
+            <td>
+                product
+            </td>
+            <td>
+                opinion
+            </td>
+            <td>
+                incidence
+            </td>
+        </tr>
+        {% for sale in sales %}
+            <tr>
+                <td>
+                    sale.client.django_user.username
+                </td>
+                <td>
+                    sale.product.name
+                </td>
+                <td>
+                    sale.opinion.name
+                </td>
+                <td>
+                    sale.incidence.name
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr/>
+{% endblock %}

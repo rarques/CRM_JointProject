@@ -52,4 +52,5 @@ urlpatterns = [
     url(r'^process_client.json', process_client_JSON, name='process_client_JSON'),
     url(r'^sales/$', purchases_per_user, name='sales_list'),
     url(r'^incidence/(?P<pk>[0-9]+)', register_incidence, name='incidence'),
+    url(r'^list_information/$', send_new_information,name='send_new_information')
 ]
