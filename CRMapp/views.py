@@ -5,8 +5,10 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
 
+from CRMapp.controller import Send_new_information
 from CRMapp.controller.ProcessedData import ProcessedData
 from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
+from CRMapp.controller.Send_new_information import Send_new_information
 from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
 from CRMapp.controller.PersonController import *
 from CRMapp.controller.CompanyController import *
@@ -379,12 +381,11 @@ class SendRecommendation(ListView):
 
 
 def send_new_information(request):
-    clients = WebUser.objects.all()
-    sales = Sale.objects.all()
-    products = Product.objects.all()
-    return render(request=request, template_name='list_information.html', context=
-    {
-        'clients': clients,
-        'sales': sales,
-        'products': products
-    })
+    send_new_information = Send_new_information(request)
+    return send_new_information.return_http_response()
+
+def send_new_information_json(request):
+    send_new_information = Send_new_information(request)
+    return send_new_information.return_json()
+
+

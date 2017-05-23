@@ -126,4 +126,10 @@
         {% endfor %}
     </table>
     <hr/>
+    <form method="post" action="../list_information.json">
+    {% csrf_token %}
+    <input type="submit" name="clients" id="clients" value="Export Clients to JSON"/>
+    <input type="submit" name="products" id="products" value="Export Products to JSON"/>
+    <input type="submit" name="sales" id="sales" value="Export Sales to JSON"/>
+    </form>
 {% endblock %}
