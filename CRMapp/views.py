@@ -1,17 +1,21 @@
 from datetime import timedelta, datetime
+
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.core.mail import send_mail
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.generic import ListView
+from django.views.generic.base import View
+
 from CRMapp.controller import Send_new_information
+from CRMapp.controller.CompanyController import *
+from CRMapp.controller.PersonController import *
+from CRMapp.controller.ProcessClients import ProcessClients
 from CRMapp.controller.ProcessedData import ProcessedData
 from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
 from CRMapp.controller.Send_new_information import Send_new_information
 from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
-from CRMapp.controller.PersonController import *
-from CRMapp.controller.CompanyController import *
-from CRMapp.controller.ProcessClients import ProcessClients
 from forms import *
 
 
@@ -282,9 +286,9 @@ def purchases_per_user(request):
 @login_required
 def register_incidence(request, pk):
     if request.method == 'GET':
-        product = Product.objects.get(id=pk)
+        sale = Sale.objects.get(id=pk)
         return render(request, 'register_incidence.html', {
-            "product": product,
+            "product": sale.product,
             "incidence_form": IncidenceForm(),
             "submitted": False,
         })
@@ -293,11 +297,11 @@ def register_incidence(request, pk):
         if incidence_form.is_valid():
             incidence = incidence_form.save(commit=False)
             incidence_category = request.POST.get("category")
-            product = Product.objects.get(id=pk)
+            sale = Sale.objects.get(id=pk)
             web_user = WebUser.objects.get(django_user=request.user)
             incidence.user = web_user
-            incidence.product = product
             incidence.category = incidence_category
+            incidence.sale = sale
             incidence.save()
             return render(request, 'register_incidence.html', {
                 "submitted": True
@@ -321,10 +325,9 @@ def post_opinion(request, pk):
             sale = Sale.objects.get(id=pk)
             product = Product.objects.get(sale=sale)
             web_user = WebUser.objects.get(django_user=request.user)
-            if Opinion.objects.filter(product=product, user=web_user).exists():
-                Opinion.objects.get(product=product, user=web_user).delete()
+            if Opinion.objects.filter(sale=sale, user=web_user).exists():
+                Opinion.objects.get(sale=sale, user=web_user).delete()
             opinion.user = web_user
-            opinion.product = product
             opinion.save()
             sale.opinion = opinion
             sale.save()
@@ -351,7 +354,7 @@ class SendReminder(ListView):
         notify_clients = list(User.objects.filter(last_login__lt=remainder_date))
         for client in notify_clients:
             send_mail(
-                'Technogad Sistems',
+                'Technogad Systems',
                 'We have new products, come and see them at technogad.herokuapp.com',
                 'technogado@gmail.com',
                 [client.email]
@@ -377,6 +380,42 @@ class SendRecommendation(ListView):
                     context['recommended'] = Product.objects.get(name=product, category=category)
 
         return context
+
+
+class SendIncidences(ListView):
+    model = Incidence
+    template_name = 'incidence_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SendIncidences, self).get_context_data(**kwargs)
+        incidences = Incidence.objects.all().order_by('category')
+        context['incidences'] = incidences
+        return context
+
+
+class IncidencesJSON(View):
+    def get(self, request):
+        incidences = Incidence.objects.all()
+        data = serializers.serialize('json', incidences)
+        return HttpResponse(data, content_type='application/json')
+
+
+class SendOpinions(ListView):
+    model = Opinion
+    template_name = 'opinion_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SendOpinions, self).get_context_data(**kwargs)
+        sales_with_opinion = Sale.objects.filter(opinion__isnull=False).order_by('product__name')
+        context['sales_with_opinion'] = sales_with_opinion
+        return context
+
+
+class OpinionsJSON(View):
+    def get(self, request):
+        opinions = Opinion.objects.all()
+        data = serializers.serialize('json', opinions)
+        return HttpResponse(data, content_type='application/json')
 
 
 def send_new_information(request):
