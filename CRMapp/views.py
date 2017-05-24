@@ -20,9 +20,8 @@ from forms import *
 
 
 def base(request):
-    return render(request, 'base.html',
-                  {'PageTitle': 'Base',
-                   'TitleHeader': 'Base'})
+    return render(request, 'homepage.html',
+                  {'TitleHeader': 'Technogad'})
 
 
 def register(request):
@@ -55,8 +54,7 @@ def register_person(request):
             new_web_user = person.create_new_web_user(web_user_form, new_user)
             person.register_interested_categories(new_web_user, interested_categories)
             person.create_new_user_as_person(user_as_person_form, new_web_user)
-            # return redirect(profile)
-            return HttpResponse("Registered")
+            return redirect("/")
         else:
             return render(request, 'register.html', {
                 "title": "Register as Person",
@@ -91,7 +89,7 @@ def register_company(request):
             new_web_user = company.create_new_web_user(web_user_form, new_user)
             company.register_interested_categories(new_web_user, interested_categories)
             company.create_new_company_user(user_as_company_form, new_web_user)
-            return HttpResponse("Registered")
+            return redirect("/")
         return render(request, 'register.html', {
             "title": "Register as Person",
             "basic_form": user_form,
