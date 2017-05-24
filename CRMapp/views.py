@@ -61,6 +61,7 @@ def register_person(request):
                 "basic_form": user_form,
                 "form": web_user_form,
                 "specific_form": user_as_person_form,
+                "categories": Category.objects.all(),
                 "destination_url": "/register-person/"
             })
 
