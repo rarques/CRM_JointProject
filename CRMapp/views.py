@@ -96,6 +96,7 @@ def register_company(request):
             "basic_form": user_form,
             "form": web_user_form,
             "specific_form": user_as_company_form,
+            "categories": Category.objects.all(),
             "destination_url": "/register-company/"
         })
 
