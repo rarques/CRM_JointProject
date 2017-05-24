@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<li>
+    <a class="btn btn-default" href="{% url 'crm:salesdpt' %}">Process sales history</a>
+</li>
+<li>
+    <a class="btn btn-default" href="{% url 'crm:send_new_information' %}">New information</a>
+</li>
+{% endblock %}

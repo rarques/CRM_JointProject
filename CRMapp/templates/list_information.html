@@ -126,7 +126,7 @@
         </tbody>
     </table>
     <hr/>
-    <form method="post" action="../list_information.json">
+    <form method="post" action="{% url 'crm:list_information.json' %}">
         {% csrf_token %}
         <input class="btn btn-default" type="submit" name="clients" id="clients" value="Export Clients to JSON"/>
         <input class="btn btn-default" type="submit" name="products" id="products" value="Export Products to JSON"/>
