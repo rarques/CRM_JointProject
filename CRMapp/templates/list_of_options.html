@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+    <l>
+        <li>
+            <a class="btn btn-default" href="{% url 'crm:salesdpt' %}">Process sales history</a>
+        </li>
+        <br/>
+        <li>
+            <a class="btn btn-default" href="{% url 'crm:send_new_information' %}">New information</a>
+        </li>
+        <br/>
+        <li>
+            <a class="btn btn-default" href="{% url 'crm:incidences' %}">New incidences</a>
+        </li>
+        <br/>
+        <li>
+            <a class="btn btn-default" href="{% url 'crm:opinions' %}">New opinions</a>
+        </li>
+        <br/>
+        <li>
+            <a class="btn btn-default" href="{% url 'crm:client_reminder' %}">Send reminders</a>
+        </li>
+    </ul>
+{% endblock %}
