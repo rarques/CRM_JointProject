@@ -374,7 +374,7 @@ class SendRecommendation(ListView):
         context['recommended'] = Product.objects.all().first
 
         if CategoryPerUser.objects.filter(user=user).exists():
-            category = CategoryPerUser.objects.get(user=user).category
+            category = CategoryPerUser.objects.filter(user=user)[0].category
             for product in top_products:
                 if Product.objects.filter(name=product, category=category).exists():
                     context['recommended'] = Product.objects.get(name=product, category=category)
