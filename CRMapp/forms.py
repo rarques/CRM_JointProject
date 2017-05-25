@@ -56,7 +56,9 @@ class IncidenceForm(ModelForm):
     class Meta:
         model = Incidence
         widgets = {
-            'explanation': TextInput(attrs={'class': 'form-control'})
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'explanation': TextInput(attrs={'class': 'form-control'}),
+            'date': TextInput(attrs={'class': 'form-control'}),
         }
         exclude = ['user', 'product', 'category', 'sale']
 
@@ -67,6 +69,10 @@ class OpinionForm(ModelForm):
     class Meta:
         model = Opinion
         exclude = ['user', 'product', 'date']
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'comment': TextInput(attrs={'class': 'form-control'}),
+        }
 
     def clean(self):
         return super(OpinionForm, self).clean()

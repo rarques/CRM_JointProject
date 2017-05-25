@@ -3,7 +3,7 @@
     <div id="modify_person">
         <form id="modify_person_form" action="{% url 'modify_person' %}" method="post">
             {% csrf_token %}
-            <table>
+            <table align="left">
                 <tr>
                     <td colspan="2">
                         <label>
@@ -116,7 +116,7 @@
                 </tr>
                 {% for category in categories %}
                     <tr>
-                        <td>
+                        <td align="left">
                             <input type="checkbox" id="{{ category.name }}" name="category"
                                    value="{{ category }}">
                             <label for="{{ category.name }}">{{ category }}</label>
