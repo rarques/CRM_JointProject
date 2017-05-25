@@ -7,7 +7,7 @@
                 <tr>
                     <td colspan="2">
                         <label>
-                            Basic
+                            Basic information
                         </label>
                     </td>
                 </tr>
@@ -36,7 +36,7 @@
                 <tr>
                     <td colspan="2">
                         <label>
-                            User information
+                            Personal information
                         </label>
                     </td>
                 </tr>
@@ -79,8 +79,8 @@
                             Zip code :
                         </label>
                     </td>
-                    <td>
-                        <input type="text" size="5"
+                    <td align="left">
+                        <input type="text"
                                value="{{ zip_code }}"
                                name="zip_code" id="zip_code"/>
                     </td>
@@ -108,6 +108,18 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>
+                        <label>
+                            DNI :
+                        </label>
+                    </td>
+                    <td align="left">
+                        <input type="text" size="9"
+                               value="{{ dni }}"
+                               name="dni" id="dni"/>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2">
                         <label>
                             Categories
@@ -123,25 +135,6 @@
                         </td>
                     </tr>
                 {% endfor %}
-                <tr>
-                    <td colspan="2">
-                        <label>
-                            Personal information
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>
-                            DNI :
-                        </label>
-                    </td>
-                    <td>
-                        <input type="text" size="9"
-                               value="{{ dni }}"
-                               name="dni" id="dni"/>
-                    </td>
-                </tr>
                 <tr>
                     <td colspan="2">
                         <input type="submit" value="Apply"/>

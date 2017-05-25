@@ -3,11 +3,11 @@
     <div id="modify_company">
         <form id="modify_company_form" action="{% url 'modify_company' %}" method="post">
             {% csrf_token %}
-            <table>
+        <table align="left">
                 <tr>
                     <td colspan="2">
                         <label>
-                            Basic
+                            Basic information
                         </label>
                     </td>
                 </tr>
@@ -36,7 +36,7 @@
                 <tr>
                     <td colspan="2">
                         <label>
-                            User information
+                            General information
                         </label>
                     </td>
                 </tr>
@@ -79,8 +79,8 @@
                             Zip code :
                         </label>
                     </td>
-                    <td>
-                        <input type="text" size="5"
+                    <td align="left">
+                        <input type="text"
                                value="{{ zip_code }}"
                                name="zip_code" id="zip_code"/>
                     </td>
@@ -110,22 +110,6 @@
                 <tr>
                     <td colspan="2">
                         <label>
-                            Categories
-                        </label>
-                    </td>
-                </tr>
-                {% for category in categories %}
-                    <tr>
-                        <td>
-                            <input type="checkbox" id="{{ category.name }}" name="category"
-                                   value="{{ category }}">
-                            <label for="{{ category.name }}">{{ category }}</label>
-                        </td>
-                    </tr>
-                {% endfor %}
-                <tr>
-                    <td colspan="2">
-                        <label>
                             Company information
                         </label>
                     </td>
@@ -136,12 +120,28 @@
                             CIF :
                         </label>
                     </td>
-                    <td>
-                        <input type="text" size="9"
+                    <td align="left">
+                        <input type="text"
                                value="{{ cif }}"
                                name="cif" id="cif"/>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="2">
+                        <label>
+                            Categories
+                        </label>
+                    </td>
+                </tr>
+                {% for category in categories %}
+                    <tr>
+                        <td align="left">
+                            <input type="checkbox" id="{{ category.name }}" name="category"
+                                   value="{{ category }}">
+                            <label for="{{ category.name }}">{{ category }}</label>
+                        </td>
+                    </tr>
+                {% endfor %}
                 <tr>
                     <td colspan="2">
                         <input type="submit" value="Apply"/>
