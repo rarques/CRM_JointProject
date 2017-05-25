@@ -35,7 +35,6 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 
 <body id="page-top">
@@ -58,19 +57,19 @@
                     <a class="page-scroll" href="{% url 'crm:options' %}">CRM</a>
                 </li>
                 {% if not request.user.is_authenticated %}
-                <li>
-                    <a class="page-scroll" href="{% url 'login' %}">Login</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="{% url 'register' %}">Register</a>
-                </li>
+                    <li>
+                        <a class="page-scroll" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="{% url 'register' %}">Register</a>
+                    </li>
                 {% else %}
-                <li>
-                    <a class="page-scroll" href="{% url 'profile' %}">Profile</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="{% url 'logout' %}">Logout</a>
-                </li>
+                    <li>
+                        <a class="page-scroll" href="{% url 'profile' %}">Profile</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="{% url 'logout' %}">Logout</a>
+                    </li>
                 {% endif %}
             </ul>
         </div>

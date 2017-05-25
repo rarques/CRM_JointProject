@@ -10,7 +10,7 @@
                     </label>
                 </td>
                 <td>
-                    <input type="text" id="country" name="country" />
+                    <input type="text" id="country" name="country"/>
                 </td>
             </tr>
             <tr>
@@ -20,7 +20,7 @@
                     </label>
                 </td>
                 <td>
-                    <input type="text" id="province" name="province"  />
+                    <input type="text" id="province" name="province"/>
                 </td>
             </tr>
             <tr>
@@ -30,7 +30,7 @@
                     </label>
                 </td>
                 <td>
-                    <input type="text" id="city" name="city" />
+                    <input type="text" id="city" name="city"/>
                 </td>
             </tr>
             <tr>
@@ -46,9 +46,9 @@
                         </legend>
                         {% for category in categories %}
                             <input type="radio" name="category" id="{{ category.id }}" value="{{ category.name }}"
-                            checked/>
+                                   checked/>
                             <label for="{{ category.id }}">
-                            {{ category.name }}
+                                {{ category.name }}
                             </label>
                         {% endfor %}
                     </fieldset>
