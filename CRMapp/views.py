@@ -5,6 +5,7 @@ from django.core import serializers
 from django.core.mail import send_mail
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
+from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.base import View
 
@@ -359,7 +360,12 @@ class SendReminder(ListView):
                 'technogado@gmail.com',
                 [client.email]
             )
-        return HttpResponse("Users Notified")
+        return redirect('crm:success_reminder')
+
+
+@login_required
+def success_reminder(request):
+    return render(request, 'users_notified.html')
 
 
 class SendRecommendation(ListView):
