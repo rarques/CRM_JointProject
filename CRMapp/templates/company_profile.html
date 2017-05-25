@@ -4,9 +4,9 @@
         <table>
             <tr>
                 <td colspan="2">
-                    <label>
-                        Basic
-                    </label>
+                    <h3>
+                        Basic information
+                    </h3>
                 </td>
             </tr>
             <tr>
@@ -35,9 +35,9 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <label>
-                        User information
-                    </label>
+                    <h3>
+                        General information
+                    </h3>
                 </td>
             </tr>
             <tr>
@@ -114,23 +114,9 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <label>
-                        Categories
-                    </label>
-                </td>
-            </tr>
-            {% for category_per_user in categories %}
-                <tr>
-                    <td>
-                        {{ category_per_user.category }}
-                    </td>
-                </tr>
-            {% endfor %}
-            <tr>
-                <td colspan="2">
-                    <label>
+                    <h3>
                         Company information
-                    </label>
+                    </h3>
                 </td>
             </tr>
             <tr>
@@ -147,12 +133,29 @@
             </tr>
             <tr>
                 <td colspan="2">
+                    <h3>
+                        Categories
+                    </h3>
+                </td>
+            </tr>
+            {% for category_per_user in categories %}
+                <tr>
+                    <td>
+                        {{ category_per_user.category }}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="2">
                     <a href="{% url 'modify_company' %}">
                         <button>
                             Modify
                         </button>
                     </a>
                 </td>
+            </tr>
+            <tr>
+                <a class="btn btn-default" href="{% url 'sales_list' %}">My products</a>
             </tr>
         </table>
     </div>
