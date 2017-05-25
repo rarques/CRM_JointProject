@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Welcome to technogad, please, select one of the above options.</h1>
+    <div class="page-header">
+        <h1>Welcome to TECHNOGAD</h1>
+    </div>
+    <div class="jumobtron">
+        <a href="{% url 'login' %}" class="btn btn-toolbar">Login</a>
+        <a href="{% url 'register' %}" class="btn btn-toolbar">Register</a>
+    </div>
 {% endblock %}

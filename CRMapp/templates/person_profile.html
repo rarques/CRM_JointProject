@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
     <div id="person_profile">
-        <table>
+        <table align="left">
             <tr>
                 <td colspan="2">
-                    <label>
-                        Basic
-                    </label>
+                    <h3>
+                        Basic information
+                    </h3>
                 </td>
             </tr>
             <tr>
@@ -35,9 +35,9 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <label>
+                    <h3>
                         User information
-                    </label>
+                    </h3>
                 </td>
             </tr>
             <tr>
@@ -114,9 +114,9 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <label>
+                    <h3>
                         Categories
-                    </label>
+                    </h3>
                 </td>
             </tr>
             {% for category_per_user in categories %}
@@ -128,9 +128,9 @@
             {% endfor %}
             <tr>
                 <td colspan="2">
-                    <label>
+                    <h3>
                         Personal information
-                    </label>
+                    </h3>
                 </td>
             </tr>
             <tr>

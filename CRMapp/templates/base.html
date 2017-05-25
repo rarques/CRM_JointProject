@@ -35,6 +35,11 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        tr, td {
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -53,17 +58,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a class="page-scroll" href="{% url 'crm:options' %}">CRM</a>
-                </li>
-                {% if not request.user.is_authenticated %}
+                {% if request.user.is_authenticated %}
                     <li>
-                        <a class="page-scroll" href="{% url 'login' %}">Login</a>
+                        <a class="page-scroll" href="{% url 'crm:options' %}">CRM</a>
                     </li>
-                    <li>
-                        <a class="page-scroll" href="{% url 'register' %}">Register</a>
-                    </li>
-                {% else %}
                     <li>
                         <a class="page-scroll" href="{% url 'profile' %}">Profile</a>
                     </li>

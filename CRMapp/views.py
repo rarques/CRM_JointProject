@@ -54,7 +54,7 @@ def register_person(request):
             new_web_user = person.create_new_web_user(web_user_form, new_user)
             person.register_interested_categories(new_web_user, interested_categories)
             person.create_new_user_as_person(user_as_person_form, new_web_user)
-            return redirect("/")
+            return redirect("login")
         else:
             return render(request, 'register.html', {
                 "title": "Register as Person",
