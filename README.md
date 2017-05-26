@@ -40,10 +40,6 @@ pip install -r requirements.txt
 Give execution permission to the file [django_testing_script.sh] and execute it.
 It will automatically apply the necessary migrations on the database and run the tests.
 
-### Break down into end to end tests
-
-Tests not implemented yet.
-
 ## Deployment
 
 Deployment in heroku
