@@ -1,22 +1,28 @@
+from datetime import timedelta, datetime
+
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.core.mail import send_mail
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
+from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views.generic.base import View
 
+from CRMapp.controller import Send_new_information
+from CRMapp.controller.CompanyController import *
+from CRMapp.controller.PersonController import *
+from CRMapp.controller.ProcessClients import ProcessClients
 from CRMapp.controller.ProcessedData import ProcessedData
 from CRMapp.controller.SalesHistoryProcesser import SalesHistoryProcesser
+from CRMapp.controller.Send_new_information import Send_new_information
 from CRMapp.models import CategoryPerUser, Category, Employee, Sale, Product
-from CRMapp.controller.PersonController import *
-from CRMapp.controller.CompanyController import *
-from CRMapp.controller.Process_clients_controller import Process_clients_controller
 from forms import *
 
 
 def base(request):
-    return render(request, 'base.html',
-                  {'PageTitle': 'Base',
-                   'TitleHeader': 'Base'})
+    return render(request, 'homepage.html',
+                  {'TitleHeader': 'Technogad'})
 
 
 def register(request):
@@ -49,14 +55,14 @@ def register_person(request):
             new_web_user = person.create_new_web_user(web_user_form, new_user)
             person.register_interested_categories(new_web_user, interested_categories)
             person.create_new_user_as_person(user_as_person_form, new_web_user)
-            # return redirect(profile)
-            return HttpResponse("Registered")
+            return redirect("login")
         else:
             return render(request, 'register.html', {
                 "title": "Register as Person",
                 "basic_form": user_form,
                 "form": web_user_form,
                 "specific_form": user_as_person_form,
+                "categories": Category.objects.all(),
                 "destination_url": "/register-person/"
             })
 
@@ -85,12 +91,13 @@ def register_company(request):
             new_web_user = company.create_new_web_user(web_user_form, new_user)
             company.register_interested_categories(new_web_user, interested_categories)
             company.create_new_company_user(user_as_company_form, new_web_user)
-            return HttpResponse("Registered")
+            return redirect("/")
         return render(request, 'register.html', {
             "title": "Register as Person",
             "basic_form": user_form,
             "form": web_user_form,
             "specific_form": user_as_company_form,
+            "categories": Category.objects.all(),
             "destination_url": "/register-company/"
         })
 
@@ -220,13 +227,13 @@ def modify_company(request):
 
 class SalesHistory(ListView):
     model = Employee
-    template_name = 'SalesHistory.html'
+    template_name = 'sales_history.html'
     queryset = ""
 
 
 class ShowProcessedSales(ListView):
     model = Employee
-    template_name = 'ProcessedSales.html'
+    template_name = 'processed_sales.html'
     queryset = ""
 
     def post(self, *args, **kwargs):
@@ -242,17 +249,17 @@ class ShowProcessedSales(ListView):
                       )
 
     def process_sale_data(self):
-        processedData = ProcessedData()
-        top_buyers = processedData.get_top_buyers()
-        top_products = processedData.get_top_products()
-        bot_products = processedData.get_bot_products()
+        processed_data = ProcessedData()
+        top_buyers = processed_data.get_top_buyers()
+        top_products = processed_data.get_top_products()
+        bot_products = processed_data.get_bot_products()
         return bot_products, top_buyers, top_products
 
     def save_api_information(self):
-        salesProcesser = SalesHistoryProcesser()
-        salesProcesser.catch_data()
-        salesProcesser.process_data()
-        salesProcesser.save_data()
+        sales_processer = SalesHistoryProcesser()
+        sales_processer.catch_data()
+        sales_processer.process_data()
+        sales_processer.save_data()
 
 
 def process_client_JSON(request):
@@ -261,7 +268,7 @@ def process_client_JSON(request):
             'categories': Category.objects.all()
         })
     elif request.method == 'POST':
-        process_clients_controller = Process_clients_controller(request)
+        process_clients_controller = ProcessClients(request)
         process_clients_controller.captureFields()
         return process_clients_controller.filter_clients_and_return('json')
 
@@ -280,9 +287,9 @@ def purchases_per_user(request):
 @login_required
 def register_incidence(request, pk):
     if request.method == 'GET':
-        product = Product.objects.get(id=pk)
+        sale = Sale.objects.get(id=pk)
         return render(request, 'register_incidence.html', {
-            "product": product,
+            "product": sale.product,
             "incidence_form": IncidenceForm(),
             "submitted": False,
         })
@@ -291,13 +298,41 @@ def register_incidence(request, pk):
         if incidence_form.is_valid():
             incidence = incidence_form.save(commit=False)
             incidence_category = request.POST.get("category")
-            product = Product.objects.get(id=pk)
+            sale = Sale.objects.get(id=pk)
             web_user = WebUser.objects.get(django_user=request.user)
             incidence.user = web_user
-            incidence.product = product
             incidence.category = incidence_category
+            incidence.sale = sale
             incidence.save()
             return render(request, 'register_incidence.html', {
+                "submitted": True
+            })
+
+
+@login_required
+def post_opinion(request, pk):
+    if request.method == 'GET':
+        sale = Sale.objects.get(id=pk)
+        product = Product.objects.get(sale=sale)
+        return render(request, 'post_opinion.html', {
+            "product": product,
+            "opinion_form": OpinionForm(),
+            "submitted": False,
+        })
+    elif request.method == 'POST':
+        opinion_form = OpinionForm(request.POST)
+        if opinion_form.is_valid():
+            opinion = opinion_form.save(commit=False)
+            sale = Sale.objects.get(id=pk)
+            product = Product.objects.get(sale=sale)
+            web_user = WebUser.objects.get(django_user=request.user)
+            if Opinion.objects.filter(sale=sale, user=web_user).exists():
+                Opinion.objects.get(sale=sale, user=web_user).delete()
+            opinion.user = web_user
+            opinion.save()
+            sale.opinion = opinion
+            sale.save()
+            return render(request, 'post_opinion.html', {
                 "submitted": True
             })
 
@@ -309,3 +344,95 @@ def profile(request):
         return redirect(to='../../person_profile/')
     elif UserAsCompany.objects.filter(web_user=web_user).exists():
         return redirect(to='../../company_profile/')
+
+
+class SendReminder(ListView):
+    model = WebUser
+    template_name = 'send_reminders.html'
+
+    def post(self, *args, **kwargs):
+        remainder_date = datetime.now() - timedelta(days=15)
+        notify_clients = list(User.objects.filter(last_login__lt=remainder_date))
+        for client in notify_clients:
+            send_mail(
+                'Technogad Systems',
+                'We have new products, come and see them at technogad.herokuapp.com',
+                'technogado@gmail.com',
+                [client.email]
+            )
+        return redirect('crm:success_reminder')
+
+
+@login_required
+def success_reminder(request):
+    return render(request, 'users_notified.html')
+
+
+class SendRecommendation(ListView):
+    model = WebUser
+    template_name = 'recommendation.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SendRecommendation, self).get_context_data(**kwargs)
+        user = WebUser.objects.get(django_user=self.request.user)
+        pd = ProcessedData()
+        top_products = pd.get_top_products()
+        context['recommended'] = Product.objects.all().first
+
+        if CategoryPerUser.objects.filter(user=user).exists():
+            category = CategoryPerUser.objects.filter(user=user)[0].category
+            for product in top_products:
+                if Product.objects.filter(name=product, category=category).exists():
+                    context['recommended'] = Product.objects.get(name=product, category=category)
+
+        return context
+
+
+class SendIncidences(ListView):
+    model = Incidence
+    template_name = 'incidence_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SendIncidences, self).get_context_data(**kwargs)
+        incidences = Incidence.objects.all().order_by('category')
+        context['incidences'] = incidences
+        return context
+
+
+class IncidencesJSON(View):
+    def get(self, request):
+        incidences = Incidence.objects.all()
+        data = serializers.serialize('json', incidences)
+        return HttpResponse(data, content_type='application/json')
+
+
+class SendOpinions(ListView):
+    model = Opinion
+    template_name = 'opinion_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SendOpinions, self).get_context_data(**kwargs)
+        sales_with_opinion = Sale.objects.filter(opinion__isnull=False).order_by('product__name')
+        context['sales_with_opinion'] = sales_with_opinion
+        return context
+
+
+class OpinionsJSON(View):
+    def get(self, request):
+        opinions = Opinion.objects.all()
+        data = serializers.serialize('json', opinions)
+        return HttpResponse(data, content_type='application/json')
+
+
+def send_new_information(request):
+    send_new_information = Send_new_information(request)
+    return render(request=request, template_name='list_information.html', context={
+        'clients': send_new_information.clients,
+        'sales': send_new_information.sales,
+        'products': send_new_information.products
+    })
+
+
+def send_new_information_json(request):
+    send_new_information = Send_new_information(request)
+    return send_new_information.return_json()

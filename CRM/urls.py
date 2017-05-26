@@ -32,12 +32,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
+
 from CRMapp.views import *
 
 urlpatterns = [
-    url(r'^$', base),
-    url(r'^worker/', include('CRMapp.urls', namespace='crm')),
+    url(r'^$', base, name='home'),
     url(r'^admin/', admin.site.urls),
+    url(r'^worker/', include('CRMapp.urls', namespace='crm')),
+    url(r'^recommendation/', login_required(SendRecommendation.as_view()), name='send_recommendation'),
     url(r'^person_profile/$', person_profile, name='person_profile'),
     url(r'^company_profile/$', company_profile, name='company_profile'),
     url(r'^modify_person/$', modify_person, name='modify_person'),
@@ -51,4 +53,7 @@ urlpatterns = [
     url(r'^process_client.json', process_client_JSON, name='process_client_JSON'),
     url(r'^sales/$', purchases_per_user, name='sales_list'),
     url(r'^incidence/(?P<pk>[0-9]+)', register_incidence, name='incidence'),
+    url(r'^opinion/(?P<pk>[0-9]+)', post_opinion, name='opinion'),
+    url(r'^list_information/$', send_new_information, name='send_new_information'),
+    url(r'^list_information.json', send_new_information_json, name='send_new_information_json')
 ]

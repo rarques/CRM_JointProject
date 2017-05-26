@@ -2,8 +2,9 @@
 
 from django.contrib.auth.models import User
 from django.forms import *
+from django.utils.translation import gettext_lazy as _
 
-from models import WebUser, UserAsPerson, UserAsCompany, Incidence
+from models import WebUser, UserAsPerson, UserAsCompany, Incidence, Opinion
 
 
 class UserForm(ModelForm):
@@ -55,7 +56,29 @@ class UserAsCompanyForm(ModelForm):
 class IncidenceForm(ModelForm):
     class Meta:
         model = Incidence
-        exclude = ['user', 'product', 'category']
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'explanation': TextInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            "name": _("Title of the incidence   ")
+        }
+        exclude = ['user', 'product', 'category', 'sale', 'date']
 
     def clean(self):
         return super(IncidenceForm, self).clean()
+
+class OpinionForm(ModelForm):
+    class Meta:
+        model = Opinion
+        exclude = ['user', 'product', 'date']
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'comment': TextInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            "name": _("Title of the opinion")
+        }
+
+    def clean(self):
+        return super(OpinionForm, self).clean()

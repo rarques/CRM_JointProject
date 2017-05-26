@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>OPINIONS:</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Product affected</th>
+            <th>Affected sale's Id</th>
+            <th>Opinion title</th>
+            <th>Comment</th>
+        </tr>
+        </thead>
+        {% for sale in sales_with_opinion %}
+            <tr>
+                <td>
+                    {{ sale.client.django_user.username }}
+                </td>
+                <td>
+                    {{ sale.product.name }}
+                </td>
+                <td>
+                    {{ sale.id }}
+                </td>
+                <td>
+                    {{ sale.opinion.name }}
+                </td>
+                <td>
+                    {{ sale.opinion.comment }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'crm:opinions_json' %}" type="button" class="btn btn-default">JSON representation</a>
+{% endblock %}
