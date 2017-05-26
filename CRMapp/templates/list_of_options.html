@@ -1,24 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
-    <l>
-        <li>
-            <a class="btn btn-default" href="{% url 'crm:salesdpt' %}">Process sales history</a>
-        </li>
-        <br/>
-        <li>
-            <a class="btn btn-default" href="{% url 'crm:send_new_information' %}">New information</a>
-        </li>
-        <br/>
-        <li>
-            <a class="btn btn-default" href="{% url 'crm:incidences' %}">New incidences</a>
-        </li>
-        <br/>
-        <li>
-            <a class="btn btn-default" href="{% url 'crm:opinions' %}">New opinions</a>
-        </li>
-        <br/>
-        <li>
-            <a class="btn btn-default" href="{% url 'crm:client_reminder' %}">Send reminders</a>
-        </li>
-    </ul>
+    <div class="container" style="width: 30%; margin : auto">
+        <table>
+            <tr>
+                <td>
+                    <a class="btn btn-default" style="width : 100%; margin: 5%" href="{% url 'crm:salesdpt' %}">Process
+                        sales history</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="btn btn-default" style="width : 100%; margin: 5%"
+                       href="{% url 'crm:send_new_information' %}">New information</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="btn btn-default" style="width : 100%; margin: 5%" href="{% url 'crm:incidences' %}">New
+                        incidences</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="btn btn-default" style="width : 100%; margin: 5%" href="{% url 'crm:opinions' %}">New
+                        opinions</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="btn btn-default" style="width : 100%; margin: 5%" href="{% url 'crm:client_reminder' %}">Send
+                        reminders</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="btn btn-default" style="width : 100%; margin: 5%" href="{% url 'process_client_JSON' %}">Client
+                        filtering</a>
+                </td>
+            </tr>
+        </table>
+    </div>
 {% endblock %}

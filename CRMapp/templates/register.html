@@ -29,9 +29,9 @@
                 </table>
             </form>
         {% else %}
-            <a href="{% url 'register_person' %}">Register as a Person</a>
+            <a href="{% url 'register_person' %}" class="btn">Register as a Person</a>
             <p>OR</p>
-            <a href="{% url 'register_company' %}">Register as a Company</a>
+            <a href="{% url 'register_company' %}" class="btn">Register as a Company</a>
         {% endif %}
     </div>
 {% endblock %}

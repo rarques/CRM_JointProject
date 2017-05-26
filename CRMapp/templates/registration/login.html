@@ -3,29 +3,30 @@
     {% if form.errors %}
         <p>Sorry, that's not a valid username or password. Please try again!</p>
     {% endif %}
-    <h2>Login</h2>
+    <div class="page-header">
+        <h2>Login</h2>
+    </div>
 
+    <div class="form-group">
+        <form method="post" id="login_form" action="{% url 'login' %}">
+            <table align="center">
+                <tr>
+                    <td>{{ form.username.label_tag }}</td>
+                    <td>{{ form.username }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.password.label_tag }}</td>
+                    <td>{{ form.password }}</td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" name="next" value="{{ next|escape }}"/></td>
+                </tr>
+            </table>
 
-<!--URL login: account/login ->login OK -> se redirige por defecto  a /recommendation/ -->
+            <input type="submit" value="login"/>
 
-    <form method="post" id="login_form" action="{% url 'login' %}">
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-            <tr>
-                <td><input type="hidden" name="next" value="{{ next|escape }}"/></td>
-            </tr>
-        </table>
-
-        <input type="submit" value="login"/>
-
-        {% csrf_token %}
-    </form>
+            {% csrf_token %}
+        </form>
+    </div>
     <li><a href="{% url 'register' %}"> Register</a></li>
 {% endblock %}

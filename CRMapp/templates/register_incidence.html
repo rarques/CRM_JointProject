@@ -7,11 +7,12 @@
             {{ incidence_form.as_p }}
             <p>Please, select the motive of the incidence:</p>
             <p><label for="broken">The product arrived broken</label>
-            <input type="radio" id="broken" name="category" value="The product arrived broken"></p>
+                <input type="radio" checked id="broken" name="category" value="The product arrived broken"></p>
             <p><label for="broken">Isn't what I expected</label>
-            <input type="radio" id="not_expected" name="category" value="Isn't what I expected"></p>
+                <input type="radio" id="not_expected" name="category" value="Isn't what I expected"></p>
             <p><label for="broken">he product broke before the end of the warranty</label>
-            <input type="radio" id="early_break" name="category" value="The product broke before the end of the warranty"></p>
+                <input type="radio" id="early_break" name="category"
+                       value="The product broke before the end of the warranty"></p>
             <p><input type="submit" value="Submit"/></p>
         </form>
     {% else %}

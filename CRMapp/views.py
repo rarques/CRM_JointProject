@@ -5,6 +5,7 @@ from django.core import serializers
 from django.core.mail import send_mail
 from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
+from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.base import View
 
@@ -54,7 +55,7 @@ def register_person(request):
             new_web_user = person.create_new_web_user(web_user_form, new_user)
             person.register_interested_categories(new_web_user, interested_categories)
             person.create_new_user_as_person(user_as_person_form, new_web_user)
-            return redirect("/")
+            return redirect("login")
         else:
             return render(request, 'register.html', {
                 "title": "Register as Person",
@@ -359,7 +360,12 @@ class SendReminder(ListView):
                 'technogado@gmail.com',
                 [client.email]
             )
-        return HttpResponse("Users Notified")
+        return redirect('crm:success_reminder')
+
+
+@login_required
+def success_reminder(request):
+    return render(request, 'users_notified.html')
 
 
 class SendRecommendation(ListView):
@@ -374,7 +380,7 @@ class SendRecommendation(ListView):
         context['recommended'] = Product.objects.all().first
 
         if CategoryPerUser.objects.filter(user=user).exists():
-            category = CategoryPerUser.objects.get(user=user).category
+            category = CategoryPerUser.objects.filter(user=user)[0].category
             for product in top_products:
                 if Product.objects.filter(name=product, category=category).exists():
                     context['recommended'] = Product.objects.get(name=product, category=category)

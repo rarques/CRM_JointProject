@@ -10,7 +10,7 @@
                     </label>
                 </td>
                 <td>
-                    <input type="text" id="country" name="country" />
+                    <input type="text" id="country" name="country"/>
                 </td>
             </tr>
             <tr>
@@ -20,7 +20,7 @@
                     </label>
                 </td>
                 <td>
-                    <input type="text" id="province" name="province"  />
+                    <input type="text" id="province" name="province"/>
                 </td>
             </tr>
             <tr>
@@ -30,7 +30,7 @@
                     </label>
                 </td>
                 <td>
-                    <input type="text" id="city" name="city" />
+                    <input type="text" id="city" name="city"/>
                 </td>
             </tr>
             <tr>
@@ -40,18 +40,20 @@
                     </label>
                 </td>
                 <td>
-                    <fieldset>
-                        <legend>
-                            Please select one of the following
-                        </legend>
-                        {% for category in categories %}
-                            <input type="radio" name="category" id="{{ category.id }}" value="{{ category.name }}"
-                            checked/>
-                            <label for="{{ category.id }}">
-                            {{ category.name }}
-                            </label>
-                        {% endfor %}
-                    </fieldset>
+                    <div class="container">
+                        <fieldset>
+                            <p>
+                                Please select one of the following
+                            </p>
+                            {% for category in categories %}
+                                <input type="radio" name="category" id="{{ category.id }}" value="{{ category.name }}"
+                                       checked/>
+                                <label for="{{ category.id }}">
+                                    {{ category.name }}
+                                </label>
+                            {% endfor %}
+                        </fieldset>
+                    </div>
                 </td>
             </tr>
             <tr>

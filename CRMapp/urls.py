@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 
-
+from CRMapp.views import success_reminder
 from views import send_new_information, send_new_information_json
 from views import SalesHistory, ShowProcessedSales, SendReminder, SendIncidences, IncidencesJSON, SendOpinions, \
     OpinionsJSON
@@ -20,6 +20,10 @@ urlpatterns = [
     url(r'reminder/$',
         login_required(SendReminder.as_view()),
         name='client_reminder'),
+
+    url(r'reminder_ok/$',
+        success_reminder,
+        name='success_reminder'),
 
     url(r'options/$',
         login_required(ListView.as_view(
