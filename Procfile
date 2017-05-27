@@ -1,2 +1,2 @@
 release: python manage.py migrate --no-input
-web: gunicorn CRMapp.wsgi --log-file -
+web: gunicorn CRM.wsgi --log-file -
