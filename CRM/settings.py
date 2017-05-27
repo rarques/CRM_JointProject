@@ -24,7 +24,7 @@ SECRET_KEY = '#@l!jpc8l-i$&^thrp71f^e2ek@znm(0f#b8$v8+)6&cm)82+z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['technogad-crm.herokuapp.com']
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
