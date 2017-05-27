@@ -2,3 +2,6 @@ Django==1.10.5
 behave==1.2.5
 splinter==0.7.5
 requests==2.14.2
+gunicorn==19.7.1
+whitenoise==3.3.0
+dj-database-url==0.4.2
