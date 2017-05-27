@@ -42,7 +42,7 @@ It will automatically apply the necessary migrations on the database and run the
 
 ## Deployment
 
-Deployment in heroku
+https://technogad-crm.herokuapp.com
 
 ## Built With
 
