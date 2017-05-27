@@ -10,3 +10,10 @@ test:
 dependencies:
   override:
     - pip install -r requirements.txt
+
+
+deployment:
+  staging:
+    branch: deployment
+    heroku:
+      appname: technogad-crm
