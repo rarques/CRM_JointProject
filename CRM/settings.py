@@ -122,4 +122,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = 'CRMapp/static'
+
 LOGIN_REDIRECT_URL = '/recommendation/'
